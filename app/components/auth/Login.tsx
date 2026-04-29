@@ -5,21 +5,24 @@ import { Button } from '../../components/ui/button';
 import { Input } from '../../components/ui/input';
 import { Checkbox } from '../../components/ui/checkbox';
 import { Label } from '../../components/ui/label';
-import { login } from '../../service/Auth';
+import { login } from "../../services/Auth";
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation'
 
 
 export const Login = () => {
 
-  const router = useRouter()
+    const router = useRouter()
 
   const submit = (event: any) => {
+
+    console.log('button clicked');
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const loginCredential = Object.fromEntries(data.entries());
     login(loginCredential);
-    router.push('/')
+        router.push('/')
+
 
   }
 

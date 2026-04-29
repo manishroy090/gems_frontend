@@ -3,13 +3,20 @@
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import { Label } from '../../components/ui/label';
-import { Input } from '../../components/ui/input';
+import { Label } from '../ui/label';
+import { Input } from '../ui/input';
 import { useEffect, useState } from "react";
 import "dotenv/config"
 import Axios from "../../libs/axios";
-import { register } from "../../service/Auth";
-import { getAllCountries } from "../../service/Config";
+import { hoshpitalRegister } from "../../services/Auth";
+import { getAllCountries } from "../../services/Config";
+import { useForm, SubmitHandler } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Registerschema } from "../../schemas/Register.schema";
+import { Ionboarding } from "../../interface/Ionboarding";
+import toast, { Toaster } from 'react-hot-toast';
+
+
 
 
 export const Register = () => {
@@ -22,46 +29,51 @@ export const Register = () => {
     slidesToScroll: 1,
     autoplay: true,
     arrows: false,
+    
+    
   };
-
-
   const [countries, setCountries] = useState();
 
 
+
+
+  //countries api call
   useEffect(() => {
     const AllCountries = async () => {
       try {
         const countries = await getAllCountries();
         setCountries(countries);
-
       } catch (error) {
         console.log('error', error);
-
       }
 
     }
-
     AllCountries();
-
-
-  }, [])
-
+  }, []);
 
 
 
-  const Submit = (event: any) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const HoshpitalDetails = Object.fromEntries(data.entries());
-    register(HoshpitalDetails);
 
 
-  };
+  const { register, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(Registerschema) });
+
+
+  const onSubmit: SubmitHandler<Ionboarding> = async(data) => {
+    console.log('data',data);
+     await hoshpitalRegister(data);
+
+
+  }
+
+
+
+
 
 
 
   return (
     <div className="flex h-screen">
+      <Toaster />
 
       {/* LEFT SIDE */}
       <div className="w-1/2 bg-gradient-to-br from-blue-50 to-blue-100 flex items-center justify-center">
@@ -101,29 +113,29 @@ export const Register = () => {
             <p className="text-gray-400 text-sm mt-1">Register your organization to get started</p>
           </div>
 
-          <form className="space-y-10" onSubmit={Submit}>
+          <form className="space-y-10" onSubmit={handleSubmit(onSubmit)}>
 
             {/* BASIC INFO */}
             <Section title="Account Credentials" icon="🔐">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Field label="Full Name" placeholder="John Doe" name="name" />
-                <Field label="Email" type="email" placeholder="example@email.com" name="email" />
-                <Field label="Password" type="password" placeholder="••••••••" name="password" />
-                <Field label="Confirm Password" type="password" placeholder="••••••••" name="confirm_password" />
+                <Field label="Full Name" placeholder="John Doe" name="name" register={register}  errors={errors} />
+                <Field label="Email" type="email" placeholder="example@email.com" name="email" register={register}   errors={errors}/>
+                <Field label="Password" type="password" placeholder="••••••••" name="password" register={register}   errors={errors}/>
+                <Field label="Confirm Password" type="password" placeholder="••••••••" name="confirm_password" register={register}   errors={errors}/>
               </div>
             </Section>
 
             {/* ORGANIZATION */}
             <Section title="Organization Details" icon="🏥">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Field label="Registration Number" placeholder="REG-000000" name="registration_number" />
-                <Field label="Tax ID" placeholder="TAX-000000" name="tax_id" />
-                <Field label="Website" placeholder="https://example.com" name="website" />
-                <Field label="Emergency Contact" placeholder="+1 000 000 0000" name="emergency_contact" />
-                <Field label="Established Date" type="date" name="established_date" />
-                <Field label="Total Beds" type="number" placeholder="e.g. 200" name="total_bed" />
+                <Field label="Registration Number" placeholder="REG-000000" name="registration_number" register={register}  errors={errors} />
+                <Field label="Tax ID" placeholder="TAX-000000" name="tax_id" register={register}   errors={errors}/>
+                <Field label="Website" placeholder="https://example.com" name="website" register={register}  errors={errors}/>
+                <Field label="Emergency Contact" placeholder="+1 000 000 0000" name="emergency_contact" register={register}  errors={errors} />
+                <Field label="Established Date" type="date" name="established_date" register={register}   errors={errors}/>
+                <Field label="Total Beds" type="number" placeholder="e.g. 200" name="total_beds" register={register} min={2}  errors={errors}/>
                 <div className="sm:col-span-2">
-                  <Field label="Logo" type="file" name="logo" />
+                  <Field label="Logo" type="file" name="logo" register={register}  errors={errors}/>
                 </div>
               </div>
             </Section>
@@ -132,21 +144,22 @@ export const Register = () => {
             <Section title="Address" icon="📍">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div className="sm:col-span-2">
-                  <Field label="Address Line 1" placeholder="Street address" name="address_line_1" />
+                  <Field label="Address Line 1" placeholder="Street address" name="address_line1" register={register}  errors={errors}/>
                 </div>
                 <div className="sm:col-span-2">
-                  <Field label="Address Line 2" placeholder="Suite, building, etc. (optional)" name="address_line2" />
+                  <Field label="Address Line 2" placeholder="Suite, building, etc. (optional)" name="address_line2" register={register}  errors={errors}/>
                 </div>
-                <Field label="City" placeholder="City" name="city" />
-                <Field label="State / Province" placeholder="State" name="state" />
+                <Field label="City" placeholder="City" name="city" register={register}  errors={errors}/>
+                <Field label="State / Province" placeholder="State" name="state" register={register}  errors={errors}/>
                 <div className="flex flex-col gap-1.5">
                   <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
                     Country
                   </Label>
                   <select
-                    name="country_id"
-                    className="h-10 text-sm bg-white text-black border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent"
+                    {...register("country_id")} className="h-10 text-sm bg-white text-black border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                     defaultValue=""
+                     errors={errors}
+
                   >
                     <option value="" disabled>
                       Select Country
@@ -159,7 +172,7 @@ export const Register = () => {
                     ))}
                   </select>
                 </div>
-                <Field label="Postal Code" placeholder="000000" name="postal_code" />
+                <Field label="Postal Code" placeholder="000000" name="postal_code" register={register} />
               </div>
             </Section>
 
@@ -200,14 +213,18 @@ const Section = ({ title, icon, children }) => (
   </div>
 );
 
-const Field = ({ label, type = "text", placeholder, name }) => (
+const Field = ({ label, type = "text", placeholder, name, register ,min ,errors}) => (
   <div className="flex flex-col gap-1.5">
     <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">{label}</Label>
     <Input
-      name={name}
       type={type}
+      {...register(name)}
       placeholder={placeholder}
+
       className="h-10 text-sm bg-white border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent placeholder:text-gray-300"
     />
+     {errors?.[name] && (
+      <p className="text-xs text-red-500">{errors[name].message}</p>
+    )}
   </div>
 );

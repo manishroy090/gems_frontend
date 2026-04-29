@@ -24,8 +24,10 @@ Axios.interceptors.response.use(
         const { response } = error;
         if (response.status === 401) {
             localStorage.removeItem("ACCESS_TOKEN");
-        } else if (response.status === 404) {
+        } else if (response.status === 422) {
             //show not found
+
+            return response
         }
         throw error;
     }
