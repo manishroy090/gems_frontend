@@ -25,7 +25,7 @@ const dmSans = DM_Sans({
 
 
 
-export default async function RootLayout({
+export default  function RootLayout({
   children
 }: {
   children: React.ReactNode
@@ -35,7 +35,7 @@ export default async function RootLayout({
     <html lang='en' suppressHydrationWarning>
       <head>
         <link rel='icon' href='/favicon.png' type='image/svg+xml' />
-        <link rel="manifest" href="/manifest.json" />
+        {/* <link rel="manifest" href="/manifest.json" /> */}
         <meta name="theme-color" content="#5d87ff" />
       </head>
       <body className={`${dmSans.className}`}>

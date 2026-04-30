@@ -29,7 +29,9 @@ export async function login(loginCredential:any){
     
    Axios.post('http://127.0.0.1:8080/api/v1/auth/login',loginCredential)
    .then((res)=>{
-    localStorage.setItem('ACCESS_TOKEN',res.data.token);
+    if(res.data.token){
+      localStorage.setItem('ACCESS_TOKEN',res.data.token);
+    }
    }).catch((error)=>{
     console.log('error',error);
    });

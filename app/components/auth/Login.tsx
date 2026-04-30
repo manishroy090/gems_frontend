@@ -12,18 +12,14 @@ import { useRouter } from 'next/navigation'
 
 export const Login = () => {
 
-    const router = useRouter()
+  const router = useRouter()
 
   const submit = (event: any) => {
-
-    console.log('button clicked');
     event.preventDefault();
     const data = new FormData(event.currentTarget);
     const loginCredential = Object.fromEntries(data.entries());
     login(loginCredential);
-        router.push('/')
-
-
+    router.push('/')
   }
 
 
@@ -55,6 +51,7 @@ export const Login = () => {
             <Input
               name="email"
               placeholder="Enter email"
+              autoComplete='off'
               className="bg-white/20 text-white placeholder:text-gray-300 border border-white/20 focus:border-white"
             />
           </div>
@@ -66,6 +63,7 @@ export const Login = () => {
               name="password"
               type="password"
               placeholder="Enter password"
+              autoComplete='off'
               className="bg-white/20 text-white placeholder:text-gray-300 border border-white/20 focus:border-white"
             />
           </div>

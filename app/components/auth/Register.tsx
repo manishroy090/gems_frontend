@@ -118,7 +118,7 @@ export const Register = () => {
             {/* BASIC INFO */}
             <Section title="Account Credentials" icon="🔐">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                <Field label="Full Name" placeholder="John Doe" name="name" register={register}  errors={errors} />
+                <Field label="Hoshpital Name" placeholder="Green Valley Hospital" name="name" register={register}  errors={errors} />
                 <Field label="Email" type="email" placeholder="example@email.com" name="email" register={register}   errors={errors}/>
                 <Field label="Password" type="password" placeholder="••••••••" name="password" register={register}   errors={errors}/>
                 <Field label="Confirm Password" type="password" placeholder="••••••••" name="confirm_password" register={register}   errors={errors}/>

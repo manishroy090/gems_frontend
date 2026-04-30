@@ -12,12 +12,11 @@ export default function Layout({
 
 
   const router = useRouter()
-  useEffect(() => {
-    const AccessToken = localStorage.getItem('ACCESS_TOKEN');
-    if (!AccessToken) {
+  const AccessToken = localStorage.getItem('ACCESS_TOKEN');
+  if (!AccessToken) {
       router.push('/auth/login')
-    }
-  },[]);
+  }
+
 
   
   return (
