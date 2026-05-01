@@ -3,7 +3,6 @@
 import { useEffect } from 'react';
 import Header from './layout/header/Header';
 import Sidebar from './layout/sidebar/Sidebar'
-import { useRouter } from 'next/navigation'
 
 
 export default function Layout({
@@ -11,11 +10,6 @@ export default function Layout({
 }: Readonly<{children: React.ReactNode}>) {
 
 
-  const router = useRouter()
-  const AccessToken = localStorage.getItem('ACCESS_TOKEN');
-  if (!AccessToken) {
-      router.push('/auth/login')
-  }
 
 
   

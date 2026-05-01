@@ -8,21 +8,36 @@ import { Label } from '../../components/ui/label';
 import { login } from "../../services/Auth";
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation'
+import { useForm, SubmitHandler } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Loginschema } from '../../schemas/Login.schema';
+import { ILogin } from '../../interface/ILogin';
+import useToaster from '../../hooks/useToaster';
+
+
+
 
 
 export const Login = () => {
 
   const router = useRouter()
+  const toaster = useToaster();
 
-  const submit = (event: any) => {
-    event.preventDefault();
-    const data = new FormData(event.currentTarget);
-    const loginCredential = Object.fromEntries(data.entries());
-    login(loginCredential);
-    router.push('/')
+  const { register, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(Loginschema) });
+
+  const onSubmit : SubmitHandler<ILogin> = async(data) =>{
+    const res =  await login(data);
+    if(res.status ===401){
+      toaster.error(res.data.message);
+
+    }
+
+    const {success} = res.data;
+    if(success){
+      router.push('/')
+    }
+
   }
-
-
 
 
 
@@ -44,28 +59,35 @@ export const Login = () => {
         <h2 className="text-white text-3xl font-semibold mb-6 text-center">
           Welcome Back
         </h2>
-        <form onSubmit={submit}>
+        <form onSubmit={handleSubmit(onSubmit)}>
           {/* email */}
+
           <div className="mb-4">
             <Label className="text-gray-200">Email</Label>
             <Input
-              name="email"
+              {...register("email")}
               placeholder="Enter email"
               autoComplete='off'
               className="bg-white/20 text-white placeholder:text-gray-300 border border-white/20 focus:border-white"
             />
+              {errors?.["email"] && (
+              <p className="text-xs text-red-500">{errors["email"].message}</p>
+                )}
           </div>
 
           {/* password */}
           <div className="mb-4">
             <Label className="text-gray-200">Password</Label>
             <Input
-              name="password"
+              {...register("password")}
               type="password"
               placeholder="Enter password"
               autoComplete='off'
               className="bg-white/20 text-white placeholder:text-gray-300 border border-white/20 focus:border-white"
             />
+              {errors?.["password"] && (
+              <p className="text-xs text-red-500">{errors["password"].message}</p>
+                )}
           </div>
 
           {/* remember + forgot */}

@@ -15,11 +15,15 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Registerschema } from "../../schemas/Register.schema";
 import { Ionboarding } from "../../interface/Ionboarding";
 import toast, { Toaster } from 'react-hot-toast';
+import { useRouter } from 'next/navigation'
+
 
 
 
 
 export const Register = () => {
+    const router = useRouter()
+  
 
   const settings = {
     dots: true,
@@ -59,8 +63,12 @@ export const Register = () => {
 
 
   const onSubmit: SubmitHandler<Ionboarding> = async(data) => {
-    console.log('data',data);
-     await hoshpitalRegister(data);
+    const res = await hoshpitalRegister(data);
+    const {success} = res.data;
+     if(success){
+      router.push('/')
+    }
+
 
 
   }

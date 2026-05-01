@@ -5,7 +5,11 @@ import type { Metadata } from 'next'
 import { DM_Sans } from 'next/font/google'
 import './css/globals.css'
 import { ThemeProvider } from './components/theme-provider'
-import ServiceWorkerRegister from './components/service-worker/ServiceWorkerRegister'
+import ServiceWorkerRegister from './components/service-worker/ServiceWorkerRegister';
+import toast, { Toaster } from 'react-hot-toast';
+
+
+
 
 
 
@@ -44,6 +48,7 @@ export default  function RootLayout({
           defaultTheme='system'
           enableSystem
           disableTransitionOnChange>
+            <Toaster/>
           <ServiceWorkerRegister />
           {children}
         </ThemeProvider>

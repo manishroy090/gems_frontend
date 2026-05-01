@@ -13,7 +13,9 @@ export default function  useToaster(){
 
     function error(message:any){
 
-       toast.error(message);
+       toast.error(message,{
+          position: 'top-right',
+       });
 
 
     }

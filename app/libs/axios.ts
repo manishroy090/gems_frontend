@@ -1,18 +1,19 @@
 import axios from "axios";
 
 const Axios = axios.create({
-    baseURL: "https://api.example.com",
+    baseURL: "http://localhost:8080/api/v1",
     timeout: 5000,
     headers: { "X-Custom-Header": "foobar" },
+    withCredentials: true,
 });
 
 
 
-Axios.interceptors.request.use((Config) => {
-    const token = localStorage.getItem("ACCESS_TOKEN");
-    Config.headers.Authorization = `Bearer ${token}`;
-    return Config;
-});
+// Axios.interceptors.request.use((Config) => {
+//     const token = localStorage.getItem("ACCESS_TOKEN");
+//     Config.headers.Authorization = `Bearer ${token}`;
+//     return Config;
+// });
 
 
 
@@ -23,10 +24,10 @@ Axios.interceptors.response.use(
     (error) => {
         const { response } = error;
         if (response.status === 401) {
-            localStorage.removeItem("ACCESS_TOKEN");
-        } else if (response.status === 422) {
-            //show not found
+            // localStorage.removeItem("ACCESS_TOKEN");
+            return response
 
+        } else if (response.status === 422) {
             return response
         }
         throw error;
