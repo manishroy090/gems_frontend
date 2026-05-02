@@ -40,7 +40,7 @@ const SidebarContent: MenuItem[] = [
         name: 'Home',
         icon: 'solar:widget-2-linear',
         id: uniqueId(),
-        url: '/',
+        url: '/orgstatus',
         isPro: false,
       },
     ],
@@ -54,7 +54,7 @@ const SidebarContent: MenuItem[] = [
         id: uniqueId(),
         name: 'Roles',
         icon: 'solar:notes-linear',
-        url: 'superAdmin/usersmanagement/roles',
+         url: '/superAdmin/usersmanagement/roles',
         isPro: false,
       },
       {

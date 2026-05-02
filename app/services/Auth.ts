@@ -19,3 +19,8 @@ export async function login(loginCredential:any){
   return login;
 
 }
+
+
+export async function  getMe(params:type) {
+  
+}

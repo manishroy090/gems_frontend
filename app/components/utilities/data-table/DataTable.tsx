@@ -69,11 +69,15 @@ export function toTitleCase(str: string) {
 
 interface DynamicTableProps<T> {
   data?: T[]
+  title?:""
 }
 
 const DataTable = <T extends Record<string, unknown>>({
   data = [],
+  title =""
 }: DynamicTableProps<T>) => {
+
+
   const [globalFilter, setGlobalFilter] = useState('')
   const [sorting, setSorting] = useState<SortingState>([])
 
@@ -393,7 +397,7 @@ const DataTable = <T extends Record<string, unknown>>({
             {/* Search + Download */}
             <div className='pb-4 pt-0 flex items-center justify-between flex-wrap gap-4'>
               <h3 className='text-xl font-semibold mb-2'>
-                Employee Data Table
+                {title} Data Table
               </h3>
               <div className='flex items-center gap-2 flex-wrap'>
                 <Input

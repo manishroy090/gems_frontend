@@ -13,126 +13,145 @@ const BCrumb = [
   },
 ]
 
- const EmployeesData = [
+const EmployeesData = [
   {
     "name": {
-      "text": "Alice Johnson",
+      "text": "Doctors / Physicians",
       "image": "/images/profile/user-1.jpg"
     },
-    "position": "Senior Software Engineer",
-    "salary": 120000,
-    "department": "Engineering",
+    "description": "this is a doctor role",
     "status": "Active",
-
+    "created_at": "2082-03-04",
+    "updated_at": "2082-03-05",
   },
   {
     "name": {
-      "text": "Bob Williams",
-      "image": "/images/profile/user-2.jpg"
+      "text": "Nurse",
+      "image": "/images/profile/user-1.jpg"
     },
-    "position": "Marketing Manager",
-    "salary": 95000,
-    "department": "Marketing",
+    "description": "this is a nurse role",
     "status": "Active",
-
+    "created_at": "2082-03-04",
+    "updated_at": "2082-03-05",
   },
+
+
   {
     "name": {
-      "text": "Carol Davis",
-      "image": "/images/profile/user-3.jpg"
+      "text": " Appointment scheduler",
+      "image": "/images/profile/user-1.jpg"
     },
-    "position": "HR Specialist",
-    "salary": 70000,
-    "department": "Human Resources",
-    "status": "On Leave",
-
-
-  },
-  {
-    "name": {
-      "text": "David Brown",
-      "image": "/images/profile/user-4.jpg"
-    },
-    "position": "Product Owner",
-    "salary": 110000,
-    "department": "Product Development",
+    "description": "this is a nurse role",
     "status": "Active",
-
+    "created_at": "2082-03-04",
+    "updated_at": "2082-03-05",
   },
   {
     "name": {
-      "text": "Eve Green",
-      "image": "/images/profile/user-5.jpg"
+      "text": "Medical receptionist",
+      "image": "/images/profile/user-1.jpg"
     },
-    "position": "Junior Software Engineer",
-    "salary": 80000,
-    "department": "Engineering",
+    "description": "this is a nurse role",
     "status": "Active",
-
+    "created_at": "2082-03-04",
+    "updated_at": "2082-03-05",
   },
+
   {
     "name": {
-      "text": "Frank White",
-      "image": "/images/profile/user-6.jpg"
+      "text": "Medical receptionist",
+      "image": "/images/profile/user-1.jpg"
     },
-    "position": "Sales Representative",
-    "salary": 65000,
-    "department": "Sales",
+    "description": "this is a nurse role",
     "status": "Active",
-
+    "created_at": "2082-03-04",
+    "updated_at": "2082-03-05",
   },
+
   {
     "name": {
-      "text": "Grace Black",
-      "image": "/images/profile/user-7.jpg"
+      "text": "Medical receptionist",
+      "image": "/images/profile/user-1.jpg"
     },
-    "position": "Financial Analyst",
-    "salary": 88000,
-    "department": "Finance",
+    "description": "this is a nurse role",
     "status": "Active",
-
+    "created_at": "2082-03-04",
+    "updated_at": "2082-03-05",
   },
+
   {
     "name": {
-      "text": "Henry King",
-      "image": "/images/profile/user-8.jpg"
+      "text": "Medical receptionist",
+      "image": "/images/profile/user-1.jpg"
     },
-    "position": "CEO",
-    "salary": 250000,
-    "department": "Executive",
+    "description": "this is a nurse role",
     "status": "Active",
-
+    "created_at": "2082-03-04",
+    "updated_at": "2082-03-05",
   },
   {
     "name": {
-      "text": "Ivy Lee",
-      "image": "/images/profile/user-9.jpg"
+      "text": "Medical receptionist",
+      "image": "/images/profile/user-1.jpg"
     },
-    "position": "Data Scientist",
-    "salary": 130000,
-    "department": "Data Analytics",
+    "description": "this is a nurse role",
     "status": "Active",
-
+    "created_at": "2082-03-04",
+    "updated_at": "2082-03-05",
   },
+
   {
     "name": {
-      "text": "Jack Miller",
-      "image": "/images/profile/user-10.jpg"
+      "text": "Medical receptionist",
+      "image": "/images/profile/user-1.jpg"
     },
-    "position": "Customer Support Specialist",
-    "salary": 55000,
-    "department": "Customer Service",
-    "status": "Terminated",
+    "description": "this is a nurse role",
+    "status": "Active",
+    "created_at": "2082-03-04",
+    "updated_at": "2082-03-05",
+  },
+
+  {
+    "name": {
+      "text": "Medical receptionist",
+      "image": "/images/profile/user-1.jpg"
+    },
+    "description": "this is a nurse role",
+    "status": "Active",
+    "created_at": "2082-03-04",
+    "updated_at": "2082-03-05",
+  },
 
 
-  }
+
 ]
 
 const page = () => {
   return (
     <>
-      <BreadcrumbComp title='Table' items={BCrumb} />
-      <DataTable data={EmployeesData}  />
+
+     <div className="flex flex-col space-y-14">
+
+    
+      <div className="grid grid-cols-3 gap-4">
+
+        <div className=" rounded-md p-8 shadow bg-slate-100">
+          <span>Total Roles</span>
+        </div>
+
+
+       <div className=" rounded-md p-8 shadow bg-slate-100">
+          <span>Total Roles</span>
+        </div>
+
+
+
+       <div className=" rounded-md p-8 shadow bg-slate-100">
+          <span>Total Roles</span>
+        </div>
+      </div>
+      <DataTable data={EmployeesData} title="Roles" />
+       </div>
     </>
   );
 };
