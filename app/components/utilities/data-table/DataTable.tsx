@@ -403,47 +403,7 @@ const DataTable = <T extends Record<string, unknown>>({
           <p className='text-center py-8 text-gray-500'>No data available.</p>
         ) : (
           <>
-            {/* Search + Download */}
-            <div className='pb-4 pt-0 flex items-center justify-between flex-wrap gap-4'>
-               <div className='flex justify-center items-center space-x-4'>
-              <Input
-                type='text'
-                className='max-w-96 lg:min-w-96 min-w-full 
-                placeholder:text-gray-400 dark:placeholder:text-white/20'
-                value={globalFilter ?? ''}
-                onChange={(e) => setGlobalFilter(e.target.value)}
-                placeholder='Search your relevant items...'
-              />
-
-              <div className='border'>
-                <Icon icon="bx:filter-alt" width="24" height="24" />
-              </div>
-
-
-             </div>
-              <div className='flex items-center gap-2 flex-wrap'>
-
-                <Button
-                  onClick={handleDownload}
-                  className='p-2 px-4 rounded-md '>
-                  <Icon
-                    icon='material-symbols:download-rounded'
-                    width={24}
-                    height={24}
-                  />
-                </Button>
-                <Button
-                  onClick={()=>openForm()}
-                  className='p-2 px-4 rounded-md '>
-                  <span>Add {title}</span>
-                  <Icon
-                    icon='material-symbols:add-rounded'
-                    width={24}
-                    height={24}
-                  />
-                </Button>
-              </div>
-            </div>
+       
 
             {/* Table */}
             <div className='overflow-x-auto border rounded-md border-ld'>
@@ -510,48 +470,7 @@ const DataTable = <T extends Record<string, unknown>>({
             </div>
 
              
-            <div className='flex flex-col sm:flex-row items-center justify-between gap-4 p-4 border-t border-border dark:border-white/10'>
-              <div className='flex gap-2'>
-                <Button
-                  onClick={() => table.previousPage()}
-                  disabled={!table.getCanPreviousPage()}
-                  variant={'secondary'}>
-                  Previous
-                </Button>
-                <Button
-                  onClick={() => table.nextPage()}
-                  disabled={!table.getCanNextPage()}>
-                  Next
-                </Button>
-              </div>
-
-              <div className='text-forest-black dark:text-white/90 font-medium text-base'>
-                Page {table.getState().pagination.pageIndex + 1} of{' '}
-                {table.getPageCount()}
-              </div>
-
-              <div className='flex items-center gap-2'>
-                <Label
-                  htmlFor='pageSize'
-                  className='mr-0 text-forest-black dark:text-white/90 text-base font-medium whitespace-nowrap min-w-32'>
-                  Rows per page:
-                </Label>
-                <Select
-                  value={String(table.getState().pagination.pageSize)}
-                  onValueChange={(value) => table.setPageSize(Number(value))}>
-                  <SelectTrigger className='w-18! cursor-pointer'>
-                    <SelectValue placeholder='Page size' />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {paginationOptions.map((size) => (
-                      <SelectItem key={size} value={String(size)}>
-                        {size}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
-              </div>
-            </div> 
+      
           </>
         )}
       </div>

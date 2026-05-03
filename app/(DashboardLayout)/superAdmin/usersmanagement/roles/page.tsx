@@ -1,4 +1,3 @@
-
 "use client";
 import React, { useState } from "react";
 import BreadcrumbComp from "../../../layout/shared/breadcrumb/BreadcrumbComp";
@@ -7,202 +6,199 @@ import Modal from "../../../../components/ui/Modal";
 import { Label } from "../../../../components/ui/label";
 import { Input } from "../../../../components/ui/input";
 import { Textarea } from "../../../../components/ui/textarea";
-
-
-const BCrumb = [
-  {
-    to: '/',
-    title: 'UsersManagement',
-  },
-  {
-    title: 'Roles',
-  },
-]
-
-const EmployeesData = [
-  {
-    "name": {
-      "text": "Doctors / Physicians",
-      "image": "/images/profile/user-1.jpg"
-    },
-    "description": "this is a doctor role",
-    "status": "Active",
-    "created_at": "2082-03-04",
-    "updated_at": "2082-03-05",
-  },
-  {
-    "name": {
-      "text": "Nurse",
-      "image": "/images/profile/user-1.jpg"
-    },
-    "description": "this is a nurse role",
-    "status": "Active",
-    "created_at": "2082-03-04",
-    "updated_at": "2082-03-05",
-  },
-
-
-  {
-    "name": {
-      "text": " Appointment scheduler",
-      "image": "/images/profile/user-1.jpg"
-    },
-    "description": "this is a nurse role",
-    "status": "Active",
-    "created_at": "2082-03-04",
-    "updated_at": "2082-03-05",
-  },
-  {
-    "name": {
-      "text": "Medical receptionist",
-      "image": "/images/profile/user-1.jpg"
-    },
-    "description": "this is a nurse role",
-    "status": "Active",
-    "created_at": "2082-03-04",
-    "updated_at": "2082-03-05",
-  },
-
-  {
-    "name": {
-      "text": "Medical receptionist",
-      "image": "/images/profile/user-1.jpg"
-    },
-    "description": "this is a nurse role",
-    "status": "Active",
-    "created_at": "2082-03-04",
-    "updated_at": "2082-03-05",
-  },
-
-  {
-    "name": {
-      "text": "Medical receptionist",
-      "image": "/images/profile/user-1.jpg"
-    },
-    "description": "this is a nurse role",
-    "status": "Active",
-    "created_at": "2082-03-04",
-    "updated_at": "2082-03-05",
-  },
-
-  {
-    "name": {
-      "text": "Medical receptionist",
-      "image": "/images/profile/user-1.jpg"
-    },
-    "description": "this is a nurse role",
-    "status": "Active",
-    "created_at": "2082-03-04",
-    "updated_at": "2082-03-05",
-  },
-  {
-    "name": {
-      "text": "Medical receptionist",
-      "image": "/images/profile/user-1.jpg"
-    },
-    "description": "this is a nurse role",
-    "status": "Active",
-    "created_at": "2082-03-04",
-    "updated_at": "2082-03-05",
-  },
-
-  {
-    "name": {
-      "text": "Medical receptionist",
-      "image": "/images/profile/user-1.jpg"
-    },
-    "description": "this is a nurse role",
-    "status": "Active",
-    "created_at": "2082-03-04",
-    "updated_at": "2082-03-05",
-  },
-
-  {
-    "name": {
-      "text": "Medical receptionist",
-      "image": "/images/profile/user-1.jpg"
-    },
-    "description": "this is a nurse role",
-    "status": "Active",
-    "created_at": "2082-03-04",
-    "updated_at": "2082-03-05",
-  },
+import Datepicker from "../../../../components/cutom/Datepicker";
+import Filter from "../../../../components/cutom/Filter";
+import Table from "../../../../components/cutom/Table";
+import Userscards from "../../../../components/cutom/cards/users/Userscards";
+import { useForm, SubmitHandler } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Userschema } from "../../../../schemas/Users.Schema"
+import { Iuser } from "../../../../interface/Iuser";
 
 
 
-]
+
+
+
 
 const page = () => {
+  const [showModal, setShowModal] = useState(false);
 
-    const [showModal, setShowModal] = useState(false);
-  
-  
-  
-    function openUserModal() {
-      console.log("Open user Modal modal")
-  
-      setShowModal(true);
-  
+
+
+  //toggel modal code
+  function openUserModal() {
+    console.log("Open user Modal modal")
+    setShowModal(true);
+  }
+
+
+  const { register, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(Userschema) });
+  const onSubmit: SubmitHandler<Iuser> = async (data) => {
+
+    console.log("onsubmit method hitted", data);
+  }
+
+  const onError: SubmitHandler<Iuser> = async (error) => {
+
+    console.log("error", error);
+
+  }
+
+
+  const data = [
+
+    {
+      "Role":"Admin",
+      "Created On":"30 Apr 2025",
+      "Status":"Active",
+      " ":<div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div>
+    },
+
+     {
+      "Role":"Nurse",
+      "Created On":"30 Apr 2025",
+      "Status":"Active",
+      " ":<div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div>
+    },
+     {
+      "Role":"Receptionist",
+      "Created On":"30 Apr 2025",
+      "Status":"Active",
+      " ":<div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div>
+    },
+     {
+      "Role":"Lab Technician",
+      "Created On":"30 Apr 2025",
+      "Status":"Active",
+      " ":<div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div>
+    },
+     {
+      "Role":"Pharmacist",
+      "Created On":"30 Apr 2025",
+      "Status":"Active",
+      " ":<div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div>
+    },
+     {
+      "Role":"Pharmacist",
+      "Created On":"30 Apr 2025",
+      "Status":"Accountant",
+      " ":<div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div>
     }
+  ]
+
   return (
-    <>
-
-      <div className="flex flex-col space-y-14">
-
-
-        <div className="grid grid-cols-3 gap-4">
-
-          <div className=" rounded-md p-8 shadow bg-white">
-            <span>Total Roles</span>
-          </div>
-
-
-          <div className=" rounded-md p-8 shadow bg-white">
-            <span>Total Roles</span>
-          </div>
+    <div className="flex flex-col space-y-5">
 
 
 
-          <div className=" rounded-md p-8 shadow bg-white">
-            <span>Total Roles</span>
+      <div className="flex flex-col space-y-3">
+        <div className="flex justify-between items-center border-b pb-4 border-gray-300">
+          <span className="font-semibold text-xl">Roles</span>
+
+          <div className="flex space-x-4">
+        
+
+
+            <div className="border rounded-md p-2 text-white text-center bg-blue-600" onClick={openUserModal}>
+              <Label>Add Roles</Label>
+
+            </div>
+
           </div>
         </div>
 
 
-      <Modal showModal={showModal}>
-        <form className="flex flex-col space-y-4">
-        <h1>Add Roles</h1>
-
-          <div>
-            <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Title</Label>
-            <Input />
-          </div>
-
-          <div>
-          <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Descriptioniom</Label>
-            <Textarea></Textarea>
-          </div>
-
-          <div>
-
-            <select className="w-full border p-2 rounded-md">
-              <option>Active</option>
-              <option>InActive</option>
-
-            </select>
-          </div>
-           <div className="flex space-x-4">
-          <button className="bg-red-600 text-white p-2 rounded-md ">Cancle</button>
-          <button className="bg-blue-600 text-white p-2 rounded-md">Submit</button>
-        </div>
-
-        </form>
-       
-      </Modal>
-\              <DataTable data={EmployeesData} title="Roles" openUserModal={openUserModal} />
 
       </div>
-    </>
+
+
+      <div className="bg-white rounded px-1">
+
+        <Table data={data} action={false}/>
+      </div>
+
+
+      {/* modal code Start from here */}
+      <Modal showModal={showModal}>
+        <form className="flex flex-col space-y-4" onSubmit={handleSubmit(onSubmit, onError)}>
+          <h1>Add Users</h1>
+          <div className="flex space-x-4">
+            <div>
+              <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Name</Label>
+              <Input  {...register("name")} />
+              {errors?.["name"] && (
+                <p className="text-xs text-red-500">{errors["name"].message}</p>
+              )}
+            </div>
+
+            <div>
+              <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Email</Label>
+              <Input  {...register("email")} />
+              {errors?.["email"] && (
+                <p className="text-xs text-red-500">{errors["email"].message}</p>
+              )}
+            </div>
+          </div>
+
+
+          <div className="flex space-x-4">
+          <div>
+            <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Passsword</Label>
+            <Input  {...register("password")} />
+            {errors?.["password"] && (
+              <p className="text-xs text-red-500">{errors["password"].message}</p>
+            )}
+          </div>
+
+
+                   <div>
+            <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Confirm Password</Label>
+            <Input  {...register("password")} />
+            {errors?.["password"] && (
+              <p className="text-xs text-red-500">{errors["password"].message}</p>
+            )}
+          </div>
+
+
+
+          </div>
+
+
+
+          <div>
+            <select className="w-full border p-2 rounded-md"  {...register("role")}>
+              <option value={"doctor"}>Doctors</option>
+              <option value={"receptionist"}>Receptionist</option>
+              <option value={"accountant"}>Accountant</option>
+              <option value={"nurses"}>Nurses</option>
+            </select>
+            {errors?.["role"] && (
+              <p className="text-xs text-red-500">{errors["role"].message}</p>
+            )}
+          </div>
+
+
+          <div>
+            <select className="w-full border p-2 rounded-md"  {...register("status")}>
+              <option value={"active"}>Active</option>
+              <option value={"inactive"}>InActive</option>
+            </select>
+            {errors?.["status"] && (
+              <p className="text-xs text-red-500">{errors["status"].message}</p>
+            )}
+          </div>
+
+          <div className="flex space-x-4">
+            <button className="bg-red-600 text-white p-2 rounded-md ">Cancle</button>
+            <button className="bg-blue-600 text-white p-2 rounded-md" type="submit">Submit</button>
+          </div>
+
+        </form>
+
+      </Modal>
+
+    </div>
   );
 };
 

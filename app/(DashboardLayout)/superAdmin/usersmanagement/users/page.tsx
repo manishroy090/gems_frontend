@@ -6,66 +6,19 @@ import Modal from "../../../../components/ui/Modal";
 import { Label } from "../../../../components/ui/label";
 import { Input } from "../../../../components/ui/input";
 import { Textarea } from "../../../../components/ui/textarea";
+import Datepicker from "../../../../components/cutom/Datepicker";
+import Filter from "../../../../components/cutom/Filter";
+import Table from "../../../../components/cutom/Table";
+import Userscards from "../../../../components/cutom/cards/users/Userscards";
+import { useForm, SubmitHandler } from "react-hook-form"
+import { yupResolver } from "@hookform/resolvers/yup";
+import { Userschema } from "../../../../schemas/Users.Schema"
+import { Iuser } from "../../../../interface/Iuser";
 
 
-const BCrumb = [
-  {
-    to: '/',
-    title: 'UsersManagement',
-  },
-  {
-    title: 'Roles',
-  },
-]
-
-const EmployeesData = [
-  {
-    "name": {
-      "text": "Alice Johnson",
-      "image": "/images/profile/user-1.jpg"
-    },
-    "position": "Doctor",
-    "salary": 120000,
-    "department": "Engineering",
-    "status": "Active",
-
-  },
-  {
-    "name": {
-      "text": "Bob Williams",
-      "image": "/images/profile/user-2.jpg"
-    },
-    "position": "Nurse",
-    "salary": 95000,
-    "department": "Marketing",
-    "status": "Active",
-
-  },
-  {
-    "name": {
-      "text": "Carol Davis",
-      "image": "/images/profile/user-3.jpg"
-    },
-    "position": "Appointment scheduler",
-    "salary": 70000,
-    "department": "Human Resources",
-    "status": "On Leave",
 
 
-  },
-  {
-    "name": {
-      "text": "David Brown",
-      "image": "/images/profile/user-4.jpg"
-    },
-    "position": "Medical receptionist",
-    "salary": 110000,
-    "department": "Product Development",
-    "status": "Active",
 
-  },
-
-]
 
 
 const page = () => {
@@ -73,100 +26,255 @@ const page = () => {
 
 
 
+  //toggel modal code
   function openUserModal() {
     console.log("Open user Modal modal")
-
     setShowModal(true);
+  }
+
+
+  const { register, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(Userschema) });
+  const onSubmit: SubmitHandler<Iuser> = async (data) => {
+
+    console.log("onsubmit method hitted", data);
+  }
+
+  const onError: SubmitHandler<Iuser> = async (error) => {
+
+    console.log("error", error);
 
   }
 
+  const data = [
+    {
+      "Name": "Manish Yadav",
+      "Role": "Doctor",
+      "Email": "manishkuyadav090@gmail",
+      "isActive": true,
+      "Verified": true,
+    },
+     {
+      "Name": "Rohan Yadav",
+      "Role": "Accountant",
+      "Email": "manishkuyadav090@gmail",
+      "isActive": true,
+      "Verified": false,
+    },
+
+      {
+      "Name": "Rohan Yadav",
+      "Role": "Accountant",
+      "Email": "manishkuyadav090@gmail",
+      "isActive": true,
+      "Verified": true,
+    },
+
+      {
+      "Name": "Rohan Yadav",
+      "Role": "Accountant",
+      "Email": "manishkuyadav090@gmail",
+      "isActive": true,
+      "Verified": false,
+    },
+      {
+      "Name": "Rohan Yadav",
+      "Role": "Accountant",
+      "Email": "manishkuyadav090@gmail",
+      "isActive": true,
+      "Verified": true,
+    },
+
+      {
+      "Name": "Rohan Yadav",
+      "Role": "Accountant",
+      "Email": "manishkuyadav090@gmail",
+      "isActive": true,
+      "Verified": false,
+    },
+      {
+      "Name": "Rohan Yadav",
+      "Role": "Accountant",
+      "Email": "manishkuyadav090@gmail",
+      "isActive": true,
+      "Verified": false,
+    },
+      {
+      "Name": "Rohan Yadav",
+      "Role": "Accountant",
+      "Email": "manishkuyadav090@gmail",
+      "isActive": true,
+      "Verified": false,
+    },
+      {
+      "Name": "Rohan Yadav",
+      "Role": "Accountant",
+      "Email": "manishkuyadav090@gmail",
+      "isActive": true,
+      "Verified": false,
+    },
+      {
+      "Name": "Rohan Yadav",
+      "Role": "Accountant",
+      "Email": "manishkuyadav090@gmail",
+      "isActive": true,
+      "Verified": false,
+    },
+      {
+      "Name": "Rohan Yadav",
+      "Role": "Accountant",
+      "Email": "manishkuyadav090@gmail",
+      "isActive": true,
+      "Verified": false,
+    },
+    
+  ]
+
   return (
-    <div className="flex flex-col space-y-14">
+    <div className="flex flex-col space-y-5">
+
+      <Userscards />
 
 
-      <div className="grid grid-cols-4 gap-4">
+      <div className="flex flex-col space-y-3">
+        <div className="flex justify-between items-center border-b pb-4 border-gray-300">
+          <span className="font-semibold text-xl">Users</span>
 
-        <div className=" rounded-md p-8 shadow bg-white flex  justify-between ">
-          <span>Total Doctors</span>
-          <div className=" h-14 w-14">
-            <img src={"/hrm_image/doctor.png"} alt="logo" className="w-full" />
-          </div>
-        </div>
-
-        <div className=" rounded-md p-8 shadow bg-white flex  justify-between ">
-          <span>Total Doctors</span>
-          <div className=" h-14 w-14">
-            <img src={"/hrm_image/nurse.png"} alt="logo" className="w-full" />
-          </div>
-        </div>
-
-        <div className=" rounded-md p-8 shadow bg-white flex  justify-between ">
-          <span>Total Receptionist</span>
-          <div className=" h-14 w-14">
-            <img src={"/hrm_image/receptionist.png"} alt="logo" className="w-full" />
-          </div>
-        </div>
+          <div className="flex space-x-4">
+            <div className="border rounded-md p-2 bg-white">
+              {/* <Label>Export</Label> */}
+              <select>
+                <option>Export</option>
+                <option>Download as PDG</option>
+                <option>Download as EXCEL</option>
+              </select>
+            </div>
 
 
-        <div className=" rounded-md p-8 shadow bg-white flex  justify-between ">
-          <span>Accountant</span>
-          <div className=" h-14 w-14">
-            <img src={"/hrm_image/accountant.png"} alt="logo" className="w-full" />
+            <div className="border rounded-md p-2 text-white text-center bg-blue-600" onClick={openUserModal}>
+              <Label>Add User</Label>
+
+            </div>
+
           </div>
         </div>
 
 
+        <div className="flex justify-between space-x-4 ">
+
+          <div className="flex space-x-6">
+            <div>
+              <Input type="text" placeholder="Search" className="w-96 h-9 bg-white rounded" />
+            </div>
+
+            <Datepicker />
+
+          </div>
 
 
+          <div className="flex items-center space-x-4">
+
+            <Filter />
+
+            <div className="bg-white p-2 h-fit font-semibold">
+              <select >
+                <option>Sort By:Recent</option>
+                <option>Recent</option>
+                <option>Oldest</option>
+              </select>
+            </div>
+
+          </div>
+
+        </div>
 
       </div>
 
 
+      <div className="bg-white rounded px-1">
+
+        <Table data={data} />
+      </div>
+
+
+      {/* modal code Start from here */}
       <Modal showModal={showModal}>
-        <form className="flex flex-col space-y-4">
+        <form className="flex flex-col space-y-4" onSubmit={handleSubmit(onSubmit, onError)}>
           <h1>Add Users</h1>
+          <div className="flex space-x-4">
+            <div>
+              <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Name</Label>
+              <Input  {...register("name")} />
+              {errors?.["name"] && (
+                <p className="text-xs text-red-500">{errors["name"].message}</p>
+              )}
+            </div>
 
-          <div>
-            <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Name</Label>
-            <Input />
+            <div>
+              <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Email</Label>
+              <Input  {...register("email")} />
+              {errors?.["email"] && (
+                <p className="text-xs text-red-500">{errors["email"].message}</p>
+              )}
+            </div>
           </div>
 
-          <div>
-            <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Email</Label>
-            <Input />
+
+          <div className="flex space-x-4">
+            <div>
+              <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Passsword</Label>
+              <Input  {...register("password")} />
+              {errors?.["password"] && (
+                <p className="text-xs text-red-500">{errors["password"].message}</p>
+              )}
+            </div>
+
+
+            <div>
+              <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Confirm Password</Label>
+              <Input  {...register("password")} />
+              {errors?.["password"] && (
+                <p className="text-xs text-red-500">{errors["password"].message}</p>
+              )}
+            </div>
+
+
+
           </div>
 
 
 
           <div>
-
-            <select className="w-full border p-2 rounded-md">
-              <option>Doctors</option>
-              <option>Receptionist</option>
-              <option>Accountant</option>
-              <option>Nurses</option>
+            <select className="w-full border p-2 rounded-md"  {...register("role")}>
+              <option value={"doctor"}>Doctors</option>
+              <option value={"receptionist"}>Receptionist</option>
+              <option value={"accountant"}>Accountant</option>
+              <option value={"nurses"}>Nurses</option>
             </select>
+            {errors?.["role"] && (
+              <p className="text-xs text-red-500">{errors["role"].message}</p>
+            )}
           </div>
 
 
           <div>
-
-            <select className="w-full border p-2 rounded-md">
-              <option>Active</option>
-              <option>InActive</option>
+            <select className="w-full border p-2 rounded-md"  {...register("status")}>
+              <option value={"active"}>Active</option>
+              <option value={"inactive"}>InActive</option>
             </select>
+            {errors?.["status"] && (
+              <p className="text-xs text-red-500">{errors["status"].message}</p>
+            )}
           </div>
+
           <div className="flex space-x-4">
             <button className="bg-red-600 text-white p-2 rounded-md ">Cancle</button>
-            <button className="bg-blue-600 text-white p-2 rounded-md">Submit</button>
+            <button className="bg-blue-600 text-white p-2 rounded-md" type="submit">Submit</button>
           </div>
 
         </form>
 
       </Modal>
 
-
-      <DataTable data={EmployeesData} title="Users" openUserModal={openUserModal} />
     </div>
   );
 };

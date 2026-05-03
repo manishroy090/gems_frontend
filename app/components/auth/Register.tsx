@@ -68,9 +68,6 @@ export const Register = () => {
      if(success){
       router.push('/')
     }
-
-
-
   }
 
 
