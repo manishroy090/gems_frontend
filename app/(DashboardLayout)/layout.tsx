@@ -20,7 +20,7 @@ export default function Layout({
         <div className='xl:block hidden'>
           <Sidebar />
         </div>
-        <div className='body-wrapper w-full bg-background'>
+        <div className='body-wrapper w-full bg-gray-100'>
           {/* Top Header  */}
           <Header />
           {/* Body Content  */}

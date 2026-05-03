@@ -14,5 +14,5 @@ export function proxy(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ['/protected/:path*','/'], // Apply only to protected routes
+    matcher: ['/protected/:path*','/'], 
 }

@@ -39,7 +39,6 @@ import {
 } from '../../../components/ui/select'
 import { Label } from '../../../components/ui/label'
 import CardBox from '../../shared/CardBox'
-
 const badgeColors = [
   'bg-blue-100 text-blue-700',
   'bg-green-100 text-green-700',
@@ -69,12 +68,14 @@ export function toTitleCase(str: string) {
 
 interface DynamicTableProps<T> {
   data?: T[]
-  title?:""
+  title?: "",
+  openUserModal:() => void;
 }
 
 const DataTable = <T extends Record<string, unknown>>({
   data = [],
-  title =""
+  title = "",
+  openUserModal 
 }: DynamicTableProps<T>) => {
 
 
@@ -99,6 +100,8 @@ const DataTable = <T extends Record<string, unknown>>({
       const val = data[0][key]
       return !Array.isArray(val)
     })
+
+   
 
     const baseColumns = keys.map((col) => ({
       accessorKey: col as keyof T & string,
@@ -198,14 +201,14 @@ const DataTable = <T extends Record<string, unknown>>({
           return (
             <div className='flex items-center gap-2'>
               {image ||
-              imageUrl ||
-              thumbnailUrl ||
-              thumbnail ||
-              image_url ||
-              avatar ||
-              qrCode ||
-              profileImage ||
-              icon ? (
+                imageUrl ||
+                thumbnailUrl ||
+                thumbnail ||
+                image_url ||
+                avatar ||
+                qrCode ||
+                profileImage ||
+                icon ? (
                 <img
                   src={
                     (image as string) ??
@@ -387,6 +390,12 @@ const DataTable = <T extends Record<string, unknown>>({
     document.body.removeChild(link)
   }
 
+   const openForm =()=>{
+         
+       openUserModal();
+      
+    }
+
   return (
     <CardBox>
       <div>
@@ -396,22 +405,39 @@ const DataTable = <T extends Record<string, unknown>>({
           <>
             {/* Search + Download */}
             <div className='pb-4 pt-0 flex items-center justify-between flex-wrap gap-4'>
-              <h3 className='text-xl font-semibold mb-2'>
-                {title} Data Table
-              </h3>
+               <div className='flex justify-center items-center space-x-4'>
+              <Input
+                type='text'
+                className='max-w-96 lg:min-w-96 min-w-full 
+                placeholder:text-gray-400 dark:placeholder:text-white/20'
+                value={globalFilter ?? ''}
+                onChange={(e) => setGlobalFilter(e.target.value)}
+                placeholder='Search your relevant items...'
+              />
+
+              <div className='border'>
+                <Icon icon="bx:filter-alt" width="24" height="24" />
+              </div>
+
+
+             </div>
               <div className='flex items-center gap-2 flex-wrap'>
-                <Input
-                  type='text'
-                  className='max-w-96 lg:min-w-96 min-w-full placeholder:text-gray-400 dark:placeholder:text-white/20'
-                  value={globalFilter ?? ''}
-                  onChange={(e) => setGlobalFilter(e.target.value)}
-                  placeholder='Search your relevant items...'
-                />
+
                 <Button
                   onClick={handleDownload}
                   className='p-2 px-4 rounded-md '>
                   <Icon
                     icon='material-symbols:download-rounded'
+                    width={24}
+                    height={24}
+                  />
+                </Button>
+                <Button
+                  onClick={()=>openForm()}
+                  className='p-2 px-4 rounded-md '>
+                  <span>Add {title}</span>
+                  <Icon
+                    icon='material-symbols:add-rounded'
                     width={24}
                     height={24}
                   />
@@ -457,7 +483,7 @@ const DataTable = <T extends Record<string, unknown>>({
                     table.getRowModel().rows.map((row) => (
                       <TableRow
                         key={row.id}
-                        className='hover:bg-primary/10 transition-colors'>
+                        className='hover:bg-primary/10 transition-colors text-xs'>
                         {row.getVisibleCells().map((cell) => (
                           <TableCell
                             key={cell.id}
@@ -483,7 +509,7 @@ const DataTable = <T extends Record<string, unknown>>({
               </Table>
             </div>
 
-            {/* Pagination Controls */}
+             
             <div className='flex flex-col sm:flex-row items-center justify-between gap-4 p-4 border-t border-border dark:border-white/10'>
               <div className='flex gap-2'>
                 <Button
@@ -525,7 +551,7 @@ const DataTable = <T extends Record<string, unknown>>({
                   </SelectContent>
                 </Select>
               </div>
-            </div>
+            </div> 
           </>
         )}
       </div>

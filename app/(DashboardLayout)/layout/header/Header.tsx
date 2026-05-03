@@ -41,7 +41,7 @@ const Header = () => {
     <>
       <header
         className={`sticky top-0 z-2 ${
-          isSticky ? "bg-background shadow-md fixed w-full" : "bg-transparent"
+          isSticky ? "bg-white shadow-md fixed w-full" : "bg-white"
         }`}
       >
         <nav
