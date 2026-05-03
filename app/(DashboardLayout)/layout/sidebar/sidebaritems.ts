@@ -75,32 +75,32 @@ const SidebarContent: MenuItem[] = [
 
 
 
-  // {
-  //   heading: 'Doctor Management',
-  //   children: [
-  //     {
-  //       name: 'Doctor',
-  //       id: uniqueId(),
-  //       icon: 'solar:login-2-linear',
-  //       children: [
-  //         {
-  //           id: uniqueId(),
-  //           name: 'Doctors',
-  //           url: '/superAdmin/organizationmanagement/hoshpital/hoshpitals',
-  //           isPro: true,
-  //         },
-  //          {
-  //           id: uniqueId(),
-  //           name: 'Appointments',
-  //           url: '/superAdmin/organizationmanagement/hoshpital/hoshpitals',
-  //           isPro: true,
-  //         },
-  //       ],
-  //     },
+  {
+    heading: 'Doctor Management',
+    children: [
+      {
+        name: 'Doctor',
+        id: uniqueId(),
+        icon: 'solar:login-2-linear',
+        children: [
+          {
+            id: uniqueId(),
+            name: 'Doctors',
+            url: '/superAdmin/organizationmanagement/hoshpital/hoshpitals',
+            isPro: true,
+          },
+           {
+            id: uniqueId(),
+            name: 'Appointments',
+            url: '/superAdmin/organizationmanagement/hoshpital/hoshpitals',
+            isPro: true,
+          },
+        ],
+      },
 
      
-  //   ],
-  // },
+    ],
+  },
 
 
   //   {

@@ -14,6 +14,8 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Userschema } from "../../../../schemas/Users.Schema"
 import { Iuser } from "../../../../interface/Iuser";
+import Exportbtn from "../../../../components/cutom/Exportbtn";
+import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 
 
 
@@ -140,18 +142,12 @@ const page = () => {
           <span className="font-semibold text-xl">Users</span>
 
           <div className="flex space-x-4">
-            <div className="border rounded-md p-2 bg-white">
-              {/* <Label>Export</Label> */}
-              <select>
-                <option>Export</option>
-                <option>Download as PDG</option>
-                <option>Download as EXCEL</option>
-              </select>
-            </div>
+              <Exportbtn/>
 
 
-            <div className="border rounded-md p-2 text-white text-center bg-blue-600" onClick={openUserModal}>
-              <Label>Add User</Label>
+            <div className="border rounded p-2 text-white flex justify-center items-center bg-[#14967f]  shadow" onClick={openUserModal}>
+               <AddOutlinedIcon/>              
+                <Label>Add User</Label>
 
             </div>
 
@@ -163,7 +159,7 @@ const page = () => {
 
           <div className="flex space-x-6">
             <div>
-              <Input type="text" placeholder="Search" className="w-96 h-9 bg-white rounded" />
+              <Input type="text" placeholder="Search" className="w-96 h-9 bg-white rounded shadow" />
             </div>
 
             <Datepicker />
@@ -175,7 +171,7 @@ const page = () => {
 
             <Filter />
 
-            <div className="bg-white p-2 h-fit font-semibold">
+            <div className="bg-white p-2 h-fit font-semibold shadow">
               <select >
                 <option>Sort By:Recent</option>
                 <option>Recent</option>

@@ -40,12 +40,12 @@ const Table = ({ data, action = false }) => {
             <tbody>
 
                 {data.map((item, rowIndex) => (
-                    <tr className="border">
+                    <tr className="border-y">
                         <td className="py-3 px-2">
                             {rowIndex + 1}
                         </td>
                         {keys.map((keysItem, colIndex) => (
-                            
+
                             <td key={colIndex} className="py-3 px-2">
 
                                 {keysItem[1] === "Verified" ? (
@@ -54,7 +54,7 @@ const Table = ({ data, action = false }) => {
                                     ) : (
                                         <img className="w-5" src="/hrm_image/multiply.png" alt="verified" />
 
-                                       
+
                                     )
                                 ) : (
                                     item?.[keysItem[1]]

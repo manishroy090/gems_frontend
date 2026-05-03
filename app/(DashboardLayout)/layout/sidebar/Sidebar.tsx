@@ -73,8 +73,8 @@ const renderSidebarItems = (
     const linkTarget = item.url?.startsWith('https') ? '_blank' : '_self'
 
     const itemClassNames = isSubItem
-      ? `mt-0.5 text-sidebar-foreground dark:text-sidebar-foreground !hover:bg-transparent ${
-          isSelected ? '!bg-transparent !text-primary' : ''
+      ? `mt-0.5 text-sidebar-foreground dark:text-sidebar-foreground !hover:bg-yellow-200  ${
+          isSelected ? '!bg-yellow-200 !text-primary' : ''
         } !px-1.5`
       : `mt-0.5 text-sidebar-foreground dark:text-sidebar-foreground`
 
@@ -87,7 +87,7 @@ const renderSidebarItems = (
           link={item.url || undefined}
           target={linkTarget}
           badge={!!item.isPro}
-          badgeColor='bg-lightsecondary'
+          badgeColor='bg-yellow-200 '
           badgeTextColor='text-secondary'
           disabled={item.disabled}
           badgeContent={item.isPro ? 'Pro' : undefined}
@@ -117,7 +117,7 @@ const SidebarLayout = ({ onClose }: { onClose?: () => void }) => {
       mode={sidebarMode}
       className='fixed left-0 top-0 border border-border bg-sidebar dark:bg-sidebar z-10 h-screen'>
       {/* Logo */}
-      <div className='px-6 flex items-center brand-logo overflow-hidden'>
+      <div className='px-6 flex items-center brand-logo overflow-hidden bg-yellow-200 h-22'>
         <AMLogo component={Link} href='/' img=''>
           <FullLogo />
         </AMLogo>
@@ -125,7 +125,7 @@ const SidebarLayout = ({ onClose }: { onClose?: () => void }) => {
 
       {/* Sidebar items */}
 
-      <SimpleBar className='h-[calc(100vh-100px)]'>
+      <SimpleBar className='h-[calc(100vh-100px)] bg-[#14967f]' >
         <div className='px-6'>
           {SidebarContent.map((section, index) => (
             <div key={index}>
