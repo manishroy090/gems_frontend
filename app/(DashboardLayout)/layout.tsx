@@ -3,16 +3,29 @@
 import { useEffect } from 'react';
 import Header from './layout/header/Header';
 import Sidebar from './layout/sidebar/Sidebar'
+import { getMe } from '../services/Auth';
+import { useSelector, useDispatch } from 'react-redux';
+import { setAuthUser } from '../store/features/Hoshpital/AuthSlice';
 
 
 export default function Layout({
   children,
-}: Readonly<{children: React.ReactNode}>) {
+}: Readonly<{ children: React.ReactNode }>) {
+
+  const dispatch = useDispatch();
+
+
+  useEffect(() => {
+
+    const getAuth = async () => {
+      const { data } = await getMe();
+      dispatch(setAuthUser(data.user));
+    }
+    getAuth();
+  }, [])
 
 
 
-
-  
   return (
     <div className='flex w-full min-h-screen'>
       <div className='page-wrapper flex w-full'>
@@ -27,7 +40,7 @@ export default function Layout({
           <div className={`container mx-auto px-6 py-30`}>{children}</div>
         </div>
       </div>
-     
+
     </div>
   )
 }

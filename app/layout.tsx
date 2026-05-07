@@ -7,6 +7,8 @@ import './css/globals.css'
 import { ThemeProvider } from './components/theme-provider'
 import ServiceWorkerRegister from './components/service-worker/ServiceWorkerRegister';
 import toast, { Toaster } from 'react-hot-toast';
+import { Provider } from 'react-redux';
+import { store } from './store/store'
 
 
 
@@ -29,7 +31,7 @@ const dmSans = DM_Sans({
 
 
 
-export default  function RootLayout({
+export default function RootLayout({
   children
 }: {
   children: React.ReactNode
@@ -43,15 +45,18 @@ export default  function RootLayout({
         <meta name="theme-color" content="#5d87ff" />
       </head>
       <body className={`${dmSans.className}`}>
-        <ThemeProvider
-          attribute='class'
-          defaultTheme='system'
-          enableSystem
-          disableTransitionOnChange>
-            <Toaster/>
-          <ServiceWorkerRegister />
-          {children}
-        </ThemeProvider>
+        <Provider store={store}>
+          <ThemeProvider
+            attribute='class'
+            defaultTheme='system'
+            enableSystem
+            disableTransitionOnChange>
+            {children}
+            <Toaster />
+            <ServiceWorkerRegister />
+
+          </ThemeProvider>
+        </Provider>
 
       </body>
     </html>

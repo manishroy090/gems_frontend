@@ -1,3 +1,5 @@
+
+
 import Link from 'next/link'
 import Image from 'next/image'
 import { useTheme } from 'next-themes'
@@ -15,6 +17,7 @@ import {
   AMSubmenu,
 } from 'tailwind-sidebar'
 import 'tailwind-sidebar/styles.css'
+import { useEffect } from 'react'
 
 interface SidebarItemType {
   heading?: string
@@ -106,6 +109,7 @@ const SidebarLayout = ({ onClose }: { onClose?: () => void }) => {
 
   // Only allow "light" or "dark" for AMSidebar
   const sidebarMode = theme === 'light' || theme === 'dark' ? theme : undefined
+
 
   return (
     <AMSidebar

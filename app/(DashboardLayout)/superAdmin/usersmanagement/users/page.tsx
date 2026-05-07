@@ -16,6 +16,8 @@ import { Userschema } from "../../../../schemas/Users.Schema"
 import { Iuser } from "../../../../interface/Iuser";
 import Exportbtn from "../../../../components/cutom/Exportbtn";
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import Link from 'next/link'
+
 
 
 
@@ -54,6 +56,8 @@ const page = () => {
       "Email": "manishkuyadav090@gmail",
       "isActive": true,
       "Verified": true,
+      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
+
     },
      {
       "Name": "Rohan Yadav",
@@ -61,6 +65,8 @@ const page = () => {
       "Email": "manishkuyadav090@gmail",
       "isActive": true,
       "Verified": false,
+      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
+
     },
 
       {
@@ -69,6 +75,8 @@ const page = () => {
       "Email": "manishkuyadav090@gmail",
       "isActive": true,
       "Verified": true,
+      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
+
     },
 
       {
@@ -77,6 +85,8 @@ const page = () => {
       "Email": "manishkuyadav090@gmail",
       "isActive": true,
       "Verified": false,
+      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
+
     },
       {
       "Name": "Rohan Yadav",
@@ -84,6 +94,8 @@ const page = () => {
       "Email": "manishkuyadav090@gmail",
       "isActive": true,
       "Verified": true,
+      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
+
     },
 
       {
@@ -92,6 +104,8 @@ const page = () => {
       "Email": "manishkuyadav090@gmail",
       "isActive": true,
       "Verified": false,
+      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
+
     },
       {
       "Name": "Rohan Yadav",
@@ -99,6 +113,8 @@ const page = () => {
       "Email": "manishkuyadav090@gmail",
       "isActive": true,
       "Verified": false,
+      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
+
     },
       {
       "Name": "Rohan Yadav",
@@ -106,6 +122,8 @@ const page = () => {
       "Email": "manishkuyadav090@gmail",
       "isActive": true,
       "Verified": false,
+      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
+
     },
       {
       "Name": "Rohan Yadav",
@@ -113,6 +131,8 @@ const page = () => {
       "Email": "manishkuyadav090@gmail",
       "isActive": true,
       "Verified": false,
+      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
+
     },
       {
       "Name": "Rohan Yadav",
@@ -120,6 +140,8 @@ const page = () => {
       "Email": "manishkuyadav090@gmail",
       "isActive": true,
       "Verified": false,
+      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
+
     },
       {
       "Name": "Rohan Yadav",
@@ -127,6 +149,8 @@ const page = () => {
       "Email": "manishkuyadav090@gmail",
       "isActive": true,
       "Verified": false,
+      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
+
     },
     
   ]

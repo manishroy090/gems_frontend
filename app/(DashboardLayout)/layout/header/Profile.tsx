@@ -18,6 +18,7 @@ const Profile = () => {
 
   const logout =( ) =>{
     localStorage.removeItem('ACCESS_TOKEN');
+    
   }
 
 

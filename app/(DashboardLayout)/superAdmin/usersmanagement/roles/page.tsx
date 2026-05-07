@@ -14,6 +14,8 @@ import { useForm, SubmitHandler } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup";
 import { Userschema } from "../../../../schemas/Users.Schema"
 import { Iuser } from "../../../../interface/Iuser";
+import Link from 'next/link'
+
 
 
 
@@ -52,38 +54,38 @@ const page = () => {
       "Role":"Admin",
       "Created On":"30 Apr 2025",
       "Status":"Active",
-      " ":<div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div>
+      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
     },
 
      {
       "Role":"Nurse",
       "Created On":"30 Apr 2025",
       "Status":"Active",
-      " ":<div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div>
+      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
     },
      {
       "Role":"Receptionist",
       "Created On":"30 Apr 2025",
       "Status":"Active",
-      " ":<div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div>
+      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
     },
      {
       "Role":"Lab Technician",
       "Created On":"30 Apr 2025",
       "Status":"Active",
-      " ":<div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div>
+      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
     },
      {
       "Role":"Pharmacist",
       "Created On":"30 Apr 2025",
       "Status":"Active",
-      " ":<div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div>
+      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
     },
      {
       "Role":"Pharmacist",
       "Created On":"30 Apr 2025",
       "Status":"Accountant",
-      " ":<div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div>
+      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
     }
   ]
 

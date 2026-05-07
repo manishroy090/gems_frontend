@@ -8,7 +8,7 @@ import useToaster from "../hooks/useToaster";
 
 
 export async function  hoshpitalRegister(payload:Ionboarding){
- const register = await Axios.post('http://127.0.0.1:8080/api/v1/auth/signup',payload);
+ const register = await Axios.post('auth/signup',payload);
  return register;
 
 }
@@ -21,6 +21,9 @@ export async function login(loginCredential:any){
 }
 
 
-export async function  getMe(params:type) {
+
+export async function  getMe() {
+  const AuthUser = await Axios.get('auth/me');
+  return AuthUser;
   
 }

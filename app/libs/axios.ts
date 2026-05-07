@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const Axios = axios.create({
-    baseURL: "http://localhost:8080/api/v1",
+    baseURL: "http://silveroakhospital.localhost/api/v1",
     timeout: 5000,
     headers: { "X-Custom-Header": "foobar" },
     withCredentials: true,

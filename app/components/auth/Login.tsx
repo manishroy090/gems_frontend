@@ -6,6 +6,7 @@ import { Input } from '../../components/ui/input';
 import { Checkbox } from '../../components/ui/checkbox';
 import { Label } from '../../components/ui/label';
 import { login } from "../../services/Auth";
+import { getMe } from "../../services/Auth";
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation'
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -38,6 +39,7 @@ export const Login = () => {
     }
 
   }
+
 
 
 
