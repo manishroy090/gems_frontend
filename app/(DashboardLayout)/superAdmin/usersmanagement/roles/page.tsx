@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import BreadcrumbComp from "../../../layout/shared/breadcrumb/BreadcrumbComp";
 import DataTable from "../../../../components/utilities/data-table/DataTable";
 import Modal from "../../../../components/ui/Modal";
@@ -15,6 +15,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Userschema } from "../../../../schemas/Users.Schema"
 import { Iuser } from "../../../../interface/Iuser";
 import Link from 'next/link'
+import { getAllRoles } from "../../../../services/Roles";
 
 
 
@@ -25,6 +26,7 @@ import Link from 'next/link'
 
 const page = () => {
   const [showModal, setShowModal] = useState(false);
+  const [roles, setRoles] = useState([])
 
 
 
@@ -48,44 +50,58 @@ const page = () => {
   }
 
 
+  useEffect(() => {
+    const getAllRole = async () => {
+
+      const result = await getAllRoles();
+      setRoles(result);
+
+    }
+
+    getAllRole();
+  }, [])
+
+
+
+
   const data = [
 
     {
-      "Role":"Admin",
-      "Created On":"30 Apr 2025",
-      "Status":"Active",
-      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
+      "Role": "Admin",
+      "Created On": "30 Apr 2025",
+      "Status": "Active",
+      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
     },
 
-     {
-      "Role":"Nurse",
-      "Created On":"30 Apr 2025",
-      "Status":"Active",
-      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
+    {
+      "Role": "Nurse",
+      "Created On": "30 Apr 2025",
+      "Status": "Active",
+      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
     },
-     {
-      "Role":"Receptionist",
-      "Created On":"30 Apr 2025",
-      "Status":"Active",
-      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
+    {
+      "Role": "Receptionist",
+      "Created On": "30 Apr 2025",
+      "Status": "Active",
+      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
     },
-     {
-      "Role":"Lab Technician",
-      "Created On":"30 Apr 2025",
-      "Status":"Active",
-      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
+    {
+      "Role": "Lab Technician",
+      "Created On": "30 Apr 2025",
+      "Status": "Active",
+      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
     },
-     {
-      "Role":"Pharmacist",
-      "Created On":"30 Apr 2025",
-      "Status":"Active",
-      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
+    {
+      "Role": "Pharmacist",
+      "Created On": "30 Apr 2025",
+      "Status": "Active",
+      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
     },
-     {
-      "Role":"Pharmacist",
-      "Created On":"30 Apr 2025",
-      "Status":"Accountant",
-      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
+    {
+      "Role": "Pharmacist",
+      "Created On": "30 Apr 2025",
+      "Status": "Accountant",
+      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
     }
   ]
 
@@ -99,7 +115,7 @@ const page = () => {
           <span className="font-semibold text-xl">Roles</span>
 
           <div className="flex space-x-4">
-        
+
 
 
             <div className="border rounded-md p-2 text-white text-center bg-blue-600" onClick={openUserModal}>
@@ -117,7 +133,8 @@ const page = () => {
 
       <div className="bg-white rounded px-1">
 
-        <Table data={data} action={false}/>
+          {roles.length>0 ? <Table data={roles}  /> : 'loading'}
+        
       </div>
 
 
@@ -145,22 +162,22 @@ const page = () => {
 
 
           <div className="flex space-x-4">
-          <div>
-            <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Passsword</Label>
-            <Input  {...register("password")} />
-            {errors?.["password"] && (
-              <p className="text-xs text-red-500">{errors["password"].message}</p>
-            )}
-          </div>
+            <div>
+              <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Passsword</Label>
+              <Input  {...register("password")} />
+              {errors?.["password"] && (
+                <p className="text-xs text-red-500">{errors["password"].message}</p>
+              )}
+            </div>
 
 
-                   <div>
-            <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Confirm Password</Label>
-            <Input  {...register("password")} />
-            {errors?.["password"] && (
-              <p className="text-xs text-red-500">{errors["password"].message}</p>
-            )}
-          </div>
+            <div>
+              <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Confirm Password</Label>
+              <Input  {...register("password")} />
+              {errors?.["password"] && (
+                <p className="text-xs text-red-500">{errors["password"].message}</p>
+              )}
+            </div>
 
 
 

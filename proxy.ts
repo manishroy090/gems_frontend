@@ -15,59 +15,59 @@ export function proxy(request: NextRequest) {
         return NextResponse.redirect(new URL('/auth/login', request.url))
     }
 
-    const routePermissions = [
-        {
-            path: "/superAdmin/usersmanagement/roles",
-            permissions: ["role.create"]
-        }
-        ,
-        {
-            path: "/superAdmin/usersmanagement/users",
-            permissions: ["user.create"]
-        },
-        {
-            path: "/superAdmin/usersmanagement/doctor",
-            permissions: ["doctor.create"]
-        }
+    // const routePermissions = [
+    //     {
+    //         path: "/superAdmin/usersmanagement/roles",
+    //         permissions: ["roles.create"]
+    //     }
+    //     ,
+    //     {
+    //         path: "/superAdmin/usersmanagement/users",
+    //         permissions: ["user.create"]
+    //     },
+    //     {
+    //         path: "/superAdmin/usersmanagement/doctor",
+    //         permissions: ["doctor.create"]
+    //     }
 
-    ]
-
-
-    const decodetoken = decodeToken(accessToken);
-
-    //user Permission
-    const { permission } = decodetoken;
-
-    const userPermission = permission.map((item) => item.title);
-
-    const path = request.nextUrl.pathname;
-
-    const pathrequiredPermissions = routePermissions.find((permission) => permission.path == path);
+    // ]
 
 
-    const requiredPermissions = pathrequiredPermissions?.permissions?.map((item) => item);
+    // const decodetoken = decodeToken(accessToken);
+
+    // //user Permission
+    // const { permission } = decodetoken;
+
+    // const userPermission = permission.map((item) => item.title);
+
+    // const path = request.nextUrl.pathname;
+
+    // const pathrequiredPermissions = routePermissions.find((permission) => permission.path == path);
 
 
-
-
-    // if route has no restriction → allow
-    if (!requiredPermissions) {
-        return NextResponse.next();
-    }
+    // const requiredPermissions = pathrequiredPermissions?.permissions?.map((item) => item);
 
 
 
-    const hasAccess = requiredPermissions?.some((perm) =>
-        userPermission.includes(perm)
-    );
+
+    // // if route has no restriction → allow
+    // if (!requiredPermissions) {
+    //     return NextResponse.next();
+    // }
 
 
 
-    if (!hasAccess) {
+    // const hasAccess = requiredPermissions?.some((perm) =>
+    //     userPermission.includes(perm)
+    // );
 
-        return NextResponse.redirect(new URL('/403', request.url));
 
-    }
+
+    // if (!hasAccess) {
+
+    //     return NextResponse.redirect(new URL('/403', request.url));
+
+    // }
 
     return NextResponse.next();
 }

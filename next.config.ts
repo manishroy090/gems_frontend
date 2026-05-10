@@ -5,9 +5,9 @@ const nextConfig = {
         {
           source: '/:path*',
           has: [{ type: 'host', value: 'greenvally.localhost' }],
-          destination: '/:path*',  
+          destination: '/:path*',
         },
- {
+        {
           source: '/:path*',
           has: [{ type: 'host', value: 'silveroakhospital.localhost' }],
           destination: '/:path*',

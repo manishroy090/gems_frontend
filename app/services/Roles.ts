@@ -2,8 +2,9 @@ import Axios from "../libs/axios";
 
 
 export async function getAllRoles(){
+    const {data} = await Axios.get("/hoshpital/roles");
 
-    const roles = await Axios.get()
+    return data.roles;
 
 }
 
@@ -36,10 +37,9 @@ export async function getAllRoles(){
 // }
 
 
-// export async function  getRolesWithPermissions(){
-
-//     const roles = await Axios.get();
-
-// }
+export async function  getRolesWithPermissions(id:any){
+    const permission = await Axios.get(`hoshpital/permission/getallpermission/${id}`);
+    return permission.data.permissions;
+}
 
 

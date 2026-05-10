@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import BreadcrumbComp from "../../../layout/shared/breadcrumb/BreadcrumbComp";
 import DataTable from "../../../../components/utilities/data-table/DataTable";
 import Modal from "../../../../components/ui/Modal";
@@ -16,6 +16,7 @@ import { Userschema } from "../../../../schemas/Users.Schema"
 import { Iuser } from "../../../../interface/Iuser";
 import Exportbtn from "../../../../components/cutom/Exportbtn";
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import { getUsers } from "../../../../services/User";
 import Link from 'next/link'
 
 
@@ -27,6 +28,13 @@ import Link from 'next/link'
 
 const page = () => {
   const [showModal, setShowModal] = useState(false);
+  const [users, setUser] = useState([]);
+  const [actionData, setAction] = useState([{
+    "edit": ( <Link href={"/superAdmin/usersmanagement/permissions"}><img src="/hrm_image/edit.png" className="w-6 h-7"></img></Link>),
+    "delete": (<Link href={"/superAdmin/usersmanagement/permissions"}><img src="/hrm_image/delete.png" className="w-6 h-7"></img></Link>),
+    "permissions": (<Link href={"/superAdmin/usersmanagement/permissions"}><img src="/hrm_image/authentication.png" className="w-6 h-7"></img></Link>)
+  }
+  ]);
 
 
 
@@ -56,104 +64,121 @@ const page = () => {
       "Email": "manishkuyadav090@gmail",
       "isActive": true,
       "Verified": true,
-      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
+      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
 
     },
-     {
+    {
       "Name": "Rohan Yadav",
       "Role": "Accountant",
       "Email": "manishkuyadav090@gmail",
       "isActive": true,
       "Verified": false,
-      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
+      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
 
     },
 
-      {
+    {
       "Name": "Rohan Yadav",
       "Role": "Accountant",
       "Email": "manishkuyadav090@gmail",
       "isActive": true,
       "Verified": true,
-      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
+      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
 
     },
 
-      {
+    {
       "Name": "Rohan Yadav",
       "Role": "Accountant",
       "Email": "manishkuyadav090@gmail",
       "isActive": true,
       "Verified": false,
-      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
+      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
 
     },
-      {
+    {
       "Name": "Rohan Yadav",
       "Role": "Accountant",
       "Email": "manishkuyadav090@gmail",
       "isActive": true,
       "Verified": true,
-      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
+      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
 
     },
 
-      {
+    {
       "Name": "Rohan Yadav",
       "Role": "Accountant",
       "Email": "manishkuyadav090@gmail",
       "isActive": true,
       "Verified": false,
-      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
+      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
 
     },
-      {
+    {
       "Name": "Rohan Yadav",
       "Role": "Accountant",
       "Email": "manishkuyadav090@gmail",
       "isActive": true,
       "Verified": false,
-      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
+      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
 
     },
-      {
+    {
       "Name": "Rohan Yadav",
       "Role": "Accountant",
       "Email": "manishkuyadav090@gmail",
       "isActive": true,
       "Verified": false,
-      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
+      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
 
     },
-      {
+    {
       "Name": "Rohan Yadav",
       "Role": "Accountant",
       "Email": "manishkuyadav090@gmail",
       "isActive": true,
       "Verified": false,
-      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
+      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
 
     },
-      {
+    {
       "Name": "Rohan Yadav",
       "Role": "Accountant",
       "Email": "manishkuyadav090@gmail",
       "isActive": true,
       "Verified": false,
-      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
+      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
 
     },
-      {
+    {
       "Name": "Rohan Yadav",
       "Role": "Accountant",
       "Email": "manishkuyadav090@gmail",
       "isActive": true,
       "Verified": false,
-      " ":<Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
+      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
 
     },
-    
+
   ]
+
+
+  useEffect(() => {
+    const getAllUser = async () => {
+      const result = await getUsers();
+      console.log("result", result.length);
+      setUser(result);
+    }
+    getAllUser();
+  }, [])
+
+
+  useEffect(() => {
+
+    console.log("users",)
+
+  }, [users])
 
   return (
     <div className="flex flex-col space-y-5">
@@ -166,12 +191,12 @@ const page = () => {
           <span className="font-semibold text-xl">Users</span>
 
           <div className="flex space-x-4">
-              <Exportbtn/>
+            <Exportbtn />
 
 
             <div className="border rounded p-2 text-white flex justify-center items-center bg-[#14967f]  shadow" onClick={openUserModal}>
-               <AddOutlinedIcon/>              
-                <Label>Add User</Label>
+              <AddOutlinedIcon />
+              <Label>Add User</Label>
 
             </div>
 
@@ -211,8 +236,8 @@ const page = () => {
 
 
       <div className="bg-white rounded px-1">
+        {users.length > 0 ? <Table data={users} actionlist={actionData} /> : "loading"}
 
-        <Table data={data} />
       </div>
 
 
