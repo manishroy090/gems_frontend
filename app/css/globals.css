@@ -4,6 +4,7 @@
 @import './layouts/sidebar.css' layer(utilities);
 @import './layouts/header.css' layer(utilities);
 @import './override/reboot.css' layer(utilities);
+@import '../sass//styles.scss' layer(utilities);
 /* @import "tw-animate-css"; */
 
 @custom-variant dark (&:is(.dark *));

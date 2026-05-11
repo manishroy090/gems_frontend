@@ -54,7 +54,7 @@ const SidebarContent: MenuItem[] = [
         id: uniqueId(),
         name: 'Roles',
         icon: 'solar:notes-linear',
-         url: '/superAdmin/usersmanagement/roles',
+        url: '/superAdmin/usersmanagement/roles',
         isPro: false,
       },
       {
@@ -64,13 +64,13 @@ const SidebarContent: MenuItem[] = [
         url: '/superAdmin/usersmanagement/users',
         isPro: false,
       },
-  
+
     ],
   },
 
 
 
- 
+
 
 
 
@@ -86,49 +86,67 @@ const SidebarContent: MenuItem[] = [
           {
             id: uniqueId(),
             name: 'Doctors',
-            url: '/superAdmin/organizationmanagement/hoshpital/hoshpitals',
+            url: '/superAdmin/doctormanagement/doctors',
             isPro: true,
           },
-           {
+          {
             id: uniqueId(),
-            name: 'Appointments',
-            url: '/superAdmin/organizationmanagement/hoshpital/hoshpitals',
+            name: 'Doctor Details',
+            url: '/superAdmin/doctormanagement/doctordetails',
+            isPro: true,
+          },
+          {
+            id: uniqueId(),
+            name: 'Add Doctor',
+            url: '/superAdmin/doctormanagement/adddoctor',
+            isPro: true,
+          },
+          {
+            id: uniqueId(),
+            name: 'Doctor Schedule',
+            url: '/superAdmin/doctormanagement/dotorschedule',
+            isPro: true,
+          }
+        ],
+      },
+
+
+    ],
+  },
+
+
+  {
+    heading: 'Patient Management',
+    children: [
+      {
+        name: 'Patients',
+        id: uniqueId(),
+        icon: 'solar:login-2-linear',
+        children: [
+          {
+            id: uniqueId(),
+            name: 'Patients',
+            url: '/superAdmin/patientmanagement/Patients',
+            isPro: true,
+          },
+          {
+            id: uniqueId(),
+            name: 'Patient Details',
+            url: '/superAdmin/patientmanagement/patientsdetails',
+            isPro: true,
+          },
+          {
+            id: uniqueId(),
+            name: 'Create Patient',
+            url: '/superAdmin/patientmanagement/createpatients',
             isPro: true,
           },
         ],
       },
 
-     
+
     ],
   },
-
-
-  //   {
-  //   heading: 'Patient Management',
-  //   children: [
-  //     {
-  //       name: 'Patient',
-  //       id: uniqueId(),
-  //       icon: 'solar:login-2-linear',
-  //       children: [
-  //         {
-  //           id: uniqueId(),
-  //           name: 'Doctors',
-  //           url: '/superAdmin/organizationmanagement/hoshpital/hoshpitals',
-  //           isPro: true,
-  //         },
-  //          {
-  //           id: uniqueId(),
-  //           name: 'Appointments',
-  //           url: '/superAdmin/organizationmanagement/hoshpital/hoshpitals',
-  //           isPro: true,
-  //         },
-  //       ],
-  //     },
-
-     
-  //   ],
-  // },
 
 ]
 
