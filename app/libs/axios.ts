@@ -1,38 +1,29 @@
 import axios from "axios";
 
-const Axios = axios.create({
-    baseURL: "http://silveroakhospital.localhost/api/v1",
-    timeout: 5000,
-    headers: { "X-Custom-Header": "foobar" },
-    withCredentials: true,
-});
+const createApi = (baseURL:any) => {
+    const api = axios.create({
+        baseURL,
+        timeout: 5000,
+        withCredentials: true,
+    });
 
+    api.interceptors.request.use((config) => {
+        const token = localStorage.getItem("ACCESS_TOKEN");
 
-
-// Axios.interceptors.request.use((Config) => {
-//     const token = localStorage.getItem("ACCESS_TOKEN");
-//     Config.headers.Authorization = `Bearer ${token}`;
-//     return Config;
-// });
-
-
-
-Axios.interceptors.response.use(
-    (response) => {
-        return response;
-    },
-    (error) => {
-        const { response } = error;
-        if (response.status === 401) {
-            // localStorage.removeItem("ACCESS_TOKEN");
-            return response
-
-        } else if (response.status === 422) {
-            return response
+        if (token) {
+            config.headers.Authorization = `Bearer ${token}`;
         }
-        throw error;
-    }
+
+        return config;
+    });
+
+    return api;
+};
+
+export const Axios = createApi(
+    "http://silveroakhospital.localhost/api/v1"
 );
 
-
-export default Axios;
+export const HospitalApi = createApi(
+    "http://silveroakhospital.localhost/api/v1/hospital"
+);

@@ -6,6 +6,9 @@ import { Icon } from '@iconify/react'
 import * as profileData from './data'
 import SimpleBar from 'simplebar-react'
 import { Button } from '../../../components/ui/button'
+import { logout } from '../../../services/Auth'
+import { useRouter } from 'next/navigation'
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -16,9 +19,14 @@ import {
 
 const Profile = () => {
 
-  const logout =( ) =>{
-    localStorage.removeItem('ACCESS_TOKEN');
-    
+  const router = useRouter();
+
+  const logoutUser =async( ) =>{
+    const log =   await logout();
+    if(log){
+       
+      router.push("/auth/login");
+    }
   }
 
 
@@ -63,8 +71,8 @@ const Profile = () => {
           <DropdownMenuSeparator className='my-2' />
 
           <div className='px-4'>
-            <Button variant='outline' asChild className='w-full rounded-md' onClick={logout}>
-              <Link href='/auth/login'>Logout</Link>
+            <Button variant='outline' asChild className='w-full rounded-md' onClick={logoutUser}>
+              <div>Logout</div>
             </Button>
           </div>
         </DropdownMenuContent>

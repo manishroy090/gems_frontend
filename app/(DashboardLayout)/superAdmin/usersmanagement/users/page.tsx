@@ -17,6 +17,7 @@ import { Iuser } from "../../../../interface/Iuser";
 import Exportbtn from "../../../../components/cutom/Exportbtn";
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import { getUsers } from "../../../../services/User";
+import Doctorcards from "../../../../components/cutom/cards/users/Doctorcards";
 import Link from 'next/link'
 
 

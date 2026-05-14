@@ -1,4 +1,4 @@
-import Axios from "../libs/axios";
+import {Axios} from "../libs/axios";
 
 
  export async function getPermissions(){

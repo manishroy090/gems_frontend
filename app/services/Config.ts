@@ -1,4 +1,4 @@
-import Axios from "../libs/axios";
+import {Axios} from "../libs/axios";
 
 export async function getAllCountries(){
    const countries = Axios.get('/config')

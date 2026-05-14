@@ -1,4 +1,4 @@
-import Axios from "../libs/axios";
+import {Axios} from "../libs/axios";
 import { useRouter } from 'next/navigation'
 import { Ionboarding } from "../interface/Ionboarding";
 import toast, { Toaster } from 'react-hot-toast';
@@ -26,4 +26,10 @@ export async function  getMe() {
   const AuthUser = await Axios.get('auth/me');
   return AuthUser;
   
+}
+
+
+export async function logout(){
+    const {data} = await Axios.post('auth/logout');
+    return data.success;
 }

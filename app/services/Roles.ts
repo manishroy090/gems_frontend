@@ -1,4 +1,4 @@
-import Axios from "../libs/axios";
+import {Axios} from "../libs/axios";
 
 
 export async function getAllRoles(){
@@ -9,32 +9,32 @@ export async function getAllRoles(){
 }
 
 
-// export async function createRole(){
+export async function createRole(){
 //   const roles = await Axios.post()
 
 
-// }
+}
 
 
-// export async function editRole(){
-//       const roles = await Axios.get()
-
-
-
-// }
-
-// export async function updateRole(){
-//       const roles = await Axios.patch()
+export async function editRole(){
+    //   const roles = await Axios.get()
 
 
 
-// }
+}
+
+export async function updateRole(){
+    //   const roles = await Axios.patch()
 
 
-// export async function deleteRole(){
-//           const roles = await Axios.delete()
 
-// }
+}
+
+
+export async function deleteRole(){
+    // const roles = await Axios.delete()
+
+}
 
 
 export async function  getRolesWithPermissions(id:any){
