@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 import { Label } from "../../../../components/ui/label";
 import { Input } from "../../../../components/ui/input";
@@ -20,8 +20,14 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { IDoctor } from "../../../../interface/IDoctor";
 import { Doctorschema } from "../../../../schemas/Doctor.schema";
 import { createDoctor } from "../../../../services/Doctor";
+import { getHospitalDepartments, getAllCountries, getAllBloodGroup } from "../../../../services/Hoshpital";
 
 const Page = () => {
+
+  const [departments, setDepartments] = useState([]);
+  const [countries, setCountries] = useState([]);
+  const [bloodgroups, setBloodgroups] = useState([]);
+
   const {
     register,
     control,
@@ -48,8 +54,8 @@ const Page = () => {
       sessions: [
         {
           day: "",
-          start: "",
-          end: "",
+          start_time: "",
+          end_time: "",
           patients: "",
         },
       ],
@@ -127,6 +133,26 @@ const Page = () => {
   const onError = (error: any) => {
     console.log("FORM ERROR", error);
   };
+
+
+
+  useEffect(() => {
+
+    const callMasterData = async () => {
+      const getAllDepartment = await getHospitalDepartments();
+      const Countries = await getAllCountries();
+      const bloodgroup = await getAllBloodGroup();
+      setBloodgroups(bloodgroup);
+      setDepartments(getAllDepartment);
+      setCountries(Countries);
+    }
+
+    callMasterData();
+
+  }, [])
+
+
+
 
   return (
     <div className="bg-white p-8 rounded-xl">
@@ -211,7 +237,18 @@ const Page = () => {
           <div className="flex flex-col space-y-2">
             <Label>Department</Label>
 
-            <Input {...register("department_id")} />
+            <select
+              {...register("department_id")}
+              className="w-full border rounded-md h-10 px-3"
+            >
+              <option value="">Select Department</option>
+
+              {departments?.map((item: any) => (
+                <option key={item.id} value={item.id}>{item.title}</option>
+              ))}
+
+
+            </select>
 
             <p className="text-xs text-red-500 mt-1">
               {errors.department_id?.message}
@@ -255,7 +292,16 @@ const Page = () => {
           <div className="flex flex-col space-y-2">
             <Label>Blood Group</Label>
 
-            <Input {...register("blood_group")} />
+            <select
+              {...register("blood_group")}
+              className="w-full border rounded-md h-10 px-3"
+            >
+              <option value="">Select Bloodgroup</option>
+              {bloodgroups?.map((bloodgroup: any) => (
+                <option key={bloodgroup.id} value={bloodgroup.id}>{bloodgroup.title}</option>
+              ))}
+
+            </select>
 
             <p className="text-xs text-red-500 mt-1">
               {errors.blood_group?.message}
@@ -266,7 +312,15 @@ const Page = () => {
           <div className="flex flex-col space-y-2">
             <Label>Gender</Label>
 
-            <Input {...register("gender")} />
+              <select
+              {...register("gender")}
+              className="w-full border rounded-md h-10 px-3"
+            >
+              <option value="">Select Gender</option>
+                <option  value="male">Male</option>
+                <option  value="female">Female</option>
+
+            </select>
 
             <p className="text-xs text-red-500 mt-1">
               {errors.gender?.message}
@@ -285,6 +339,93 @@ const Page = () => {
           </div>
         </div>
 
+
+
+
+        <div>
+          <div className="">
+            <h2 className="text-lg font-semibold">
+              Address Information
+            </h2>
+
+            <div className="grid grid-cols-3 gap-3">
+
+              <div className="flex flex-col space-y-2">
+                <Label>Country</Label>
+                <select
+                  {...register("country_id")}
+                  className="w-full border rounded-md h-10 px-3"
+                >
+                  <option value="">Select Country</option>
+
+
+                  {countries?.map((country: any) => (
+                    <option key={country.id} value={country.id}>{country.title}</option>
+                  ))}
+
+
+                </select>
+                <p className="text-xs text-red-500 mt-1">
+                  {errors.country_id?.message}
+                </p>
+              </div>
+
+
+              <div className="flex flex-col space-y-2">
+                <Label>State</Label>
+                <Input {...register("state")} />
+                <p className="text-xs text-red-500 mt-1">
+                  {errors.state?.message}
+                </p>
+              </div>
+
+
+              <div className="flex flex-col space-y-2">
+                <Label>City</Label>
+                <Input {...register("city")} />
+                <p className="text-xs text-red-500 mt-1">
+                  {errors.city?.message}
+                </p>
+              </div>
+
+              <div className="flex flex-col space-y-2">
+                <Label>Address</Label>
+                <Input {...register("address")} />
+                <p className="text-xs text-red-500 mt-1">
+                  {errors.address?.message}
+                </p>
+              </div>
+
+
+              <div className="flex flex-col space-y-2">
+                <Label>Address 2</Label>
+                <Input {...register("address_2")} />
+                <p className="text-xs text-red-500 mt-1">
+                  {errors.address_2?.message}
+                </p>
+              </div>
+
+
+
+
+              <div className="flex flex-col space-y-2">
+                <Label>Pin Code</Label>
+                <Input {...register("pin_code")} />
+                <p className="text-xs text-red-500 mt-1">
+                  {errors.pin_code?.message}
+                </p>
+              </div>
+
+            </div>
+
+
+          </div>
+
+
+        </div>
+
+
+
         {/* ================= SESSION INFO ================= */}
 
         <div>
@@ -298,8 +439,8 @@ const Page = () => {
               onClick={() =>
                 appendSession({
                   day: "",
-                  start: "",
-                  end: "",
+                  start_time: "",
+                  end_time: "",
                   patients: "",
                 })
               }
@@ -346,11 +487,11 @@ const Page = () => {
 
                   <Input
                     type="time"
-                    {...register(`sessions.${index}.start`)}
+                    {...register(`sessions.${index}.start_time`)}
                   />
 
                   <p className="text-xs text-red-500 mt-1">
-                    {errors.sessions?.[index]?.start?.message}
+                    {errors.sessions?.[index]?.start_time?.message}
                   </p>
                 </div>
 
@@ -360,11 +501,11 @@ const Page = () => {
 
                   <Input
                     type="time"
-                    {...register(`sessions.${index}.end`)}
+                    {...register(`sessions.${index}.end_time`)}
                   />
 
                   <p className="text-xs text-red-500 mt-1">
-                    {errors.sessions?.[index]?.end?.message}
+                    {errors.sessions?.[index]?.end_time?.message}
                   </p>
                 </div>
 
@@ -546,7 +687,7 @@ const DynamicSection = ({
                   </p>
                 </div>
 
-               <div className="flex flex-col space-y-2">
+                <div className="flex flex-col space-y-2">
                   <Label>End Date</Label>
                   <Input
                     type="date"
@@ -573,7 +714,7 @@ const DynamicSection = ({
 
                 <div>
                   <Input
-                   type="date"
+                    type="date"
                     placeholder="From"
                     {...register(`${type}s.${index}.from`)}
                   />

@@ -1,7 +1,7 @@
 export interface ISession {
   day: string;
-  start: string;
-  end: string;
+  start_time: string;
+  end_time: string;
   patients: number | string;
 }
 
@@ -36,6 +36,12 @@ export interface IDoctor {
   blood_group: string;
   gender: string;
   bio: string;
+  country_id:String
+  state:String,
+  city:String,
+  address:String,
+  address_2:String
+  pin_code:String
 
   // Dynamic Fields
   sessions: ISession[];

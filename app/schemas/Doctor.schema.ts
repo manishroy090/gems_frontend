@@ -35,6 +35,16 @@ export const Doctorschema = yup.object({
   gender: yup.string().required("Gender is required"),
 
   bio: yup.string().required("Bio is required"),
+  country_id:yup.string().required("Country is required"),
+  state:yup.string().required("State is required"),
+  city:yup.string().required("City is required"),
+  address:yup.string().required("Address is required"),
+  address_2:yup.string(""),
+  pin_code:yup.string(),
+
+
+
+
 
   // ================= SESSION VALIDATION =================
 
@@ -44,9 +54,9 @@ export const Doctorschema = yup.object({
       yup.object({
         day: yup.string().required("Day is required"),
 
-        start: yup.string().required("Start time is required"),
+        start_time: yup.string().required("Start time is required"),
 
-        end: yup.string().required("End time is required"),
+        end_time: yup.string().required("End time is required"),
 
         patients: yup
           .number()
