@@ -10,6 +10,8 @@ import { Select } from "../../../../components/ui/select";
 import { IPatient } from "../../../../interface/Ipatient";
 import { Patientschema } from "../../../../schemas/Patient.schema";
 import { getAllCountries, getAllBloodGroup } from "../../../../services/Hoshpital";
+import { getAllPatientStatus ,createPatient} from "../../../../services/Patients";
+import { getAllDoctor } from "../../../../services/Doctor";
 import {
     useForm,
     useFieldArray,
@@ -24,9 +26,11 @@ const page = () => {
     const { register, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(Patientschema) });
     const [countries, setCountries] = useState([]);
     const [bloodgroups, setBloodgroups] = useState([]);
+    const [doctors, setDoctors] = useState([]);
+    const [patientStatuses, setPatientStatus] = useState([]);
 
     const onSubmit: SubmitHandler<IPatient> = async (data) => {
-        console.log("FORM DATA", data);
+        await createPatient(data);
     };
 
 
@@ -39,8 +43,12 @@ const page = () => {
         const callMasterData = async () => {
             const Countries = await getAllCountries();
             const bloodgroup = await getAllBloodGroup();
+            const doctors = await getAllDoctor();
+            const patientStatus = await getAllPatientStatus();
+            setPatientStatus(patientStatus);
             setBloodgroups(bloodgroup);
             setCountries(Countries);
+            setDoctors(doctors);
         }
 
         callMasterData();
@@ -100,7 +108,16 @@ const page = () => {
 
                         <div>
                             <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Primary Doctor</Label>
-                            <Input  {...register("primary_doctor")} />
+                            <select
+                                {...register("primary_doctor")}
+                                className="w-full border rounded-md h-10 px-3"
+                            >
+                                <option value="">Select BloodGroup</option>
+                                {doctors?.map((doctor: any) => (
+                                    <option key={doctor.doctor_id} value={doctor.doctor_id}>{`${doctor.firstname} ${doctor.lastname}`}</option>
+                                ))}
+
+                            </select>
                             <p className="text-xs text-red-500 mt-1">
                                 {errors.primary_doctor?.message}
                             </p>
@@ -109,7 +126,7 @@ const page = () => {
 
                         <div>
                             <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">DOB</Label>
-                            <Input {...register("dob")} />
+                            <Input {...register("dob")} type="date" />
                             <p className="text-xs text-red-500 mt-1">
                                 {errors.dob?.message}
                             </p>
@@ -157,7 +174,15 @@ const page = () => {
 
                         <div>
                             <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Status</Label>
-                            <Input {...register("status")} />
+                            <select
+                                {...register("status")}
+                                className="w-full border rounded-md h-10 px-3"
+                            >
+                                <option value="">Select Status</option>
+                                {patientStatuses?.map((patientStatus: any) => (
+                                    <option key={patientStatus.id} value={patientStatus.id}>{patientStatus.title}</option>
+                                ))}
+                            </select>
                             <p className="text-xs text-red-500 mt-1">
                                 {errors.status?.message}
                             </p>

@@ -1,8 +1,8 @@
-import {Axios} from "../libs/axios";
+import {Axios,HospitalApi} from "../libs/axios";
 
 
 export async function getAllRoles(){
-    const {data} = await Axios.get("/hoshpital/roles");
+    const {data} = await HospitalApi.get("/roles");
 
     return data.roles;
 
