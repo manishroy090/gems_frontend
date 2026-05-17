@@ -121,8 +121,8 @@ const menu = [
   {
     name: "Settings",
     icon: <SettingsIcon />,
-    path: "/underconstruction",
-    disabled: true,
+    path: "/settings",
+    disabled: false,
   },
 ];
 
