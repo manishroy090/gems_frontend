@@ -28,26 +28,27 @@ export default function Layout({
   }, [dispatch]);
 
   return (
-    <div className="flex h-screen bg-gray-100">
-
+    <div className="h-screen w-screen overflow-hidden bg-gray-100">
+      
       {/* ================= SIDEBAR ================= */}
-      <div className="hidden xl:block w-64 bg-white border-r">
+      <aside className="fixed left-0 top-0 z-40 hidden xl:block">
         <Sidebar />
-      </div>
+      </aside>
 
-      {/* ================= MAIN AREA ================= */}
-      <div className="flex flex-col flex-1 overflow-hidden">
+      {/* ================= MAIN CONTENT ================= */}
+      <div className="xl:ml-72 h-screen flex flex-col overflow-hidden">
 
-        {/* HEADER */}
-        <Header />
+        {/* ================= HEADER ================= */}
+        <header className="shrink-0 bg-white border-b z-30">
+          <Header />
+        </header>
 
-        {/* PAGE CONTENT */}
+        {/* ================= PAGE CONTENT ================= */}
         <main className="flex-1 overflow-y-auto p-6">
           {children}
         </main>
 
       </div>
-
     </div>
   );
 }
