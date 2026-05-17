@@ -64,46 +64,6 @@ const page = () => {
 
 
 
-  const data = [
-
-    {
-      "Role": "Admin",
-      "Created On": "30 Apr 2025",
-      "Status": "Active",
-      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
-    },
-
-    {
-      "Role": "Nurse",
-      "Created On": "30 Apr 2025",
-      "Status": "Active",
-      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
-    },
-    {
-      "Role": "Receptionist",
-      "Created On": "30 Apr 2025",
-      "Status": "Active",
-      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
-    },
-    {
-      "Role": "Lab Technician",
-      "Created On": "30 Apr 2025",
-      "Status": "Active",
-      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
-    },
-    {
-      "Role": "Pharmacist",
-      "Created On": "30 Apr 2025",
-      "Status": "Active",
-      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
-    },
-    {
-      "Role": "Pharmacist",
-      "Created On": "30 Apr 2025",
-      "Status": "Accountant",
-      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
-    }
-  ]
 
   return (
     <div className="flex flex-col space-y-5">

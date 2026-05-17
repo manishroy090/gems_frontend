@@ -1,64 +1,49 @@
-import { useEffect, useState } from "react";
-import Link from 'next/link'
+import { useEffect, useState, useRef } from "react";
 import { Badge } from "../ui/badge";
+import Link from "next/link";
 
 
-const Table = ({ data, actionlist = [] }) => {
+/* ---------------- ACTION MENU ---------------- */
 
+const ActionMenu = ({ item, actions }) => {
+    const [open, setOpen] = useState(false);
+    const menuRef = useRef(null);
 
-    const [keys, setKeys] = useState([]);
-    const [formatedData, setFormatedData] = useState([]);
-    const [actionData, setAction] = useState(actionlist);
+    const defaultActions = [
+        {
+            label: "View",
+            icon: "👁️",
+            onClick: (item) => console.log("View", item),
+        },
+        {
+            label: "Edit",
+            icon: "✏️",
+            onClick: (item) => console.log("Edit", item),
+        },
+        {
+            label: "Delete",
+            icon: "🗑️",
+            onClick: (item) => console.log("Delete", item),
+        },
+    ];
 
+    const finalActions =
+        Array.isArray(actions) && actions.length > 0
+            ? actions
+            : defaultActions;
+
+    // Close dropdown on outside click
     useEffect(() => {
-        const keys = Object.entries(Object.keys(data[0]));
-        setKeys(keys);
+        const handleClickOutside = (event) => {
+            if (menuRef.current && !menuRef.current.contains(event.target)) {
+                setOpen(false);
+            }
+        };
 
-        const formatedData = data.map((item) => ({
-            ...item,
-            permissions: (
-                <Link href={`/superAdmin/usersmanagement/permissions/${item.id}`}>
-                    <div className="border w-fit px-6 py-1 flex space-x-4 items-center">
-                        <img
-                            src="/hrm_image/authentication.png"
-                            className="w-8 h-8"
-                            alt="permission"
-                        />
-                        <span className="font-semibold">Permission</span>
-                    </div>
-                </Link>
-            ),
-            is_active: item.is_active ? (
-                <Badge className='px-2 py-1 rounded-full text-xs font-semibold bg-green-100 text-green-700'>
-                    Active
-                </Badge>
-            ) : <Badge className='px-2 py-1 rounded-full text-xs font-semibold bg-red-100 text-red-700'>
-                Inactive
-            </Badge>
-            ,
-            email_verified_at: item.email_verified_at ? (
-                <img
-                    className="w-5"
-                    src="/hrm_image/check-mark.png"
-                    alt="verified"
-                />
-            ) : <img className="w-5" src="/hrm_image/multiply.png" alt="verified" />
-
-        }));
-
-        setFormatedData(formatedData);
-
-
-
-
-
-
-    }, [data])
-
-
-
-
-
+        document.addEventListener("mousedown", handleClickOutside);
+        return () =>
+            document.removeEventListener("mousedown", handleClickOutside);
+    }, []);
 
 
 
@@ -66,67 +51,143 @@ const Table = ({ data, actionlist = [] }) => {
 
 
     return (
-        <table className="table-fixed w-full  ">
-            <thead>
-                <tr className="border-y">
-                    <th className="text-left px-2 py-3">SN</th>
+        <div ref={menuRef} className="relative inline-block text-left">
+            {/* 3 DOT BUTTON */}
+            <button
+                onClick={() => setOpen((prev) => !prev)}
+                className="px-2 py-1 text-xl font-bold"
+            >
+                ⋮
+            </button>
 
-                    {keys.map((item) => (
-                        <th className="text-left px-2 py-3">{item[1]}</th>
+            {/* DROPDOWN */}
+            {open && (
+                <div className="absolute right-0 mt-2 w-40 bg-white border rounded shadow z-50">
+                    {finalActions.map((action, index) => (
+                        action.href ? (
+                            <Link
+                                key={index}
+                                href={typeof action.href === "function" ? action.href(item) : action.href}
+                                onClick={() => setOpen(false)}
+                                className="w-full text-left px-3 py-2 hover:bg-gray-100 flex items-center space-x-2"
+                            >
+                                <span>{action.icon}</span>
+                                <span>{action.label}</span>
+                            </Link>
+                        ) : (
+                            <button
+                                key={index}
+                                onClick={() => {
+                                    action.onClick?.(item);
+                                    setOpen(false);
+                                }}
+                                className="w-full text-left px-3 py-2 hover:bg-gray-100 flex items-center space-x-2"
+                            >
+                                <span>{action.icon}</span>
+                                <span>{action.label}</span>
+                            </button>
+                        )
                     ))}
+                </div>
+            )}
+        </div>
+    );
+};
+
+/* ---------------- MAIN TABLE ---------------- */
+
+const Table = ({ data = [], actionlist }) => {
+    const [keys, setKeys] = useState([]);
+    const [optimizedData ,setOptimizedData] = useState([]);
+
+    useEffect(() => {
+        if (Array.isArray(data) && data.length > 0) {
+            setKeys(Object.keys(data[0]));
+        } else {
+            setKeys([]);
+        }
+    }, [data]);
+
+    if (!Array.isArray(data) || data.length === 0) {
+        return <p className="p-4 text-gray-500">No data available</p>;
+    }
 
 
-                    {Array.isArray(actionlist) && actionlist.length > 0 ? <th className="text-left px-2 py-3">Action</th> : ''}
+  
 
+    return (
+        <div className="overflow-x-auto">
+            <table className="w-full table-auto border-collapse">
 
+                {/* HEADER */}
+                <thead>
+                    <tr className="border-y bg-gray-50">
 
-                </tr>
-            </thead>
-            <tbody>
+                        <th className="text-left px-2 py-3 w-[60px]">SN</th>
 
-                {formatedData.map((item, rowIndex) => (
-                    <tr className="border-y">
-                        <td className="py-3 px-2">
-                            {rowIndex + 1}
-                        </td>
-                        {keys.map((keysItem, colIndex) => (
-
-                            <td key={colIndex} className="py-3 px-2">
-
-                                {keysItem[1] === "Verified" ? (
-                                    item?.[keysItem[1]] ? (
-                                        <img className="w-5" src="/hrm_image/check-mark.png" alt="verified" />
-                                    ) : (
-                                        <img className="w-5" src="/hrm_image/multiply.png" alt="verified" />
-
-
-                                    )
-                                ) : (
-                                    item?.[keysItem[1]]
-                                )}                            </td>
+                        {keys.map((key) => (
+                            <th
+                                key={key}
+                                className="text-left px-2 py-3 capitalize min-w-[120px]"
+                            >
+                                {key}
+                            </th>
                         ))}
 
-                        {actionData.map((actionItem, index) => (
-                            <td key={index} className="flex space-x-2   py-3">
-                                {Object.values(actionItem).map((action, i) => (
-                                    <div key={index} className="">
-                                        {action}
-                                    </div>
-                                ))}
-                            </td>
-                        ))}
-                        {/* {action ? <td className="py-3 px-2">{ }</td> : ""} */}
-
+                        <th className="text-left px-2 py-3 w-[80px]">Action</th>
                     </tr>
-                ))}
+                </thead>
 
+                {/* BODY */}
+                <tbody>
+                    {data.map((item, rowIndex) => (
+                        <tr key={rowIndex} className="border-y hover:bg-gray-50">
 
+                            {/* SN */}
+                            <td className="py-3 px-2 w-[60px]">
+                                {rowIndex + 1}
+                            </td>
 
-            </tbody>
-        </table>
+                            {/* DYNAMIC COLUMNS */}
+                            {keys.map((key) => (
+                                <td
+                                    key={key}
+                                    className="py-3 px-2 max-w-[200px] break-words whitespace-normal"
+                                >
+                                    {typeof item[key] === "boolean" ? (
+                                        item[key] ? (
+                                            <Badge className="bg-green-100 text-green-700">
+                                                True
+                                            </Badge>
+                                        ) : (
+                                            <Badge className="bg-red-100 text-red-700">
+                                                False
+                                            </Badge>
+                                        )
+                                    ) : (
+                                        item[key]
+                                    )}
+                                </td>
+                            ))}
 
-    )
-}
+                            {/* ACTION */}
+                            <td className="py-3 px-2 w-[80px]">
+                                <ActionMenu
+                                    item={item}
+                                    actions={
+                                        Array.isArray(actionlist) && actionlist.length > 0
+                                            ? actionlist
+                                            : undefined
+                                    }
+                                />
+                            </td>
 
+                        </tr>
+                    ))}
+                </tbody>
+            </table>
+        </div>
+    );
+};
 
 export default Table;

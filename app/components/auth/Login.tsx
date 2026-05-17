@@ -14,6 +14,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Loginschema } from '../../schemas/Login.schema';
 import { ILogin } from '../../interface/ILogin';
 import useToaster from '../../hooks/useToaster';
+import Image from "next/image";
 
 
 
@@ -26,15 +27,15 @@ export const Login = () => {
 
   const { register, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(Loginschema) });
 
-  const onSubmit : SubmitHandler<ILogin> = async(data) =>{
-    const res =  await login(data);
-    if(res.status ===401){
+  const onSubmit: SubmitHandler<ILogin> = async (data) => {
+    const res = await login(data);
+    if (res.status === 401) {
       toaster.error(res.data.message);
 
     }
 
-    const {success} = res.data;
-    if(success){
+    const { success } = res.data;
+    if (success) {
       router.push('/')
     }
 
@@ -58,9 +59,12 @@ export const Login = () => {
         border border-white/20 
         shadow-2xl shadow-black/40">
 
-        <h2 className="text-white text-3xl font-semibold mb-6 text-center">
-          Welcome Back
-        </h2>
+        <div className="flex items-center justify-center  mb-6  h-24  w-full">
+          <img
+            src="/hrm_image/newlogo.svg"
+            className="h-auto w-fit  object-contain"
+          />
+        </div>
         <form onSubmit={handleSubmit(onSubmit)}>
           {/* email */}
 
@@ -72,9 +76,9 @@ export const Login = () => {
               autoComplete='off'
               className="bg-white/20 text-white placeholder:text-gray-300 border border-white/20 focus:border-white"
             />
-              {errors?.["email"] && (
+            {errors?.["email"] && (
               <p className="text-xs text-red-500">{errors["email"].message}</p>
-                )}
+            )}
           </div>
 
           {/* password */}
@@ -87,9 +91,9 @@ export const Login = () => {
               autoComplete='off'
               className="bg-white/20 text-white placeholder:text-gray-300 border border-white/20 focus:border-white"
             />
-              {errors?.["password"] && (
+            {errors?.["password"] && (
               <p className="text-xs text-red-500">{errors["password"].message}</p>
-                )}
+            )}
           </div>
 
           {/* remember + forgot */}

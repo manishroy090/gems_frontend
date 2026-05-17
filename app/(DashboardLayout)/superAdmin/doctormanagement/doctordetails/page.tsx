@@ -1,318 +1,224 @@
 "use client";
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-import InsertDriveFileIcon from '@mui/icons-material/InsertDriveFile';
-import LocalPhoneIcon from '@mui/icons-material/LocalPhone';
-import EmailIcon from '@mui/icons-material/Email';
-import LocationPinIcon from '@mui/icons-material/LocationPin';
-import BloodtypeIcon from '@mui/icons-material/Bloodtype';
-import AccessibleIcon from '@mui/icons-material/Accessible';
-import FemaleIcon from '@mui/icons-material/Female';
-import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 
 import { useState } from "react";
-
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 
 const availabilityData = {
-    Monday: ['11:30AM -12:30PM', '11:30AM -12:30PM', '11:30AM -12:30PM', '11:30AM -12:30PM'],
-    Tuesday: ['11:30AM -12:30PM', '11:30AM -12:30PM', '11:30AM -12:30PM', '11:30AM -12:30PM'],
-    Wednesday: ['11:30AM -12:30PM', '11:30AM -12:30PM', '11:30AM -12:30PM', '11:30AM -12:30PM'],
-    Thursday: ['11:30AM -12:30PM', '11:30AM -12:30PM', '11:30AM -12:30PM', '11:30AM -12:30PM'],
-    Friday: ['11:30AM -12:30PM', '11:30AM -12:30PM', '11:30AM -12:30PM', '11:30AM -12:30PM'],
+  Monday: ["11:30AM - 12:30PM", "2:00PM - 3:00PM"],
+  Tuesday: ["10:00AM - 11:00AM", "4:00PM - 5:00PM"],
+  Wednesday: ["12:00PM - 1:00PM"],
+  Thursday: ["3:00PM - 4:00PM"],
+  Friday: ["1:00PM - 2:00PM"],
 };
 
-const page = () => {
+const Page = () => {
+  const [activeDay, setActiveDay] = useState("Tuesday");
 
-    const [activeDay, setActiveDay] = useState("Tuesday");
+  return (
+    <div className="grid grid-cols-3 gap-4 p-4 bg-white">
 
+      {/* ================= HEADER (UPGRADED) ================= */}
+      <div className="col-span-3 border p-4 rounded-xl shadow-sm flex justify-between items-center">
 
-    return (
+        {/* LEFT */}
+        <div className="flex space-x-6 items-center">
 
-        <div className='grid grid-cols-3 gap-4'>
+          <img
+            src="https://as2.ftcdn.net/v2/jpg/04/75/00/71/1000_F_475007199_FLk7bivHPRIjtiylrMeA4027ehCQWurq.jpg"
+            className="w-32 h-28 object-cover rounded-xl shadow"
+          />
 
-            <div className=" flex justify-between bg-white p-4 items-center col-start-1 col-end-4">
+          <div className="space-y-1">
 
-                <div className="flex space-x-8 items-center">
-                    <div className='bg-red-600 w-40 h-32'>
-                        <img
-                            src='https://as2.ftcdn.net/v2/jpg/04/75/00/71/1000_F_475007199_FLk7bivHPRIjtiylrMeA4027ehCQWurq.jpg'
-                            className='w-full h-full object-cover object-center'
-                            alt='preview'
-                        />
-                    </div>
-
-                    <div className="doctor_details">
-
-                        <div className="doctor_bio flex flex-col space-x-4 ">
-
-
-                            <div className="flex space-x-4 items-center">
-                                <span className="font-semibold text-xl">Dr . John Smit</span>
-                                <span>Cardiology</span>
-                            </div>
-
-                            <span>MBBS, MD cardiology</span>
-
-                        </div>
-
-                        <div className="flex  space-x-4">
-                            <span>Clinic : Downtown Medical clinic</span>
-                            <span>Available</span>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="flex flex-col text-left space-y-2">
-                    <span className="font-semibold text-gray-600">Consultation Charge</span>
-                    <span><span className="font-semibold text-xl">$499</span>/30min</span>
-                    <button className='bg-blue-600 text-white p-1 rounded'><CalendarMonthIcon /> <span>Book Appointment</span></button>
-                </div>
+            <div className="flex space-x-3 items-center">
+              <span className="font-semibold text-xl">Dr. John Smith</span>
+              <span className="text-sm text-gray-500">Cardiology</span>
             </div>
 
-            <div className="availability bg-white p-4  col-start-1 col-end-3">
-                <h1 className="mb-4 text-xl font-semibold">Availability</h1>
+            <span className="text-sm text-gray-500">MBBS, MD Cardiology</span>
 
-                {/* Tabs */}
-                <ul className="flex flex-wrap -mb-px border-b">
-                    {Object.keys(availabilityData).map((day) => (
-                        <li key={day} className="me-2">
-                            <button
-                                onClick={() => setActiveDay(day)}
-                                className={`inline-block p-4 border-b-2 rounded-t-base transition-colors ${activeDay === day
-                                    ? "text-fg-brand border-brand"
-                                    : "border-transparent hover:text-fg-brand hover:border-brand"
-                                    }`}
-                            >
-                                {day}
-                            </button>
-                        </li>
-                    ))}
-                </ul>
-
-                {/* Content */}
-                <div className="mt-4 p-4 ">
-                    <h2 className="font-medium">{activeDay}</h2>
-                    <div className='flex space-x-8'>
-                        {availabilityData[activeDay].map((item) => (
-
-
-                            <p className='bg-slate-100 px-4 py-1'>{item}</p>
-
-                        ))}
-                    </div>
-                </div>
+            <div className="flex space-x-3 text-sm">
+              <span>Clinic: Downtown Medical</span>
+              <span className="text-green-600 font-medium">Available</span>
             </div>
 
-            <div className="availability bg-white p-4  col-start-3 col-end-3">
-                <h1>About</h1>
-
-                <div className='details flex flex-col space-y-4'>
-
-                    <div className='flex items-center space-x-4'>
-                        <div className="icons border border-white/30 rounded-full p-2 bg-slate-100 flex items-center justify-center">
-                            <InsertDriveFileIcon className="text-black" />
-                        </div>
-
-                        <div>
-                            <span>Medical Liscence Number</span>
-                            <span>ML566659898</span>
-
-                        </div>
-
-
-                    </div>
-                    <div className='flex items-center space-x-4'>
-                        <div className="icons border border-white/30 rounded-full p-2 bg-slate-100 flex items-center justify-center">
-                            <LocalPhoneIcon className="text-black" />
-                        </div>
-
-                        <div>
-                            <span>Phone Number</span>
-                            <span>+1 54546 45648</span>
-
-                        </div>
-
-
-                    </div>
-
-                    <div className='flex items-center space-x-4'>
-                        <div className="icons border border-white/30 rounded-full p-2 bg-slate-100 flex items-center justify-center">
-                            <EmailIcon className="text-black" />
-                        </div>
-
-                        <div>
-                            <span>Email Address</span>
-                            <span>john@example.com</span>
-
-                        </div>
-
-
-                    </div>
-
-
-                    <div className='flex items-center space-x-4'>
-                        <div className="icons border border-white/30 rounded-full p-2 bg-slate-100 flex items-center justify-center">
-                            <LocationPinIcon className="text-black" />
-                        </div>
-
-                        <div>
-                            <span>Location</span>
-                            <span>4150 Hiney Road, Las Vegas, NV 89109</span>
-
-                        </div>
-
-
-                    </div>
-
-
-
-                    <div className='flex items-center space-x-4'>
-                        <div className="icons border border-white/30 rounded-full p-2 bg-slate-100 flex items-center justify-center">
-                            <CalendarMonthIcon className="text-black" />
-                        </div>
-
-                        <div>
-                            <span>DOB</span>
-                            <span>25 Jan 1990</span>
-
-                        </div>
-
-
-                    </div>
-
-
-
-                    <div className='flex items-center space-x-4'>
-                        <div className="icons border border-white/30 rounded-full p-2 bg-slate-100 flex items-center justify-center">
-                            <BloodtypeIcon className="text-black" />
-                        </div>
-
-                        <div>
-                            <span>Blood Group</span>
-                            <span>O +ve</span>
-
-                        </div>
-
-
-                    </div>
-
-                    <div className='flex items-center space-x-4'>
-                        <div className="icons border border-white/30 rounded-full p-2 bg-slate-100 flex items-center justify-center">
-                            <AccessibleIcon className="text-black" />
-                        </div>
-
-                        <div>
-                            <span>Year of Experience</span>
-                            <span>15+ Years</span>
-
-                        </div>
-
-
-                    </div>
-
-
-                    <div className='flex items-center space-x-4'>
-                        <div className="icons border border-white/30 rounded-full p-2 bg-slate-100 flex items-center justify-center">
-                            <FemaleIcon className="text-black" />
-                        </div>
-
-                        <div>
-                            <span>Gender</span>
-                            <span>Male</span>
-
-                        </div>
-
-
-                    </div>
-
-
-                </div>
-
-            </div>
-
-            <div className="bio bg-white p-4  col-start-1 col-end-3">
-                <h1>Short Bio</h1>
-
-                <p>Dr. John Smith has been practicing family medicine for over 10 years. She has extensive experience in managing chronic illnesses, preventive care, and treating a wide range of medical conditions for patients of all ages.</p>
-
-            </div>
-
-
-            <div className="bio bg-white p-6 col-start-1 col-end-3 rounded-xl shadow-sm">
-                <h1 className="text-xl font-semibold mb-6">Education Information</h1>
-
-                <div className="relative border-l-2 border-gray-300 ml-3 space-y-8">
-
-                    {/* Timeline Item */}
-                    <div className="relative pl-8">
-                        <div className="absolute -left-[9px] top-1 w-4 h-4 bg-blue-600 rounded-full border-2 border-white"></div>
-
-                        <div className="flex flex-col">
-                            <span className="font-semibold text-gray-800">
-                                Boston Medicine Institution - MD
-                            </span>
-
-                            <span className="text-sm text-gray-500">
-                                25 May 1990 - 29 Jan 1992
-                            </span>
-                        </div>
-                    </div>
-
-                    {/* Timeline Item */}
-                    <div className="relative pl-8">
-                        <div className="absolute -left-[9px] top-1 w-4 h-4 bg-blue-600 rounded-full border-2 border-white "></div>
-
-                        <div className="flex flex-col">
-                            <span className="font-semibold text-gray-800">
-                                Boston Medicine Institution - MD
-                            </span>
-
-                            <span className="text-sm text-gray-500">
-                                25 May 1990 - 29 Jan 1992
-                            </span>
-                        </div>
-                    </div>
-
-                </div>
-            </div>
-
-            <div className="award-recognition bg-white p-6 col-start-1 col-end-3 rounded-xl shadow-sm flex flex-col space-y-4">
-                <h1>Awards & Recognition</h1>
-
-                <div className='flex flex-col space-y-4'>
-                    <div className='flex flex-col'>
-
-                        <div className='flex space-x-4'>
-                            <EmojiEventsIcon/>
-                            <span className='font-semibold text-sm'>Top Doctor Award (2023)</span>
-                        </div>
-
-                        <span>Demonstrates mastery of comprehensive, ongoing care for individuals and families, across all ages and genders.</span>
-
-                    </div>
-
-                     <div className='flex flex-col'>
-
-                        <div className='flex space-x-4'>
-                            <EmojiEventsIcon/>
-                            <span className='font-semibold text-sm'>Top Doctor Award (2023)</span>
-                        </div>
-
-                        <span>Demonstrates mastery of comprehensive, ongoing care for individuals and families, across all ages and genders.</span>
-
-                    </div>
-
-                </div>
-
-
-            </div>
-
-
-
-
+          </div>
+        </div>
+
+        {/* RIGHT ACTIONS */}
+        <div className="flex flex-col items-end space-y-3">
+
+          {/* PRICE */}
+          <div className="text-right">
+            <span className="text-gray-500 text-sm">Consultation</span>
+            <h2 className="font-bold text-xl">$499 / 30min</h2>
+          </div>
+
+          {/* ACTION BUTTONS */}
+          <div className="flex gap-2">
+
+            <button className="px-4 py-2 text-sm border rounded-xl hover:bg-gray-100 transition">
+              📞 Call
+            </button>
+
+            <button className="px-4 py-2 text-sm border rounded-xl hover:bg-gray-100 transition">
+              💬 Msg
+            </button>
+
+            <button className="px-4 py-2 text-sm bg-blue-600 text-white rounded-xl hover:bg-blue-700 shadow-md transition flex items-center gap-1">
+              <CalendarMonthIcon fontSize="small" />
+              Book Appointment
+            </button>
+
+          </div>
 
         </div>
-    )
-}
 
+      </div>
 
-export default page
+      {/* ================= AVAILABILITY ================= */}
+      <div className="col-span-2 border p-4 rounded-xl shadow-sm">
+
+        <h1 className="font-semibold mb-3">Availability</h1>
+
+        <div className="flex border-b mb-3">
+          {Object.keys(availabilityData).map((day) => (
+            <button
+              key={day}
+              onClick={() => setActiveDay(day)}
+              className={`px-3 py-2 text-sm border-b-2 transition ${
+                activeDay === day
+                  ? "border-blue-600 text-blue-600"
+                  : "border-transparent text-gray-500"
+              }`}
+            >
+              {day}
+            </button>
+          ))}
+        </div>
+
+        <div className="flex gap-2 flex-wrap">
+          {availabilityData[activeDay].map((t, i) => (
+            <span key={i} className="px-3 py-1 bg-gray-100 rounded">
+              {t}
+            </span>
+          ))}
+        </div>
+
+      </div>
+
+      {/* ================= ABOUT ================= */}
+      <div className="border p-4 rounded-xl shadow-sm">
+
+        <h1 className="font-semibold mb-3">About</h1>
+
+        <div className="space-y-2 text-sm text-gray-600">
+          <p>📞 +1 54546 45648</p>
+          <p>📧 john@example.com</p>
+          <p>📍 Las Vegas</p>
+          <p>🩸 O+</p>
+          <p>🎓 15+ Years</p>
+        </div>
+
+      </div>
+
+      {/* ================= BIO ================= */}
+      <div className="col-span-2 border p-4 rounded-xl shadow-sm">
+
+        <h1 className="font-semibold mb-2">Bio</h1>
+
+        <p className="text-sm text-gray-600">
+          Dr. John Smith is a cardiologist with 15+ years of experience in heart
+          disease treatment and preventive care.
+        </p>
+
+      </div>
+
+      {/* ================= EDUCATION ================= */}
+      <div className="col-span-3 border p-4 rounded-xl shadow-sm">
+
+        <h1 className="font-semibold mb-3">Education</h1>
+
+        <div className="border-l pl-4 space-y-3 text-sm">
+
+          <div>
+            <p className="font-medium">Harvard Medical School</p>
+            <p className="text-gray-500">MD Cardiology (2010 - 2014)</p>
+          </div>
+
+          <div>
+            <p className="font-medium">Boston University</p>
+            <p className="text-gray-500">MBBS (2005 - 2009)</p>
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* ================= AWARDS ================= */}
+      <div className="col-span-3 border p-4 rounded-xl shadow-sm">
+
+        <h1 className="font-semibold mb-3">Awards & Recognition</h1>
+
+        <div className="space-y-3">
+
+          <div className="flex gap-3">
+            <span>🏆</span>
+            <div>
+              <p className="text-sm font-medium">Top Cardiologist Award (2023)</p>
+              <p className="text-xs text-gray-500">
+                Excellence in patient care and cardiac treatment.
+              </p>
+            </div>
+          </div>
+
+          <div className="flex gap-3">
+            <span>⭐</span>
+            <div>
+              <p className="text-sm font-medium">Patient Choice Award</p>
+              <p className="text-xs text-gray-500">
+                Highly rated by patients for care quality.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+      {/* ================= CERTIFICATIONS ================= */}
+      <div className="col-span-3 border p-4 rounded-xl shadow-sm">
+
+        <h1 className="font-semibold mb-3">Certifications</h1>
+
+        <div className="space-y-3">
+
+          <div className="flex gap-3">
+            <span>🎓</span>
+            <div>
+              <p className="text-sm font-medium">Board Certified Cardiologist</p>
+              <p className="text-xs text-gray-500">
+                American Board of Internal Medicine (ABIM)
+              </p>
+            </div>
+          </div>
+
+          <div className="flex gap-3">
+            <span>📜</span>
+            <div>
+              <p className="text-sm font-medium">ACLS Certified</p>
+              <p className="text-xs text-gray-500">
+                Advanced cardiac life support certification
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+  );
+};
+
+export default Page;

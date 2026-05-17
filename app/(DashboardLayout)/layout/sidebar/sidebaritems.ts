@@ -88,24 +88,6 @@ const SidebarContent: MenuItem[] = [
             name: 'Doctors',
             url: '/superAdmin/doctormanagement/doctors',
             isPro: true,
-          },
-          {
-            id: uniqueId(),
-            name: 'Doctor Details',
-            url: '/superAdmin/doctormanagement/doctordetails',
-            isPro: true,
-          },
-          {
-            id: uniqueId(),
-            name: 'Add Doctor',
-            url: '/superAdmin/doctormanagement/adddoctor',
-            isPro: true,
-          },
-          {
-            id: uniqueId(),
-            name: 'Doctor Schedule',
-            url: '/superAdmin/doctormanagement/dotorschedule',
-            isPro: true,
           }
         ],
       },
@@ -129,18 +111,8 @@ const SidebarContent: MenuItem[] = [
             url: '/superAdmin/patientmanagement/Patients',
             isPro: true,
           },
-          {
-            id: uniqueId(),
-            name: 'Patient Details',
-            url: '/superAdmin/patientmanagement/patientsdetails',
-            isPro: true,
-          },
-          {
-            id: uniqueId(),
-            name: 'Create Patient',
-            url: '/superAdmin/patientmanagement/createpatients',
-            isPro: true,
-          },
+              
+    
         ],
       },
 

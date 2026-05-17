@@ -1,38 +1,60 @@
+"use client"
+import Filter from "../../../../components/cutom/Filter";
+import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
+import WindowIcon from "@mui/icons-material/Window";
+import { useState } from "react";
+import Grid from "../../../../components/cutom/doctors/Grid";
+import List from "../../../../components/cutom/doctors/List";
+import Link from 'next/link'
 
-import Doctorcards from "../../../../components/cutom/cards/users/Doctorcards"
 
-const page = () => {
+export default function Page() {
 
-    return (
-        <div className="grid grid-cols-3 gap-4">
-
-
-            <Doctorcards />
-            <Doctorcards />
-
-            <Doctorcards />
-
-              <Doctorcards />
-            <Doctorcards />
-
-            <Doctorcards />
-
-              <Doctorcards />
-            <Doctorcards />
-
-            <Doctorcards />
-
-              <Doctorcards />
-            <Doctorcards />
-
-            <Doctorcards />
+  const [switchViewwise ,setswitchView] = useState("grid");
 
 
 
 
+
+  function switchView (viewaction) {
+    setswitchView(viewaction);
+  }
+
+  return (
+
+    <div className="flex flex-col space-y-10">
+      <div className="doctor_header flex justify-between w-full bg-yellow-200 px-4 py-3 text-gray-800">
+        {/* Left side */}
+        <div className="doctor_heading flex space-x-4 items-center">
+          <h1 className="text-lg font-semibold">Doctor {switchViewwise}</h1>
+          <span className="text-sm">Total Doctors: 565</span>
         </div>
-    )
+
+        {/* Right side */}
+        <div className="flex items-center justify-center space-x-4">
+
+          <Filter />
+
+          <div className="view_wise flex items-center space-x-4">
+            <FormatListBulletedIcon  onClick={()=>switchView("list")} />
+            <WindowIcon onClick={()=>switchView("grid")} />
+          </div>
+
+           <Link href={"/superAdmin/doctormanagement/adddoctor"}>
+          <button className="bg-[#14967f] text-white p-2 rounded">
+            New Doctor
+          </button>
+          </Link>
+        </div>
+
+
+      </div>
+
+      <div className="content">
+        {switchViewwise=="grid" ? (<Grid/>) : (<List/>)}
+      </div>
+
+
+    </div>
+  );
 }
-
-
-export default page
