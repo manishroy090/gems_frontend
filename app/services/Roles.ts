@@ -9,9 +9,8 @@ export async function getAllRoles(){
 }
 
 
-export async function createRole(){
-//   const roles = await Axios.post()
-
+export async function createRole(payload){
+    const role = await HospitalApi.post(`roles/create`,payload)
 
 }
 
@@ -37,8 +36,19 @@ export async function deleteRole(){
 }
 
 
+export async function assignPermission(payload){
+    const permission = await HospitalApi.post(`roles/assignpermissiontorole`,payload);
+    // return permission.data.permissions;
+}
+
+export async function updateRolePermissions(id,payload){
+    const permission = await HospitalApi.put(`roles/updaterolepermission/${id}`,payload);
+    // return permission.data.permissions;
+}
+
+
 export async function  getRolesWithPermissions(id:any){
-    const permission = await Axios.get(`hoshpital/permission/getallpermission/${id}`);
+    const permission = await HospitalApi.get(`permission/getallpermission/${id}`);
     return permission.data.permissions;
 }
 

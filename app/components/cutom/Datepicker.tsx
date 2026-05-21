@@ -1,31 +1,159 @@
-
+import { useState } from 'react';
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
-const Datepicker = () => {
 
+import 'react-date-range/dist/styles.css';
+import 'react-date-range/dist/theme/default.css';
+import { DateRange } from 'react-date-range';
+import { format } from 'date-fns';
+
+const Datepicker = ({ onChange }) => {
+  const [open, setOpen] = useState(false);
+  const [showCalendar, setShowCalendar] = useState(false);
+
+  const [rangeState, setRangeState] = useState([
+    {
+      startDate: new Date(),
+      endDate: new Date(),
+      key: 'selection',
+    },
+  ]);
+
+  const options = [
+    'Today',
+    'Yesterday',
+    'Last 7 Days',
+    'Last 30 Days',
+    'This Month',
+    'Last Month',
+    'Custom Range',
+  ];
+
+  const formatRange = (start, end) => {
+    return `${format(start, 'd MMM yy')} - ${format(end, 'd MMM yy')}`;
+  };
+
+  const handleSelectOption = (option) => {
+    if (option === 'Custom Range') {
+      setShowCalendar(true);
+      return;
+    }
+
+    const today = new Date();
+    let start = today;
+    let end = today;
+
+    switch (option) {
+      case 'Yesterday':
+        start = end = new Date(today.setDate(today.getDate() - 1));
+        break;
+
+      case 'Last 7 Days':
+        start = new Date(today.setDate(today.getDate() - 6));
+        end = new Date();
+        break;
+
+      case 'Last 30 Days':
+        start = new Date(today.setDate(today.getDate() - 29));
+        end = new Date();
+        break;
+
+      case 'This Month':
+        start = new Date(today.getFullYear(), today.getMonth(), 1);
+        end = new Date();
+        break;
+
+      case 'Last Month': {
+        const d = new Date();
+        start = new Date(d.getFullYear(), d.getMonth() - 1, 1);
+        end = new Date(d.getFullYear(), d.getMonth(), 0);
+        break;
+      }
+
+      default:
+        break;
+    }
+
+    setRangeState([{ startDate: start, endDate: end, key: 'selection' }]);
+    onChange?.({ startDate: start, endDate: end, label: option });
+
+    setShowCalendar(false);
+    setOpen(false);
+  };
+
+  const handleRangeChange = (item) => {
+    const selection = item.selection;
+
+    setRangeState([selection]);
+
+    onChange?.({
+      startDate: selection.startDate,
+      endDate: selection.endDate,
+      label: 'Custom Range',
+    });
+  };
+
+  const currentRange = formatRange(
+    rangeState[0].startDate,
+    rangeState[0].endDate
+  );
 
   return (
-    <div>
+    <div className="relative flex items-start">
+      {/* Trigger (optimized UI only) */}
+      <div
+        onClick={() => setOpen((p) => !p)}
+        className="bg-white w-fit px-4 py-2 flex items-center gap-2 rounded font-medium shadow cursor-pointer hover:shadow-md transition"
+      >
+        <CalendarMonthIcon sx={{ fontSize: 20 }} className="text-gray-600" />
 
-      <div className="bg-white w-fit px-4 py-1 flex items-center justify-center space-x-4 rounded font-semibold shadow">
-        <CalendarMonthIcon  style={{ fontSize: '28px' }}/>
-        <span>3 May 26 - 3 May 26</span>
+        <span className="text-sm text-gray-800 leading-none whitespace-nowrap">
+          {currentRange}
+        </span>
       </div>
 
-      <div className=" hidden bg-white w-fit p-1 flex items-center justify-center rounded font-semibold">
-        <select>
-          <option>Today</option>
-          <option>Yestarday</option>
-          <option>Last 7 Days</option>
-          <option>Last 30 Days</option>
-          <option>This Month</option>
-          <option>Last Month</option>
-          <option>Custom Range</option>
-        </select>
-      </div>
+      {/* Attached Panel (NO GAP between dropdown & calendar) */}
+      {open && (
+        <div className="absolute top-full left-0 mt-0 flex bg-white shadow rounded overflow-hidden z-50">
+          {/* Options */}
+          <div className="w-56 border-r">
+            {options.map((option) => (
+              <div
+                key={option}
+                onClick={() => handleSelectOption(option)}
+                className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+              >
+                {option}
+              </div>
+            ))}
+          </div>
+
+          {/* Calendar */}
+          {showCalendar && (
+            <div className="p-2">
+              <DateRange
+                editableDateInputs={true}
+                onChange={handleRangeChange}
+                moveRangeOnFirstSelection={false}
+                ranges={rangeState}
+              />
+
+              <div className="flex justify-end p-2">
+                <button
+                  onClick={() => {
+                    setShowCalendar(false);
+                    setOpen(false);
+                  }}
+                  className="px-3 py-1 text-sm bg-blue-500 text-white rounded"
+                >
+                  Apply
+                </button>
+              </div>
+            </div>
+          )}
+        </div>
+      )}
     </div>
-
-  )
-}
-
+  );
+};
 
 export default Datepicker;

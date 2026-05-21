@@ -2,8 +2,9 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
-import { getRolesWithPermissions } from "../../../../../services/Roles";
+import { getRolesWithPermissions ,assignPermission ,updateRolePermissions} from "../../../../../services/Roles";
 import { getPermissions } from "../../../../../services/Permission";
+
 
 const ACTIONS = ["index", "create", "edit", "delete", "view"];
 
@@ -112,12 +113,17 @@ const Page = () => {
 
     if (isExistingAssignment) {
       console.log("UPDATE permissions →", payload);
-      // await updatePermissions(payload);
+      updateRolePermissions(payload.role_id,payload)
+     
+      //  await getRolesWithPermissions(payload);
     } else {
+      await assignPermission(payload)
       console.log("ASSIGN permissions →", payload);
       // await assignPermissions(payload);
     }
   };
+
+  
 
   return (
     <div className="flex flex-col space-y-5">

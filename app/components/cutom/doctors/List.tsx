@@ -4,11 +4,13 @@ import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import Table from "../../cutom/Table";
 import { useState } from "react";
 import Link from 'next/link'
+import Badge from '@mui/material/Badge';
 
 
 const List = () => {
 
 
+  const [page, setPage] = useState(1);
 
 
   const doctorsList = [
@@ -126,7 +128,51 @@ const List = () => {
           label: "Delete",
           onClick: (item) => console.log("delete", item),
         },
-      ]} />
+      ]}
+        query={{
+          search: "",
+          filters: {
+            status: "Busy",
+          },
+          dateRange: {
+            key: "admittedDate",
+            from: "2026-01-01",
+            to: "2026-12-31"
+          },
+          sort: {
+            key: "age",
+            order: "desc"
+          }
+
+        }}
+        pagination={{
+          page,
+          limit: 10,
+          total: 120
+        }}
+        onPageChange={(newPage) => {
+          setPage(newPage);
+          fetchData(newPage); // backend call
+        }}
+          loading={false}
+
+
+        columnRenderers={{
+          status: (value) => {
+            if (value === "Available") {
+              return <Badge className="bg-yellow-100 text-yellow-700 p-2 rounded">Available</Badge>;
+            }
+            if (value === "On Leave") {
+              return <Badge className="bg-yellow-100 text-yellow-700 p-2 rounded">On Leave</Badge>;
+            }
+            if (value === "Busy") {
+              return <Badge className="bg-green-100 text-green-700 p-2 rounded">Busy</Badge>;
+            }
+            return <Badge className="bg-blue-100 text-blue-700 p-2 rounded">Under Treatment</Badge>;
+          }
+        }}
+
+      />
     </div>
 
   )

@@ -1,6 +1,6 @@
 
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-const Modal = ({ children, showModal }: { children: React.ReactNode; showModal: boolean }) => {
+const Modal = ({ children, showModal,className }: { children: React.ReactNode; showModal: boolean;className:string}) => {
     return (
         <div
             className={
@@ -13,10 +13,10 @@ const Modal = ({ children, showModal }: { children: React.ReactNode; showModal: 
         >
             <div>
             </div>
-            <div className="w-full max-w-md mx-4 bg-white rounded-2xl shadow-xl p-6">
-                <div className='flex justify-end'>
+            <div className={`bg-white rounded-2xl shadow-xl ${className}`}>
+                {/* <div className='flex justify-end'>
                     <CloseOutlinedIcon />
-                </div>
+                </div> */}
                 {children}
             </div>
         </div>

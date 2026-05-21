@@ -6,6 +6,7 @@ import Sidebar from "./layout/sidebar/Sidebar";
 import { getMe } from "../services/Auth";
 import { useDispatch } from "react-redux";
 import { setAuthUser } from "../store/features/Hoshpital/AuthSlice";
+import AIBotUI from "../components/cutom/AIBotUI";
 
 export default function Layout({
   children,
@@ -46,6 +47,7 @@ export default function Layout({
         {/* ================= PAGE CONTENT ================= */}
         <main className="flex-1 overflow-y-auto p-6">
           {children}
+          <AIBotUI/>
         </main>
 
       </div>

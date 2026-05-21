@@ -44,18 +44,14 @@ export default function RootLayout({
         {/* <link rel="manifest" href="/manifest.json" /> */}
         <meta name="theme-color" content="#5d87ff" />
       </head>
-      <body className={`${dmSans.className}`}>
+      <body className="">
         <Provider store={store}>
-          <ThemeProvider
-            attribute='class'
-            defaultTheme='system'
-            enableSystem
-            disableTransitionOnChange>
+       
             {children}
             <Toaster />
             <ServiceWorkerRegister />
 
-          </ThemeProvider>
+       
         </Provider>
 
       </body>

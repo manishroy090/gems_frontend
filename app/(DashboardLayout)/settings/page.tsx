@@ -1,16 +1,21 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { getAllCountries  } from "../../services/Config";
+import { getHospitalDepartments ,getAllBloodGroup,getAllModules,getAllSubModule,getAllAvailableTest} from "../../services/Hoshpital";
+import { getAllPatientStatus } from "../../services/Patients";
+import Table from "../../components/cutom/Table";
+import { use } from "apexcharts";
 
-const masterData = {
-  availableTests: ["CBC", "Blood Sugar", "MRI Scan", "X-Ray", "Lipid Profile"],
-  bloodGroups: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
-  countries: ["Nepal", "India", "USA", "UK", "UAE", "Canada"],
-  departments: ["Cardiology", "Neurology", "Orthopedics", "Pathology", "ENT"],
-  modules: ["EMR", "Billing", "Lab", "Pharmacy", "Appointments"],
-  submodules: ["Reports", "Analytics", "Settings", "Notifications"],
-  patientStatus: ["Active", "Discharged", "Critical", "Under Observation"],
-};
+// const masterData = {
+//   availableTests: ["CBC", "Blood Sugar", "MRI Scan", "X-Ray", "Lipid Profile"],
+//   bloodGroups: ["A+", "A-", "B+", "B-", "AB+", "AB-", "O+", "O-"],
+//   countries: ["Nepal", "India", "USA", "UK", "UAE", "Canada"],
+//   departments: ["Cardiology", "Neurology", "Orthopedics", "Pathology", "ENT"],
+//   modules: ["EMR", "Billing", "Lab", "Pharmacy", "Appointments"],
+//   submodules: ["Reports", "Analytics", "Settings", "Notifications"],
+//   patientStatus: ["Active", "Discharged", "Critical", "Under Observation"],
+// };
 
 const tabs = [
   { key: "availableTests", label: "Available Tests" },
@@ -22,11 +27,50 @@ const tabs = [
   { key: "patientStatus", label: "Patient Status" },
 ];
 
+
 const Page = () => {
   const [activeTab, setActiveTab] = useState("availableTests");
+  const [masterData,setMasterData] = useState({});
+  const [data, setData] = useState([]);
+  //  const data = masterData[activeTab] || [];
 
-  const data = masterData[activeTab];
 
+  useEffect(()=>{
+
+    const getMasterData = async () =>{
+      const countries = await  getAllCountries();
+      const hospitalDepartment = await getHospitalDepartments();
+      const getAllBloodGroups = await getAllBloodGroup();
+      const modules = await getAllModules();
+      const subModules = await getAllSubModule();
+      const availableTests = await getAllAvailableTest();
+      const patientStatus = await getAllPatientStatus();
+
+
+      setMasterData({
+        countries:countries,
+        departments:hospitalDepartment,
+        bloodGroups:getAllBloodGroups,
+        modules:modules,
+        submodules:subModules,
+        availableTests:availableTests,
+        patientStatus:patientStatus
+      })
+      // console.log("countries",countries);
+    }
+    getMasterData();
+  },[])
+
+
+  useEffect(()=>{
+
+    const data =  masterData[activeTab];
+    setData(data);
+
+    // console.log("data",data);
+    // console.log(activeTab);
+
+  },[activeTab])
   return (
     <div className="p-6 space-y-6">
 
@@ -57,35 +101,10 @@ const Page = () => {
           </h2>
         </div>
 
-        <table className="w-full text-left">
-          <thead className="bg-gray-100 text-gray-600 text-sm">
-            <tr>
-              <th className="p-3 w-20">#</th>
-              <th className="p-3">Name</th>
-            </tr>
-          </thead>
+        <Table data={data}/>
 
-          <tbody>
-            {data.map((item, index) => (
-              <tr
-                key={index}
-                className="border-t hover:bg-gray-50 transition"
-              >
-                <td className="p-3 text-gray-500">{index + 1}</td>
-                <td className="p-3 font-medium text-gray-700">
-                  {item}
-                </td>
-              </tr>
-            ))}
-          </tbody>
-        </table>
+      
 
-        {/* empty state */}
-        {data.length === 0 && (
-          <div className="p-6 text-center text-gray-500">
-            No data available
-          </div>
-        )}
       </div>
     </div>
   );

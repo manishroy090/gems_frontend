@@ -35,7 +35,7 @@ const menu = [
   },
 
   {
-    name: "Staff",
+    name: "Users",
     icon: <PeopleIcon />,
     path: "/superAdmin/usersmanagement/users",
   },

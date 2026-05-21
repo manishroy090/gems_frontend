@@ -12,10 +12,11 @@ import Table from "../../../../components/cutom/Table";
 import Userscards from "../../../../components/cutom/cards/users/Userscards";
 import { useForm, SubmitHandler } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Userschema } from "../../../../schemas/Users.Schema"
-import { Iuser } from "../../../../interface/Iuser";
+import { RoleSchema } from "../../../../schemas/Role.schema"
+import { IRole} from "../../../../interface/IRoles";
 import Link from 'next/link'
-import { getAllRoles } from "../../../../services/Roles";
+import { getAllRoles,createRole } from "../../../../services/Roles";
+import Badge from "@mui/material/Badge";
 
 
 
@@ -37,13 +38,12 @@ const page = () => {
   }
 
 
-  const { register, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(Userschema) });
-  const onSubmit: SubmitHandler<Iuser> = async (data) => {
-
-    console.log("onsubmit method hitted", data);
+  const { register, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(RoleSchema) });
+  const onSubmit: SubmitHandler<IRole> = async (data) => {
+        await createRole(data);
   }
 
-  const onError: SubmitHandler<Iuser> = async (error) => {
+  const onError: SubmitHandler<IRole> = async (error) => {
 
     console.log("error", error);
 
@@ -52,10 +52,8 @@ const page = () => {
 
   useEffect(() => {
     const getAllRole = async () => {
-
       const result = await getAllRoles();
       setRoles(result);
-
     }
 
     getAllRole();
@@ -78,7 +76,7 @@ const page = () => {
 
 
 
-            <div className="border rounded-md p-2 text-white text-center bg-blue-600" onClick={openUserModal}>
+            <div className="border rounded-md p-2 text-white text-center bg-blue-600 hidden" onClick={openUserModal}>
               <Label>Add Roles</Label>
 
             </div>
@@ -93,8 +91,12 @@ const page = () => {
 
       <div className="bg-white rounded px-1">
 
-          {roles.length>0 ? <Table data={roles}  /> : 'loading'}
-        
+        {roles.length > 0 ? <Table data={roles} showaction={false} columnRenderers={{
+          permissions: (value, row) => {
+            return <Link href={`/superAdmin/usersmanagement/permissions/${row.id}`}><img src={"/hrm_image/authentication.png"} className="w-8" /></Link>;
+          }
+        }} /> : 'loading'}
+
       </div>
 
 
@@ -102,64 +104,19 @@ const page = () => {
       <Modal showModal={showModal}>
         <form className="flex flex-col space-y-4" onSubmit={handleSubmit(onSubmit, onError)}>
           <h1>Add Users</h1>
-          <div className="flex space-x-4">
-            <div>
-              <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Name</Label>
-              <Input  {...register("name")} />
-              {errors?.["name"] && (
-                <p className="text-xs text-red-500">{errors["name"].message}</p>
-              )}
-            </div>
-
-            <div>
-              <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Email</Label>
-              <Input  {...register("email")} />
-              {errors?.["email"] && (
-                <p className="text-xs text-red-500">{errors["email"].message}</p>
-              )}
-            </div>
-          </div>
-
-
-          <div className="flex space-x-4">
-            <div>
-              <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Passsword</Label>
-              <Input  {...register("password")} />
-              {errors?.["password"] && (
-                <p className="text-xs text-red-500">{errors["password"].message}</p>
-              )}
-            </div>
-
-
-            <div>
-              <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Confirm Password</Label>
-              <Input  {...register("password")} />
-              {errors?.["password"] && (
-                <p className="text-xs text-red-500">{errors["password"].message}</p>
-              )}
-            </div>
-
-
-
-          </div>
-
 
 
           <div>
-            <select className="w-full border p-2 rounded-md"  {...register("role")}>
-              <option value={"doctor"}>Doctors</option>
-              <option value={"receptionist"}>Receptionist</option>
-              <option value={"accountant"}>Accountant</option>
-              <option value={"nurses"}>Nurses</option>
-            </select>
-            {errors?.["role"] && (
-              <p className="text-xs text-red-500">{errors["role"].message}</p>
+            <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Title</Label>
+            <Input  {...register("title")} />
+            {errors?.["title"] && (
+              <p className="text-xs text-red-500">{errors["title"].message}</p>
             )}
           </div>
 
-
           <div>
             <select className="w-full border p-2 rounded-md"  {...register("status")}>
+              <option value="">Select Status</option>
               <option value={"active"}>Active</option>
               <option value={"inactive"}>InActive</option>
             </select>
@@ -167,6 +124,18 @@ const page = () => {
               <p className="text-xs text-red-500">{errors["status"].message}</p>
             )}
           </div>
+
+
+          <div>
+            <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Description</Label>
+            <Textarea {...register("description")} />
+              {errors?.["description"] && (
+              <p className="text-xs text-red-500">{errors["description"].message}</p>
+            )}
+          </div>
+
+
+
 
           <div className="flex space-x-4">
             <button className="bg-red-600 text-white p-2 rounded-md ">Cancle</button>

@@ -59,7 +59,7 @@ const SidebarContent: MenuItem[] = [
       },
       {
         id: uniqueId(),
-        name: 'Staff',
+        name: 'User',
         icon: 'solar:ticker-star-linear',
         url: '/superAdmin/usersmanagement/users',
         isPro: false,

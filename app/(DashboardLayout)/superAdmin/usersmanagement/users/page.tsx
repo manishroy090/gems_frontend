@@ -18,24 +18,32 @@ import Exportbtn from "../../../../components/cutom/Exportbtn";
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import { getUsers } from "../../../../services/User";
 import Doctorcards from "../../../../components/cutom/cards/users/Doctorcards";
+import SortBy from "../../../../components/cutom/SortBy";
 import Link from 'next/link'
-
-
-
-
-
-
-
+import ProfilePictureUpload from "../../../../components/cutom/ProfilePictureUpload";
+import { getAllCountries } from "../../../../services/Config";
+import { getAllBloodGroup } from "../../../../services/Hoshpital";
+import { getAllRoles } from "../../../../services/Roles";
+import { createUser} from "../../../../services/Hoshpital";
+import { useRouter } from 'next/navigation'
+import { getUser ,updateUser} from "../../../../services/User";
 
 const page = () => {
+  const router =  useRouter();
   const [showModal, setShowModal] = useState(false);
-  const [users, setUser] = useState([]);
+  const [users, setUsers] = useState([]);
+  const [countries, setCountries] = useState([]);
+  const [bloodgroups, setBloodgroups] = useState([]);
+  const [roles, setRole] = useState([]);
+  const [user, setUser] = useState([]);
+
   const [actionData, setAction] = useState([{
-    "edit": ( <Link href={"/superAdmin/usersmanagement/permissions"}><img src="/hrm_image/edit.png" className="w-6 h-7"></img></Link>),
+    "edit": (<Link href={"/superAdmin/usersmanagement/permissions"}><img src="/hrm_image/edit.png" className="w-6 h-7"></img></Link>),
     "delete": (<Link href={"/superAdmin/usersmanagement/permissions"}><img src="/hrm_image/delete.png" className="w-6 h-7"></img></Link>),
     "permissions": (<Link href={"/superAdmin/usersmanagement/permissions"}><img src="/hrm_image/authentication.png" className="w-6 h-7"></img></Link>)
   }
   ]);
+
 
 
 
@@ -46,10 +54,19 @@ const page = () => {
   }
 
 
-  const { register, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(Userschema) });
+  const { register, handleSubmit,reset, formState: { errors } } = useForm({ resolver: yupResolver(Userschema) });
   const onSubmit: SubmitHandler<Iuser> = async (data) => {
+   const userExists =  Object.keys(user).length > 0 ;
 
-    console.log("onsubmit method hitted", data);
+   if(userExists && user){
+
+     console.log("update methoc");
+     await updateUser(user.id,data);
+   }
+   else{
+    //  setShowModal(true);
+     createUser(data);
+   }
   }
 
   const onError: SubmitHandler<Iuser> = async (error) => {
@@ -58,121 +75,49 @@ const page = () => {
 
   }
 
-  const data = [
-    {
-      "Name": "Manish Yadav",
-      "Role": "Doctor",
-      "Email": "manishkuyadav090@gmail",
-      "isActive": true,
-      "Verified": true,
-      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
-
-    },
-    {
-      "Name": "Rohan Yadav",
-      "Role": "Accountant",
-      "Email": "manishkuyadav090@gmail",
-      "isActive": true,
-      "Verified": false,
-      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
-
-    },
-
-    {
-      "Name": "Rohan Yadav",
-      "Role": "Accountant",
-      "Email": "manishkuyadav090@gmail",
-      "isActive": true,
-      "Verified": true,
-      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
-
-    },
-
-    {
-      "Name": "Rohan Yadav",
-      "Role": "Accountant",
-      "Email": "manishkuyadav090@gmail",
-      "isActive": true,
-      "Verified": false,
-      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
-
-    },
-    {
-      "Name": "Rohan Yadav",
-      "Role": "Accountant",
-      "Email": "manishkuyadav090@gmail",
-      "isActive": true,
-      "Verified": true,
-      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
-
-    },
-
-    {
-      "Name": "Rohan Yadav",
-      "Role": "Accountant",
-      "Email": "manishkuyadav090@gmail",
-      "isActive": true,
-      "Verified": false,
-      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
-
-    },
-    {
-      "Name": "Rohan Yadav",
-      "Role": "Accountant",
-      "Email": "manishkuyadav090@gmail",
-      "isActive": true,
-      "Verified": false,
-      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
-
-    },
-    {
-      "Name": "Rohan Yadav",
-      "Role": "Accountant",
-      "Email": "manishkuyadav090@gmail",
-      "isActive": true,
-      "Verified": false,
-      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
-
-    },
-    {
-      "Name": "Rohan Yadav",
-      "Role": "Accountant",
-      "Email": "manishkuyadav090@gmail",
-      "isActive": true,
-      "Verified": false,
-      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
-
-    },
-    {
-      "Name": "Rohan Yadav",
-      "Role": "Accountant",
-      "Email": "manishkuyadav090@gmail",
-      "isActive": true,
-      "Verified": false,
-      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
-
-    },
-    {
-      "Name": "Rohan Yadav",
-      "Role": "Accountant",
-      "Email": "manishkuyadav090@gmail",
-      "isActive": true,
-      "Verified": false,
-      " ": <Link href={"/superAdmin/usersmanagement/permissions"}><div className="border w-fit px-6 py-1 flex space-x-4 items-center"><img src="/hrm_image/authentication.png" className="w-8 h-8"></img><span className="font-semibold">Permission</span></div></Link>
-
-    },
-
-  ]
 
 
   useEffect(() => {
-    const getAllUser = async () => {
+    const getAllData = async () => {
       const result = await getUsers();
-      console.log("result", result.length);
-      setUser(result);
+      const countries = await getAllCountries();
+      const bloodgroup = await getAllBloodGroup();
+      const roles = await getAllRoles();
+      // console.log("result", result.length);
+      setUsers(result);
+      setCountries(countries)
+      setBloodgroups(bloodgroup);
+      setRole(roles);
     }
-    getAllUser();
-  }, [])
+    getAllData();
+  }, []);
+
+
+  const edit =  async (userId) =>{
+
+   const user = await getUser(userId);
+   setUser(user);
+   setShowModal(true);
+
+  reset({
+    first_name: user.firstname,
+    last_name: user.lastname,
+    role_id: user.role_id,
+    designation: user.designation,
+    phone_number: user.phone_number,
+    email: user.email,
+    dob:user.dob?.split("T")[0],
+    gender: user.gender,
+    bloodgroup: user.blood_group,
+    country: user.country_id,
+    state: user.state,
+    city: user.city,
+    address_1: user.address_one,
+    address_2: user.address_two,
+    pinecode: user.pin_code,
+  });
+
+  }
 
 
   useEffect(() => {
@@ -195,10 +140,15 @@ const page = () => {
             <Exportbtn />
 
 
-            <div className="border rounded p-2 text-white flex justify-center items-center bg-[#14967f]  shadow" onClick={openUserModal}>
-              <AddOutlinedIcon />
-              <Label>Add User</Label>
-
+            <div
+              className="inline-flex items-center gap-2 px-4 py-2 bg-[#14967f] text-white border border-[#14967f]
+             shadow-sm hover:shadow-md transition cursor-pointer select-none"
+              onClick={openUserModal}
+            >
+              <AddOutlinedIcon fontSize="small" />
+              <span className="text-sm font-medium leading-none">
+                Add User
+              </span>
             </div>
 
           </div>
@@ -212,7 +162,10 @@ const page = () => {
               <Input type="text" placeholder="Search" className="w-96 h-9 bg-white rounded shadow" />
             </div>
 
-            <Datepicker />
+            <Datepicker
+              showDropdown
+
+            />
 
           </div>
 
@@ -221,13 +174,7 @@ const page = () => {
 
             <Filter />
 
-            <div className="bg-white p-2 h-fit font-semibold shadow">
-              <select >
-                <option>Sort By:Recent</option>
-                <option>Recent</option>
-                <option>Oldest</option>
-              </select>
-            </div>
+            <SortBy />
 
           </div>
 
@@ -237,88 +184,246 @@ const page = () => {
 
 
       <div className="bg-white rounded px-1">
-        {users.length > 0 ? <Table data={users} actionlist={actionData} /> : "loading"}
+        <Table data={users} actionlist={actionData}
+          showaction={true}
+          actionlist={[
+            { label: "View", icon: "👁️", onClick: (item) => router.push(`/superAdmin/usersmanagement/users/view/${item.id}`)},
+            { label: "edit", icon: "👁️", onClick: (item) => edit(item.id)},
+
+          ]}
+
+        />
 
       </div>
 
 
       {/* modal code Start from here */}
-      <Modal showModal={showModal}>
-        <form className="flex flex-col space-y-4" onSubmit={handleSubmit(onSubmit, onError)}>
-          <h1>Add Users</h1>
-          <div className="flex space-x-4">
-            <div>
-              <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Name</Label>
-              <Input  {...register("name")} />
-              {errors?.["name"] && (
-                <p className="text-xs text-red-500">{errors["name"].message}</p>
-              )}
-            </div>
+      <Modal showModal={showModal} className="w-[60rem] rounded-2xl overflow-hidden shadow-2xl mt-8">
 
-            <div>
-              <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Email</Label>
-              <Input  {...register("email")} />
-              {errors?.["email"] && (
-                <p className="text-xs text-red-500">{errors["email"].message}</p>
-              )}
+        {/* Header */}
+        <div className="bg-gradient-to-r from-[#14967f] to-[#12b886] px-6 py-4">
+          <h2 className="text-white text-lg font-semibold tracking-wide">
+            {Object.keys(user).length > 0 ? "Update" : "Add"} Staff
+          </h2>
+          <p className="text-white/80 text-xs mt-1">
+            Fill in the details to create a new staff profile
+          </p>
+        </div>
+
+        {/* Form */}
+        <form
+          className="flex flex-col space-y-8 bg-white p-8"
+          onSubmit={handleSubmit(onSubmit, onError)}
+        >
+
+          {/* Profile */}
+          <div className="flex justify-center">
+            <ProfilePictureUpload />
+          </div>
+
+          {/* Personal Info */}
+          <div className="space-y-4">
+            <h3 className="text-sm font-semibold text-gray-600 uppercase tracking-wider border-b pb-2">
+              Basic Information
+            </h3>
+
+            <div className="grid grid-cols-12 gap-4 mt-2">
+
+              <div className="col-span-4">
+                <Label>First Name</Label>
+                <Input  {...register("first_name")} />
+                {errors?.["first_name"] && (
+                  <p className="text-xs text-red-500">{errors["first_name"].message}</p>
+                )}
+              </div>
+
+              <div className="col-span-4">
+                <Label>Last Name</Label>
+                <Input  {...register("last_name")} />
+                {errors?.["last_name"] && (
+                  <p className="text-xs text-red-500">{errors["last_name"].message}</p>
+                )}
+              </div>
+
+              <div className="col-span-4">
+                <Label>Role</Label>
+                <select
+                  {...register("role_id")}
+                  className="w-full border rounded-md h-10 px-3"
+                >
+                  <option value="">Select Role</option>
+                  {roles?.map((role: any) => (
+                    <option key={role.id} value={role.id}>{role.title}</option>
+                  ))}
+                </select>
+                {errors?.["role_id"] && (
+                  <p className="text-xs text-red-500">{errors["role_id"].message}</p>
+                )}
+
+              </div>
+
+              <div className="col-span-4">
+                <Label>Designation</Label>
+                <Input  {...register("designation")} />
+                {errors?.["designation"] && (
+                  <p className="text-xs text-red-500">{errors["designation"].message}</p>
+                )}
+              </div>
+
+              <div className="col-span-4">
+                <Label>Phone Number</Label>
+                <Input  {...register("phone_number")} />
+                {errors?.["phone_number"] && (
+                  <p className="text-xs text-red-500">{errors["phone_number"].message}</p>
+                )}
+              </div>
+
+              <div className="col-span-4">
+                <Label>Email</Label>
+                <Input {...register("email")} />
+                {errors?.["email"] && (
+                  <p className="text-xs text-red-500">{errors["email"].message}</p>
+                )}
+              </div>
+
+
+              <div className="col-span-4">
+                <Label>DOB</Label>
+                <Input type="date" {...register("dob")} />
+                {errors?.["dob"] && (
+                  <p className="text-xs text-red-500">{errors["dob"].message}</p>
+                )}
+              </div>
+
+
+              <div className="col-span-4">
+                <Label>Gender</Label>
+                <select
+                  {...register("gender")}
+                  className="w-full border rounded-md h-10 px-3"
+                >
+                  <option value="">Select Gender</option>
+                  <option value="male">Male</option>
+                  <option value="female">Female</option>
+
+                </select>
+                {errors?.["gender"] && (
+                  <p className="text-xs text-red-500">{errors["gender"].message}</p>
+                )}
+              </div>
+
+              <div className="col-span-4">
+                <Label>Blood Group</Label>
+                <select
+                  {...register("bloodgroup")}
+                  className="w-full border rounded-md h-10 px-3"
+                >
+                  <option value="">Select Bloodgroup</option>
+                  {bloodgroups?.map((bloodgroup: any) => (
+                    <option key={bloodgroup.id} value={bloodgroup.id}>{bloodgroup.title}</option>
+                  ))}
+
+                </select>
+
+                {errors?.["bloodgroup"] && (
+                  <p className="text-xs text-red-500">{errors["bloodgroup"].message}</p>
+                )}
+              </div>
+
             </div>
           </div>
 
 
-          <div className="flex space-x-4">
-            <div>
-              <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Passsword</Label>
-              <Input  {...register("password")} />
-              {errors?.["password"] && (
-                <p className="text-xs text-red-500">{errors["password"].message}</p>
-              )}
+
+
+
+          {/* Address */}
+          <div className="">
+            <h3 className="text-sm font-semibold text-gray-600 uppercase tracking-wider border-b pb-2">
+              Address Information
+            </h3>
+
+            <div className="grid grid-cols-12 gap-4 mt-2">
+
+              <div className="col-span-4">
+                <Label>Country</Label>
+                <select
+                  {...register("country")}
+                  className="w-full border rounded-md h-10 px-3"
+                >
+                  <option value="">Select Country</option>
+
+
+                  {countries?.map((country: any) => (
+                    <option key={country.id} value={country.id}>{country.title}</option>
+                  ))}
+                </select>
+                {errors?.["country"] && (
+                  <p className="text-xs text-red-500">{errors["country"].message}</p>
+                )}
+              </div>
+
+              <div className="col-span-4">
+                <Label>State</Label>
+                <Input   {...register("state")} />
+                {errors?.["state"] && (
+                  <p className="text-xs text-red-500">{errors["state"].message}</p>
+                )}
+              </div>
+
+              <div className="col-span-4">
+                <Label>City</Label>
+                <Input {...register("city")} />
+                {errors?.["city"] && (
+                  <p className="text-xs text-red-500">{errors["city"].message}</p>
+                )}
+              </div>
+
+              <div className="col-span-4">
+                <Label>Address 1</Label>
+                <Input {...register("address_1")} />
+                {errors?.["address_1"] && (
+                  <p className="text-xs text-red-500">{errors["address_1"].message}</p>
+                )}
+              </div>
+
+              <div className="col-span-4">
+                <Label>Address 2</Label>
+                <Input {...register("address_2")} />
+                {errors?.["address_2"] && (
+                  <p className="text-xs text-red-500">{errors["address_2"].message}</p>
+                )}
+              </div>
+
+              <div className="col-span-4">
+                <Label>Pincode</Label>
+                <Input {...register("pinecode")} />
+                {errors?.["pinecode"] && (
+                  <p className="text-xs text-red-500">{errors["pinecode"].message}</p>
+                )}
+              </div>
+
             </div>
-
-
-            <div>
-              <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Confirm Password</Label>
-              <Input  {...register("password")} />
-              {errors?.["password"] && (
-                <p className="text-xs text-red-500">{errors["password"].message}</p>
-              )}
-            </div>
-
-
-
           </div>
 
+          {/* Actions */}
+          <div className="flex justify-end space-x-3 pt-4 border-t">
+            <button
+              type="button"
+              className="px-4 py-2 rounded-lg border border-gray-300 text-gray-600 hover:bg-gray-100 transition"
+            >
+              Cancel
+            </button>
 
-
-          <div>
-            <select className="w-full border p-2 rounded-md"  {...register("role")}>
-              <option value={"doctor"}>Doctors</option>
-              <option value={"receptionist"}>Receptionist</option>
-              <option value={"accountant"}>Accountant</option>
-              <option value={"nurses"}>Nurses</option>
-            </select>
-            {errors?.["role"] && (
-              <p className="text-xs text-red-500">{errors["role"].message}</p>
-            )}
-          </div>
-
-
-          <div>
-            <select className="w-full border p-2 rounded-md"  {...register("status")}>
-              <option value={"active"}>Active</option>
-              <option value={"inactive"}>InActive</option>
-            </select>
-            {errors?.["status"] && (
-              <p className="text-xs text-red-500">{errors["status"].message}</p>
-            )}
-          </div>
-
-          <div className="flex space-x-4">
-            <button className="bg-red-600 text-white p-2 rounded-md ">Cancle</button>
-            <button className="bg-blue-600 text-white p-2 rounded-md" type="submit">Submit</button>
+            <button
+              type="submit"
+              className="px-5 py-2 rounded-lg bg-[#14967f] text-white font-medium hover:opacity-90 shadow-md transition"
+            >
+               {Object.keys(user).length > 0 ? "Update" : "Save"} Staff
+            </button>
           </div>
 
         </form>
-
       </Modal>
 
     </div>
