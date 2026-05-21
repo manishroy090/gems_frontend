@@ -1,11 +1,8 @@
 "use client";
-import React, { useState, useEffect } from "react";
-import BreadcrumbComp from "../../../layout/shared/breadcrumb/BreadcrumbComp";
-import DataTable from "../../../../components/utilities/data-table/DataTable";
+import { useState, useEffect } from "react";
 import Modal from "../../../../components/ui/Modal";
 import { Label } from "../../../../components/ui/label";
 import { Input } from "../../../../components/ui/input";
-import { Textarea } from "../../../../components/ui/textarea";
 import Datepicker from "../../../../components/cutom/Datepicker";
 import Filter from "../../../../components/cutom/Filter";
 import Table from "../../../../components/cutom/Table";
@@ -17,66 +14,63 @@ import { Iuser } from "../../../../interface/Iuser";
 import Exportbtn from "../../../../components/cutom/Exportbtn";
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
 import { getUsers } from "../../../../services/User";
-import Doctorcards from "../../../../components/cutom/cards/users/Doctorcards";
 import SortBy from "../../../../components/cutom/SortBy";
 import Link from 'next/link'
 import ProfilePictureUpload from "../../../../components/cutom/ProfilePictureUpload";
 import { getAllCountries } from "../../../../services/Config";
 import { getAllBloodGroup } from "../../../../services/Hoshpital";
 import { getAllRoles } from "../../../../services/Roles";
-import { createUser} from "../../../../services/Hoshpital";
+import { createUser } from "../../../../services/Hoshpital";
 import { useRouter } from 'next/navigation'
-import { getUser ,updateUser} from "../../../../services/User";
+import { getUser, updateUser, deleteUserById } from "../../../../services/User";
 
 const page = () => {
-  const router =  useRouter();
+  const router = useRouter();
   const [showModal, setShowModal] = useState(false);
   const [users, setUsers] = useState([]);
   const [countries, setCountries] = useState([]);
   const [bloodgroups, setBloodgroups] = useState([]);
   const [roles, setRole] = useState([]);
   const [user, setUser] = useState([]);
+  const [isDeleted , setIsDeleted] = useState(false);
 
-  const [actionData, setAction] = useState([{
-    "edit": (<Link href={"/superAdmin/usersmanagement/permissions"}><img src="/hrm_image/edit.png" className="w-6 h-7"></img></Link>),
-    "delete": (<Link href={"/superAdmin/usersmanagement/permissions"}><img src="/hrm_image/delete.png" className="w-6 h-7"></img></Link>),
-    "permissions": (<Link href={"/superAdmin/usersmanagement/permissions"}><img src="/hrm_image/authentication.png" className="w-6 h-7"></img></Link>)
-  }
-  ]);
-
+ 
 
 
 
   //toggel modal code
   function openUserModal() {
-    console.log("Open user Modal modal")
     setShowModal(true);
   }
 
 
-  const { register, handleSubmit,reset, formState: { errors } } = useForm({ resolver: yupResolver(Userschema) });
+
+  //form submission code
+  const { register, handleSubmit, reset, formState: { errors } } = useForm({ resolver: yupResolver(Userschema) });
   const onSubmit: SubmitHandler<Iuser> = async (data) => {
-   const userExists =  Object.keys(user).length > 0 ;
+    const userExists = Object.keys(user).length > 0;
 
-   if(userExists && user){
-
-     console.log("update methoc");
-     await updateUser(user.id,data);
-   }
-   else{
-    //  setShowModal(true);
-     createUser(data);
-   }
+    if (userExists && user) {
+      await updateUser(user.id, data);
+    }
+    else {
+      //  setShowModal(true);
+      createUser(data);
+    }
   }
 
-  const onError: SubmitHandler<Iuser> = async (error) => {
 
+
+  //form submission fail fallback
+
+  const onError: SubmitHandler<Iuser> = async (error) => {
     console.log("error", error);
 
   }
 
 
 
+  // called on first render
   useEffect(() => {
     const getAllData = async () => {
       const result = await getUsers();
@@ -90,41 +84,45 @@ const page = () => {
       setRole(roles);
     }
     getAllData();
-  }, []);
+    setIsDeleted(false);
+  }, [isDeleted]);
 
 
-  const edit =  async (userId) =>{
 
-   const user = await getUser(userId);
-   setUser(user);
-   setShowModal(true);
-
-  reset({
-    first_name: user.firstname,
-    last_name: user.lastname,
-    role_id: user.role_id,
-    designation: user.designation,
-    phone_number: user.phone_number,
-    email: user.email,
-    dob:user.dob?.split("T")[0],
-    gender: user.gender,
-    bloodgroup: user.blood_group,
-    country: user.country_id,
-    state: user.state,
-    city: user.city,
-    address_1: user.address_one,
-    address_2: user.address_two,
-    pinecode: user.pin_code,
-  });
+  //call on edit
+  const edit = async (userId) => {
+    const user = await getUser(userId);
+    setUser(user);
+    setShowModal(true);
+    reset({
+      first_name: user.firstname,
+      last_name: user.lastname,
+      role_id: user.role_id,
+      designation: user.designation,
+      phone_number: user.phone_number,
+      email: user.email,
+      dob: user.dob?.split("T")[0],
+      gender: user.gender,
+      bloodgroup: user.blood_group,
+      country: user.country_id,
+      state: user.state,
+      city: user.city,
+      address_1: user.address_one,
+      address_2: user.address_two,
+      pinecode: user.pin_code,
+    });
 
   }
 
 
-  useEffect(() => {
+  //call on delete
+  const deleteUser = async (userId) => {
+    deleteUserById(userId);
+    setIsDeleted(true);
+  }
 
-    console.log("users",)
 
-  }, [users])
+
 
   return (
     <div className="flex flex-col space-y-5">
@@ -184,15 +182,32 @@ const page = () => {
 
 
       <div className="bg-white rounded px-1">
-        <Table data={users} actionlist={actionData}
+        <Table
+          data={users}
           showaction={true}
           actionlist={[
-            { label: "View", icon: "👁️", onClick: (item) => router.push(`/superAdmin/usersmanagement/users/view/${item.id}`)},
-            { label: "edit", icon: "👁️", onClick: (item) => edit(item.id)},
+            {
+              label: "View",
+              icon: "👁️",
+              href: (item) =>
+                `/superAdmin/usersmanagement/users/view/${item.id}`,
+            },
 
+            {
+              label: "Edit",
+              icon: "✏️",
+              onClick: (item) => edit(item.id),
+            },
+
+            {
+              label: "Delete",
+              icon: "🗑️",
+              confirm: true,
+              onClick: (item) => deleteUser(item.id),
+            },
           ]}
-
         />
+
 
       </div>
 
@@ -419,7 +434,7 @@ const page = () => {
               type="submit"
               className="px-5 py-2 rounded-lg bg-[#14967f] text-white font-medium hover:opacity-90 shadow-md transition"
             >
-               {Object.keys(user).length > 0 ? "Update" : "Save"} Staff
+              {Object.keys(user).length > 0 ? "Update" : "Save"} Staff
             </button>
           </div>
 

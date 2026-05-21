@@ -30,7 +30,9 @@ export async function updateUser(id,payload) {
 
 
 
-export async function deleteUser() {
+export async function deleteUserById(id) {
+    const { data } = await HospitalApi.delete(`/auth/users/${id}`);
+  return data.message
 
 }
 

@@ -1,261 +1,487 @@
-import { useEffect, useState, useRef, useMemo } from "react";
-import { Badge } from "../ui/badge";
+"use client";
+
+import React, {
+    memo,
+    useEffect,
+    useMemo,
+    useRef,
+    useState,
+} from "react";
+
 import Link from "next/link";
+import { Badge } from "../ui/badge";
 
-/* ---------------- ACTION MENU ---------------- */
+/* =========================================================
+   TYPES
+========================================================= */
 
-const ActionMenu = ({ item, actions }) => {
-    const [open, setOpen] = useState(false);
-    const menuRef = useRef(null);
+export type TableAction<T = any> = {
+    label: string;
+    icon?: React.ReactNode;
+    href?: string | ((item: T) => string);
+    confirm?: boolean;
+    onClick?: (item: T) => void | Promise<void>;
+};
 
-    const defaultActions = [
-        { label: "View", icon: "👁️", onClick: (item) => console.log("View", item) },
-        { label: "Edit", icon: "✏️", onClick: (item) => console.log("Edit", item) },
-        { label: "Delete", icon: "🗑️", onClick: (item) => console.log("Delete", item) },
-    ];
+type ColumnRenderer<T> = (
+    value: any,
+    item: T
+) => React.ReactNode;
 
-    const finalActions =
-        Array.isArray(actions) && actions.length > 0 ? actions : defaultActions;
-
-    useEffect(() => {
-        const handleClickOutside = (event) => {
-            if (menuRef.current && !menuRef.current.contains(event.target)) {
-                setOpen(false);
-            }
+type TableProps<T = any> = {
+    data: T[];
+    actionlist?: TableAction<T>[];
+    columnRenderers?: Record<string, ColumnRenderer<T>>;
+    query?: {
+        search?: string;
+        filters?: Record<string, any>;
+        dateRange?: {
+            key: string;
+            from?: string;
+            to?: string;
         };
+        sort?: {
+            key: string;
+            order: "asc" | "desc";
+        };
+    };
+    showaction?: boolean;
+};
 
-        document.addEventListener("mousedown", handleClickOutside);
-        return () => document.removeEventListener("mousedown", handleClickOutside);
-    }, []);
+/* =========================================================
+   DELETE MODAL
+========================================================= */
+
+const DeleteModal = ({
+    open,
+    onClose,
+    onConfirm,
+}: {
+    open: boolean;
+    onClose: () => void;
+    onConfirm: () => void;
+}) => {
+    if (!open) return null;
 
     return (
-        <div ref={menuRef} className="relative inline-block text-left">
-        <button
-                onClick={() => setOpen((p) => !p)}
-                className="px-3 py-1.5 text-gray-600 hover:text-gray-900 hover:bg-gray-100 rounded-md transition text-lg"
-            >
-                ⋮
-            </button>
+        <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40">
+            <div className="bg-white rounded-xl shadow-xl p-6 w-[340px]">
 
-            {open && (
-                <div className="absolute right-0 mt-2 w-44 bg-white border rounded-lg shadow-lg z-50 overflow-hidden">
-                    {finalActions.map((action, i) =>
-                        action.href ? (
-                            <Link
-                                key={i}
-                                href={
-                                    typeof action.href === "function"
-                                        ? action.href(item)
-                                        : action.href
-                                }
-                                onClick={() => setOpen(false)}
-                                className="block px-3 py-2 text-sm hover:bg-gray-50 flex gap-2"
-                            >
-                                <span>{action.icon}</span>
-                                <span>{action.label}</span>
-                            </Link>
-                        ) : (
-                            <button
-                                key={i}
-                                onClick={() => {
-                                    action.onClick?.(item);
-                                    setOpen(false);
-                                }}
-                                className="w-full text-left px-3 py-2 text-sm hover:bg-gray-50 flex gap-2"
-                            >
-                                <span>{action.icon}</span>
-                                <span>{action.label}</span>
-                            </button>
-                        )
-                    )}
+                <h2 className="text-lg font-semibold">
+                    Confirm Delete
+                </h2>
+
+                <p className="text-sm text-gray-500 mt-2">
+                    Are you sure you want to delete this item?
+                </p>
+
+                <div className="flex justify-end gap-3 mt-6">
+                    <button
+                        onClick={onClose}
+                        className="px-4 py-2 rounded-md bg-gray-100 hover:bg-gray-200"
+                    >
+                        Cancel
+                    </button>
+
+                    <button
+                        onClick={onConfirm}
+                        className="px-4 py-2 rounded-md bg-red-600 text-white hover:bg-red-700"
+                    >
+                        Delete
+                    </button>
                 </div>
-            )}
+            </div>
         </div>
     );
 };
 
-/* ---------------- TABLE ---------------- */
+/* =========================================================
+   ACTION MENU
+========================================================= */
 
-const Table = ({
+const ActionMenu = memo(
+    <T extends Record<string, any>>({
+        item,
+        actions = [],
+    }: {
+        item: T;
+        actions: TableAction<T>[];
+    }) => {
+        const [open, setOpen] = useState(false);
+        const [confirmAction, setConfirmAction] =
+            useState<TableAction<T> | null>(null);
+
+        const menuRef = useRef<HTMLDivElement | null>(null);
+
+        useEffect(() => {
+            const handleOutside = (e: MouseEvent) => {
+                if (
+                    menuRef.current &&
+                    !menuRef.current.contains(e.target as Node)
+                ) {
+                    setOpen(false);
+                }
+            };
+
+            document.addEventListener(
+                "mousedown",
+                handleOutside
+            );
+
+            return () =>
+                document.removeEventListener(
+                    "mousedown",
+                    handleOutside
+                );
+        }, []);
+
+        const handleAction = async (
+            action: TableAction<T>
+        ) => {
+            if (action.confirm) {
+                setConfirmAction(action);
+                return;
+            }
+
+            await action.onClick?.(item);
+            setOpen(false);
+        };
+
+        return (
+            <>
+                <div
+                    ref={menuRef}
+                    className="relative inline-block"
+                >
+                    <button
+                        onClick={() =>
+                            setOpen((prev) => !prev)
+                        }
+                        className="px-3 py-1.5 rounded-md hover:bg-gray-100 text-lg"
+                    >
+                        ⋮
+                    </button>
+
+                    {open && (
+                        <div className="absolute right-0 mt-2 w-44 bg-white border rounded-lg shadow-lg overflow-hidden z-40">
+
+                            {actions.map((action, i) =>
+                                action.href ? (
+                                    <Link
+                                        key={i}
+                                        href={
+                                            typeof action.href ===
+                                            "function"
+                                                ? action.href(item)
+                                                : action.href
+                                        }
+                                        onClick={() =>
+                                            setOpen(false)
+                                        }
+                                        className="flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-50"
+                                    >
+                                        <span>
+                                            {action.icon}
+                                        </span>
+
+                                        <span>
+                                            {action.label}
+                                        </span>
+                                    </Link>
+                                ) : (
+                                    <button
+                                        key={i}
+                                        onClick={() =>
+                                            handleAction(action)
+                                        }
+                                        className="w-full flex items-center gap-2 px-4 py-2 text-sm hover:bg-gray-50"
+                                    >
+                                        <span>
+                                            {action.icon}
+                                        </span>
+
+                                        <span>
+                                            {action.label}
+                                        </span>
+                                    </button>
+                                )
+                            )}
+                        </div>
+                    )}
+                </div>
+
+                {/* CONFIRM MODAL */}
+
+                <DeleteModal
+                    open={!!confirmAction}
+                    onClose={() =>
+                        setConfirmAction(null)
+                    }
+                    onConfirm={async () => {
+                        await confirmAction?.onClick?.(
+                            item
+                        );
+
+                        setConfirmAction(null);
+                        setOpen(false);
+                    }}
+                />
+            </>
+        );
+    }
+);
+
+ActionMenu.displayName = "ActionMenu";
+
+/* =========================================================
+   TABLE
+========================================================= */
+
+const Table = <T extends Record<string, any>>({
     data = [],
-    actionlist,
+    actionlist = [],
     columnRenderers = {},
     query = {},
-    showaction
-}) => {
+    showaction = false,
+}: TableProps<T>) => {
 
-    const [keys, setKeys] = useState([]);
+    /* =====================================================
+       KEYS
+    ===================================================== */
 
-    useEffect(() => {
-        if (Array.isArray(data) && data.length > 0) {
-            setKeys(Object.keys(data[0]));
-        } else {
-            setKeys([]);
-        }
+    const keys = useMemo(() => {
+        if (!data?.length) return [];
+
+        return Object.keys(data[0]).filter(
+            (key) => key !== "id"
+        );
     }, [data]);
 
-    /* ---------------- ENGINE: FILTER + SEARCH + SORT ---------------- */
+    /* =====================================================
+       FILTER + SEARCH + SORT
+    ===================================================== */
 
     const filteredData = useMemo(() => {
         let result = [...data];
 
-        const { search, filters, dateRange, sort } = query;
+        const {
+            search,
+            filters,
+            dateRange,
+            sort,
+        } = query;
 
-        /* -------- GLOBAL SEARCH -------- */
+        /* SEARCH */
+
         if (search) {
-            const s = search.toLowerCase();
+            const lower = search.toLowerCase();
 
             result = result.filter((row) =>
                 Object.values(row).some((val) =>
-                    String(val).toLowerCase().includes(s)
+                    String(val)
+                        .toLowerCase()
+                        .includes(lower)
                 )
             );
         }
 
-        /* -------- FIELD FILTERS -------- */
-        if (filters && typeof filters === "object") {
-            Object.entries(filters).forEach(([key, value]) => {
-                if (value !== undefined && value !== null && value !== "") {
-                    result = result.filter(
-                        (row) => String(row[key]) === String(value)
-                    );
+        /* FILTERS */
+
+        if (filters) {
+            Object.entries(filters).forEach(
+                ([key, value]) => {
+                    if (
+                        value !== undefined &&
+                        value !== null &&
+                        value !== ""
+                    ) {
+                        result = result.filter(
+                            (row) =>
+                                String(row[key]) ===
+                                String(value)
+                        );
+                    }
                 }
-            });
+            );
         }
 
-        /* -------- DATE RANGE FILTER -------- */
+        /* DATE RANGE */
+
         if (dateRange?.key) {
             result = result.filter((row) => {
-                const rowDate = new Date(row[dateRange.key]);
+                const rowDate = new Date(
+                    row[dateRange.key]
+                );
 
-                if (dateRange.from && rowDate < new Date(dateRange.from)) return false;
-                if (dateRange.to && rowDate > new Date(dateRange.to)) return false;
+                if (
+                    dateRange.from &&
+                    rowDate <
+                        new Date(dateRange.from)
+                ) {
+                    return false;
+                }
+
+                if (
+                    dateRange.to &&
+                    rowDate >
+                        new Date(dateRange.to)
+                ) {
+                    return false;
+                }
 
                 return true;
             });
         }
 
-        /* -------- SORTING -------- */
+        /* SORT */
+
         if (sort?.key) {
             result.sort((a, b) => {
                 const aVal = a[sort.key];
                 const bVal = b[sort.key];
 
-                if (aVal === bVal) return 0;
+                const isAsc =
+                    sort.order === "asc";
 
-                const isAsc = sort.order === "asc";
-
-                if (typeof aVal === "number") {
-                    return isAsc ? aVal - bVal : bVal - aVal;
+                if (
+                    typeof aVal === "number" &&
+                    typeof bVal === "number"
+                ) {
+                    return isAsc
+                        ? aVal - bVal
+                        : bVal - aVal;
                 }
 
                 return isAsc
-                    ? String(aVal).localeCompare(String(bVal))
-                    : String(bVal).localeCompare(String(aVal));
+                    ? String(aVal).localeCompare(
+                          String(bVal)
+                      )
+                    : String(bVal).localeCompare(
+                          String(aVal)
+                      );
             });
         }
 
         return result;
     }, [data, query]);
 
-    /* ---------------- EMPTY STATE ---------------- */
+    /* =====================================================
+       EMPTY STATE
+    ===================================================== */
 
-    if (!Array.isArray(filteredData) || filteredData.length === 0) {
+    if (!filteredData.length) {
         return (
-            <p className="p-4 text-gray-500">
+            <div className="p-6 text-center text-gray-500">
                 No data available
-            </p>
+            </div>
         );
     }
 
-    return (
-        <div className="overflow-x-auto rounded-lg border bg-white shadow-sm">
+    /* =====================================================
+       RENDER
+    ===================================================== */
 
-            <table className="w-full table-auto border-collapse">
+    return (
+        <div className="overflow-x-auto rounded-xl border bg-white shadow-sm">
+            <table className="w-full border-collapse">
 
                 {/* HEADER */}
-                <thead className="bg-gray-50">
-                    <tr className="border-b">
 
-                        <th className="text-left px-4 py-3 text-xs font-semibold uppercase w-[60px]">
+                <thead className="bg-gray-50 border-b">
+                    <tr>
+
+                        <th className="px-4 py-3 text-left text-xs font-semibold uppercase w-[60px]">
                             SN
                         </th>
 
-                        {keys.map((key) =>
-                            key !== "id" ? (
-                                <th
-                                    key={key}
-                                    className="text-left px-4 py-3 text-xs font-semibold uppercase"
-                                >
-                                    {key}
-                                </th>
-                            ) : null
+                        {keys.map((key) => (
+                            <th
+                                key={key}
+                                className="px-4 py-3 text-left text-xs font-semibold uppercase"
+                            >
+                                {key}
+                            </th>
+                        ))}
+
+                        {showaction && (
+                            <th className="px-4 py-3 text-left text-xs font-semibold uppercase w-[90px]">
+                                Action
+                            </th>
                         )}
-
-
-                        {showaction && 
-
-                        <th className="text-left px-4 py-3 text-xs font-semibold uppercase w-[80px]">
-                            Action
-                        </th>
-                        }
                     </tr>
                 </thead>
 
                 {/* BODY */}
+
                 <tbody className="divide-y">
 
-                    {filteredData.map((item, i) => (
-                        <tr key={i} className="hover:bg-blue-50/40 transition">
+                    {filteredData.map((item, index) => (
+                        <tr
+                            key={item.id || index}
+                            className="hover:bg-blue-50/40 transition"
+                        >
 
-                            {/* SN */}
+                            {/* SERIAL */}
+
                             <td className="px-4 py-3 text-sm font-medium">
-                                {i + 1}
+                                {index + 1}
                             </td>
 
                             {/* DATA */}
-                            {keys.map((key) =>
-                                key !== "id" ?
 
-                                    (
-                                        <td key={key} className="px-4 py-3 text-sm">
-
-                                            {/* COLUMN RENDER ENGINE */}
-                                            {columnRenderers?.[key] ? (
-                                                columnRenderers[key](item[key], item)
-                                            ) : typeof item[key] === "boolean" ? (
-                                                item[key] ? (
-                                                    <Badge className="bg-green-100 text-green-700">
-                                                        True
-                                                    </Badge>
-                                                ) : (
-                                                    <Badge className="bg-red-100 text-red-700">
-                                                        False
-                                                    </Badge>
-                                                )
-                                            ) : (
-                                                item[key]
-                                            )}
-
-                                        </td>
-                                    ) : null)}
+                            {keys.map((key) => (
+                                <td
+                                    key={key}
+                                    className="px-4 py-3 text-sm"
+                                >
+                                    {columnRenderers?.[
+                                        key
+                                    ] ? (
+                                        columnRenderers[
+                                            key
+                                        ](
+                                            item[key],
+                                            item
+                                        )
+                                    ) : typeof item[
+                                          key
+                                      ] ===
+                                      "boolean" ? (
+                                        item[key] ? (
+                                            <Badge className="bg-green-100 text-green-700">
+                                                True
+                                            </Badge>
+                                        ) : (
+                                            <Badge className="bg-red-100 text-red-700">
+                                                False
+                                            </Badge>
+                                        )
+                                    ) : (
+                                        String(item[key])
+                                    )}
+                                </td>
+                            ))}
 
                             {/* ACTION */}
 
-                            {showaction && <td className="px-4 py-3">
-                                <div className="flex justify-center">
-                                    <ActionMenu item={item} actions={actionlist} />
-                                </div>
-                            </td>}
-
-
+                            {showaction && (
+                                <td className="px-4 py-3">
+                                    <div className="flex justify-center">
+                                        <ActionMenu
+                                            item={item}
+                                            actions={
+                                                actionlist
+                                            }
+                                        />
+                                    </div>
+                                </td>
+                            )}
                         </tr>
                     ))}
-
                 </tbody>
             </table>
         </div>
     );
 };
 
-export default Table;
+export default memo(Table);
