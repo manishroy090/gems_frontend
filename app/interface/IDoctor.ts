@@ -23,6 +23,7 @@ export interface ICertification {
 }
 
 export interface IDoctor {
+  image:any,
   firstname: string;
   lastname: string;
   phonenumber: string;
@@ -35,6 +36,9 @@ export interface IDoctor {
   language_spoken: string;
   blood_group: string;
   gender: string;
+  fee:String,
+  status:String,
+  feature_on_website:Boolean;
   bio: string;
   country_id:String
   state:String,

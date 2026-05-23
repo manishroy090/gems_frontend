@@ -1,29 +1,27 @@
-
+"use client"
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import Doctorcards from '../cards/users/Doctorcards';
-const Grid = () => {
+import { useEffect, useState } from 'react';
+const Grid = ({data=[]}) => {
 
+  const [doctors ,setDoctors] = useState();
+
+  useEffect(()=>{
+
+    setDoctors(data);
+
+  },[data])
 
   return (
     <div className='grid grid-cols-3 gap-4'>
 
-      <Doctorcards />
-      <Doctorcards />
 
-      <Doctorcards />
+      {doctors?.map((item,index)=>(
 
-      <Doctorcards />
+      <Doctorcards doctorDetails={item} key={index}/>
+      ))}
 
-      <Doctorcards />
-
-      <Doctorcards />
-
-      <Doctorcards />
-      <Doctorcards />
-      <Doctorcards />
-      <Doctorcards />
-      <Doctorcards />
-      <Doctorcards />
+     
 
 
     </div>

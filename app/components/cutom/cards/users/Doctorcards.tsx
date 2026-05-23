@@ -1,12 +1,14 @@
+"use client"
 import { useState, useRef, useEffect } from "react";
 import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
 
-const Doctorcards = () => {
+const Doctorcards = ({doctorDetails}) => {
   const [openMenu, setOpenMenu] = useState(false);
   const menuRef = useRef(null);
+
 
   // Close menu when clicking outside
   useEffect(() => {
@@ -20,32 +22,39 @@ const Doctorcards = () => {
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
+
+
+
+ 
+
   return (
     <div className="group relative flex items-center gap-5 p-5 w-full max-w-md rounded-3xl bg-gradient-to-br from-white to-blue-50 border border-blue-100 shadow-md hover:shadow-xl transition">
 
       {/* Image */}
       <div className="w-28 h-28 flex-shrink-0">
         <img
-          src="https://as2.ftcdn.net/v2/jpg/04/75/00/71/1000_F_475007199_FLk7bivHPRIjtiylrMeA4027ehCQWurq.jpg"
+          src={`http://localhost:8080/uploads/doctors/${doctorDetails?.image}`}
           alt="doctor"
           className="w-full h-full object-cover rounded-2xl border-2 border-white shadow-md"
         />
       </div>
 
       {/* Info */}
+
+      
       <div className="flex-1 flex flex-col gap-2 pr-10">
         <div className="flex items-start justify-between gap-2">
           <div className="flex flex-col">
             <h2 className="text-lg font-bold text-gray-800">
-              Dr. Mick Thompson
+              {`${doctorDetails?.firstname} ${doctorDetails?.lastname}`}
             </h2>
             <p className="text-sm text-blue-600 font-medium">
-              Cardiologist
+              {doctorDetails.department}
             </p>
           </div>
 
           <span className="text-xs px-2 py-1 rounded-full bg-green-100 text-green-600 font-medium">
-            Available
+              {doctorDetails?.doctor_status}
           </span>
         </div>
 
@@ -55,7 +64,7 @@ const Doctorcards = () => {
           </p>
           <p>
             <span className="font-medium text-gray-800">Starts From:</span>{" "}
-            <span className="text-blue-600 font-bold">$499</span>
+            <span className="text-blue-600 font-bold">${doctorDetails.fees}</span>
           </p>
         </div>
 

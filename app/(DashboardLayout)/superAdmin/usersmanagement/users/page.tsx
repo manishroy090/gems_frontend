@@ -32,9 +32,9 @@ const page = () => {
   const [bloodgroups, setBloodgroups] = useState([]);
   const [roles, setRole] = useState([]);
   const [user, setUser] = useState([]);
-  const [isDeleted , setIsDeleted] = useState(false);
+  const [isDeleted, setIsDeleted] = useState(false);
 
- 
+
 
 
 

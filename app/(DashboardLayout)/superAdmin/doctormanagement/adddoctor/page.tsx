@@ -1,42 +1,45 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
-
-import { Label } from "../../../../components/ui/label";
+import React, { useEffect, useState } from "react"; import { Label } from "../../../../components/ui/label";
 import { Input } from "../../../../components/ui/input";
 import { Textarea } from "../../../../components/ui/textarea";
-
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddIcon from "@mui/icons-material/Add";
-
-import {
-  useForm,
-  useFieldArray,
-  SubmitHandler,
-} from "react-hook-form";
-
+import { CirclePlus } from 'lucide-react';
+import ProfilePictureUpload from "../../../../components/cutom/ProfilePictureUpload";
+import { useForm, SubmitHandler, useFieldArray, Controller } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup";
-
 import { IDoctor } from "../../../../interface/IDoctor";
 import { Doctorschema } from "../../../../schemas/Doctor.schema";
-import { createDoctor } from "../../../../services/Doctor";
 import { getHospitalDepartments, getAllCountries, getAllBloodGroup } from "../../../../services/Hoshpital";
+import Addbtn from "../../../../components/cutom/Addbtn";
+import Cancelbtn from "../../../../components/cutom/Cancelbtn";
+import CustomDatePicker from "../../../../components/cutom/CustomDatePicker";
+import TimePicker from "../../../../components/cutom/TimePicker";
+import { getAllDoctorStatus } from "../../../../services/Config";
+import { createDoctor,getDoctor } from "../../../../services/Doctor";
+import { useSearchParams } from "next/navigation";
 
-const Page = () => {
+
+
+const page = () => {
 
   const [departments, setDepartments] = useState([]);
   const [countries, setCountries] = useState([]);
   const [bloodgroups, setBloodgroups] = useState([]);
+  const [doctorStatus, setDoctorStatus] = useState([]);
+  const params = useSearchParams();
 
   const {
     register,
     control,
     handleSubmit,
+    reset,
+    setValue,
     formState: { errors },
   } = useForm<IDoctor>({
     resolver: yupResolver(Doctorschema),
 
     defaultValues: {
+      image: "",
       firstname: "",
       lastname: "",
       phonenumber: "",
@@ -85,7 +88,6 @@ const Page = () => {
     },
   });
 
-  // ================= FIELD ARRAYS =================
 
   const {
     fields: sessionFields,
@@ -123,18 +125,81 @@ const Page = () => {
     name: "certifications",
   });
 
-  // ================= SUBMIT =================
+
+  useEffect(()=>{
+    
+     const doctorId = params.get('doctor_id');
+
+      const getDoctorDetails = async() =>{
+      const result = await getDoctor();
+      setValue('image',"dd", { shouldValidate: true });
+
+      reset({
+        firstname:result.firstname,
+        lastname:result.lastname,
+        phonenumber:result.phone_number,
+        email:result.email,
+        dob:result.dob,
+        year_of_experience:result.year_of_exp,
+        department_id:String(result.department_id),
+        designation:result.designation,
+        medical_licese_number:result.medical_license_number,
+        language_spoken:result.language_spoken,
+        blood_group:String(result.blood_group),
+        gender:result.gender,
+        fee:result.fees,
+        status:result.status_id,
+        feature_on_website:result.feature_on_website,
+        bio:result.bio,
+        country_id:String(result.country_id),
+        state:result.state,
+        city:result.city,
+        address:result.address_one,
+        address_2:result.address_two,
+        pin_code:result.pin_code,
+        sessions:result.doctor_sessions,
+        educations:result.education,
+        awards:result.award,
+        certifications:result.certification
+      })
+
+      // console.log("result",result);
+    }
+
+    getDoctorDetails();
+  },[departments,bloodgroups,countries])
+
+
 
   const onSubmit: SubmitHandler<IDoctor> = async (data) => {
-    console.log("FORM DATA", data);
-    createDoctor(data)
+    const formData = new FormData();
+
+    Object.entries(data).forEach(([key, value]) => {
+
+      if (Array.isArray(value)) {
+        formData.append(key, JSON.stringify(value));
+      }
+
+      else if (value instanceof File) {
+        formData.append(key, value);
+      }
+
+      else if (value !== undefined && value !== null) {
+        formData.append(key, String(value));
+      }
+    });
+
+    // DEBUG (correct way)
+    for (const pair of formData.entries()) {
+      console.log(pair[0], pair[1]);
+    }
+
+    await createDoctor(formData);
   };
 
   const onError = (error: any) => {
     console.log("FORM ERROR", error);
   };
-
-
 
   useEffect(() => {
 
@@ -142,216 +207,236 @@ const Page = () => {
       const getAllDepartment = await getHospitalDepartments();
       const Countries = await getAllCountries();
       const bloodgroup = await getAllBloodGroup();
+      const doctorStatus = await getAllDoctorStatus();
+
       setBloodgroups(bloodgroup);
       setDepartments(getAllDepartment);
       setCountries(Countries);
+      setDoctorStatus(doctorStatus);
+
     }
-
     callMasterData();
-
   }, [])
 
 
+  const edit = async () =>{
+
+      console.log("edit method called")
+  }
 
 
   return (
-    <div className="bg-white p-8 rounded-xl">
-      <h1 className="text-2xl font-semibold border-b pb-4">
-        New Doctor
-      </h1>
-
-      <form
-        onSubmit={handleSubmit(onSubmit, onError)}
-        className="space-y-10 mt-8"
-      >
-        {/* ================= BASIC INFO ================= */}
-
-        <div className="grid grid-cols-2 gap-5">
-          {/* FIRST NAME */}
-          <div className="flex flex-col space-y-2">
-            <Label>First Name</Label>
-
-            <Input {...register("firstname")} />
-
-            <p className="text-xs text-red-500 mt-1">
-              {errors.firstname?.message}
+    <>
+      <div className="bg-white  pb-8 w-full h-fit">
+        <form onSubmit={handleSubmit(onSubmit, onError)}
+        >
+          <div className="bg-gradient-to-r from-[#14967f] to-[#12b886] px-6 py-4">
+            <h2 className="text-white text-lg font-semibold tracking-wide">
+              Add Doctor
+            </h2>
+            <p className="text-white/80 text-xs mt-1">
+              Fill in the details to create a new Doctor profile
             </p>
           </div>
 
-          {/* LAST NAME */}
-          <div className="flex flex-col space-y-2">
-            <Label>Last Name</Label>
+          <div className="grid grid-cols-5 gap-4 p-4">
+            <div className="col-span-5 flex flex-col items-center justify-center">
+              <ProfilePictureUpload setValue={setValue} register={register("image")} />
+                 <p className="text-xs text-red-500 mt-1">
+                {errors.image?.message}
+              </p>
+            </div>
+            <div className="flex flex-col space-y-2">
+              <Label>First Name</Label>
 
-            <Input {...register("lastname")} />
+              <Input {...register("firstname")} />
 
-            <p className="text-xs text-red-500 mt-1">
-              {errors.lastname?.message}
-            </p>
-          </div>
+              <p className="text-xs text-red-500 mt-1">
+                {errors.firstname?.message}
+              </p>
+            </div>
 
-          {/* PHONE */}
-          <div className="flex flex-col space-y-2">
-            <Label>Phone Number</Label>
+            <div className="flex flex-col space-y-2">
+              <Label>Last Name</Label>
 
-            <Input {...register("phonenumber")} />
+              <Input {...register("lastname")} />
 
-            <p className="text-xs text-red-500 mt-1">
-              {errors.phonenumber?.message}
-            </p>
-          </div>
+              <p className="text-xs text-red-500 mt-1">
+                {errors.lastname?.message}
+              </p>
+            </div>
 
-          {/* EMAIL */}
-          <div className="flex flex-col space-y-2">
-            <Label>Email</Label>
+            <div className="flex flex-col space-y-2">
+              <Label>Phone Number</Label>
+              <Input {...register("phonenumber")} />
+              <p className="text-xs text-red-500 mt-1">
+                {errors.phonenumber?.message}
+              </p>
+            </div>
 
-            <Input {...register("email")} />
+            <div className="flex flex-col space-y-2">
+              <Label>Email</Label>
+              <Input  {...register("email")} />
+              <p className="text-xs text-red-500 mt-1">
+                {errors.email?.message}
+              </p>
+            </div>
 
-            <p className="text-xs text-red-500 mt-1">
-              {errors.email?.message}
-            </p>
-          </div>
+            <div className="flex flex-col space-y-2">
+              <Label>Dob</Label>
 
-          {/* DOB */}
-          <div className="flex flex-col space-y-2">
-            <Label>DOB</Label>
+              <Controller
+                name="dob"
+                control={control}
+                render={({ field }) => (
+                  <CustomDatePicker
+                    value={field.value}
+                    onChange={field.onChange}
+                    error={errors.dob?.message}
+                  />
+                )}
+              />
 
-            <Input type="date" {...register("dob")} />
+            </div>
 
-            <p className="text-xs text-red-500 mt-1">
-              {errors.dob?.message}
-            </p>
-          </div>
+            <div className="flex flex-col space-y-2">
+              <Label>Experience</Label>
+              <Input  {...register("year_of_experience")} type="number" />
+              <p className="text-xs text-red-500 mt-1">
+                {errors.year_of_experience?.message}
+              </p>
+            </div>
 
-          {/* EXPERIENCE */}
-          <div className="flex flex-col space-y-2">
-            <Label>Experience</Label>
+            <div className="flex flex-col space-y-2">
+              <Label>Department</Label>
+              <select
+                {...register("department_id")}
+                className="w-full border rounded-md h-10 px-3"
+              >
+                <option value="">Select Department</option>
 
-            <Input {...register("year_of_experience")} />
-
-            <p className="text-xs text-red-500 mt-1">
-              {errors.year_of_experience?.message}
-            </p>
-          </div>
-
-          {/* DEPARTMENT */}
-          <div className="flex flex-col space-y-2">
-            <Label>Department</Label>
-
-            <select
-              {...register("department_id")}
-              className="w-full border rounded-md h-10 px-3"
-            >
-              <option value="">Select Department</option>
-
-              {departments?.map((item: any) => (
-                <option key={item.id} value={item.id}>{item.title}</option>
-              ))}
+                {departments?.map((item: any) => (
+                  <option key={item.id} value={item.id}>{item.title}</option>
+                ))}
 
 
-            </select>
+              </select>
 
-            <p className="text-xs text-red-500 mt-1">
-              {errors.department_id?.message}
-            </p>
-          </div>
+              <p className="text-xs text-red-500 mt-1">
+                {errors.department_id?.message}
+              </p>
+            </div>
 
-          {/* DESIGNATION */}
-          <div className="flex flex-col space-y-2">
-            <Label>Designation</Label>
+            <div className="flex flex-col space-y-2">
+              <Label>Designation</Label>
+              <Input  {...register("designation")} />
+              <p className="text-xs text-red-500 mt-1">
+                {errors.designation?.message}
+              </p>
+            </div>
 
-            <Input {...register("designation")} />
+            <div className="flex flex-col space-y-2">
+              <Label>Medical License Number</Label>
+              <Input {...register("medical_licese_number")} />
+              <p className="text-xs text-red-500 mt-1">
+                {errors.medical_licese_number?.message}
+              </p>
+            </div>
 
-            <p className="text-xs text-red-500 mt-1">
-              {errors.designation?.message}
-            </p>
-          </div>
 
-          {/* LICENSE */}
-          <div className="flex flex-col space-y-2">
-            <Label>Medical License Number</Label>
+            <div className="flex flex-col space-y-2">
+              <Label>Language Spoken</Label>
+              <Input  {...register("language_spoken")} />
+              <p className="text-xs text-red-500 mt-1">
+                {errors.language_spoken?.message}
+              </p>
+            </div>
 
-            <Input {...register("medical_licese_number")} />
+            <div className="flex flex-col space-y-2">
+              <Label>Blood Group</Label>
+              <select
+                {...register("blood_group")}
+                className="w-full border rounded-md h-10 px-3"
+              >
+                <option value="">Select Bloodgroup</option>
+                {bloodgroups?.map((bloodgroup: any) => (
+                  <option key={bloodgroup.id} value={bloodgroup.id}>{bloodgroup.title}</option>
+                ))}
 
-            <p className="text-xs text-red-500 mt-1">
-              {errors.medical_licese_number?.message}
-            </p>
-          </div>
+              </select>
 
-          {/* LANGUAGE */}
-          <div className="flex flex-col space-y-2">
-            <Label>Language Spoken</Label>
+              <p className="text-xs text-red-500 mt-1">
+                {errors.blood_group?.message}
+              </p>
+            </div>
 
-            <Input {...register("language_spoken")} />
-
-            <p className="text-xs text-red-500 mt-1">
-              {errors.language_spoken?.message}
-            </p>
-          </div>
-
-          {/* BLOOD GROUP */}
-          <div className="flex flex-col space-y-2">
-            <Label>Blood Group</Label>
-
-            <select
-              {...register("blood_group")}
-              className="w-full border rounded-md h-10 px-3"
-            >
-              <option value="">Select Bloodgroup</option>
-              {bloodgroups?.map((bloodgroup: any) => (
-                <option key={bloodgroup.id} value={bloodgroup.id}>{bloodgroup.title}</option>
-              ))}
-
-            </select>
-
-            <p className="text-xs text-red-500 mt-1">
-              {errors.blood_group?.message}
-            </p>
-          </div>
-
-          {/* GENDER */}
-          <div className="flex flex-col space-y-2">
-            <Label>Gender</Label>
+            <div className="flex flex-col space-y-2">
+              <Label>Gender</Label>
 
               <select
-              {...register("gender")}
-              className="w-full border rounded-md h-10 px-3"
-            >
-              <option value="">Select Gender</option>
-                <option  value="male">Male</option>
-                <option  value="female">Female</option>
+                {...register("gender")}
+                className="w-full border rounded-md h-10 px-3"
+              >
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
 
-            </select>
+              </select>
 
-            <p className="text-xs text-red-500 mt-1">
-              {errors.gender?.message}
-            </p>
+              <p className="text-xs text-red-500 mt-1">
+                {errors.gender?.message}
+              </p>
+            </div>
+            <div className="flex flex-col space-y-2">
+              <Label>Fee</Label>
+              <Input  {...register("fee")} />
+              <p className="text-xs text-red-500 mt-1">
+                {errors.fee?.message}
+              </p>
+            </div>
+
+            <div className="flex flex-col space-y-2">
+              <Label>Status</Label>
+              <select
+                {...register("status")}
+                className="w-full border rounded-md h-10 px-3"
+              >
+                <option value="">Select Status</option>
+                {doctorStatus?.map((status: any) => (
+                  <option key={status.id} value={status.id}>{status.title}</option>
+                ))}
+
+              </select>
+              <p className="text-xs text-red-500 mt-1">
+                {errors.status?.message}
+              </p>
+            </div>
+
+            <div className="flex  space-x-4">
+              <Label>Features onWebsite</Label>
+
+              <input type="checkbox" {...register("feature_on_website")} />
+
+              <p className="text-xs text-red-500 mt-1">
+                {errors.status?.message}
+              </p>
+            </div>
+
+            <div className="flex flex-col space-y-2 col-span-5">
+              <Label>Bio</Label>
+              <Textarea  {...register("bio")} />
+              <p className="text-xs text-red-500 mt-1">
+                {errors.bio?.message}
+              </p>
+            </div>
           </div>
 
-          {/* BIO */}
-          <div className="col-span-2">
-            <Label>Bio</Label>
-
-            <Textarea {...register("bio")} />
-
-            <p className="text-xs text-red-500 mt-1">
-              {errors.bio?.message}
-            </p>
-          </div>
-        </div>
-
-
-
-
-        <div>
-          <div className="">
-            <h2 className="text-lg font-semibold">
-              Address Information
-            </h2>
-
-            <div className="grid grid-cols-3 gap-3">
-
+          <div className="p-4">
+            <h2 className="text-lg font-semibold">Address Information</h2>
+            <div className="grid grid-cols-4 gap-4 p-4">
               <div className="flex flex-col space-y-2">
                 <Label>Country</Label>
+
                 <select
                   {...register("country_id")}
                   className="w-full border rounded-md h-10 px-3"
@@ -370,19 +455,21 @@ const Page = () => {
                 </p>
               </div>
 
-
               <div className="flex flex-col space-y-2">
                 <Label>State</Label>
+
                 <Input {...register("state")} />
+
                 <p className="text-xs text-red-500 mt-1">
                   {errors.state?.message}
                 </p>
               </div>
 
-
               <div className="flex flex-col space-y-2">
                 <Label>City</Label>
+
                 <Input {...register("city")} />
+
                 <p className="text-xs text-red-500 mt-1">
                   {errors.city?.message}
                 </p>
@@ -390,234 +477,198 @@ const Page = () => {
 
               <div className="flex flex-col space-y-2">
                 <Label>Address</Label>
-                <Input {...register("address")} />
+
+                <Input  {...register("address")} />
+
                 <p className="text-xs text-red-500 mt-1">
                   {errors.address?.message}
+
                 </p>
               </div>
-
 
               <div className="flex flex-col space-y-2">
                 <Label>Address 2</Label>
+
                 <Input {...register("address_2")} />
+
                 <p className="text-xs text-red-500 mt-1">
                   {errors.address_2?.message}
+
                 </p>
               </div>
-
-
-
 
               <div className="flex flex-col space-y-2">
-                <Label>Pin Code</Label>
+                <Label>Pinecode</Label>
+
                 <Input {...register("pin_code")} />
+
                 <p className="text-xs text-red-500 mt-1">
                   {errors.pin_code?.message}
+
                 </p>
               </div>
-
             </div>
-
-
           </div>
 
+          <div className="p-4 flex flex-col space-y-4">
+            <div className="flex justify-between items-center mb-4">
+              <h2 className="text-lg font-semibold">Session Information</h2>
 
-        </div>
-
-
-
-        {/* ================= SESSION INFO ================= */}
-
-        <div>
-          <div className="flex justify-between items-center mb-4">
-            <h2 className="text-lg font-semibold">
-              Session Information
-            </h2>
-
-            <button
-              type="button"
-              onClick={() =>
+              <button type="button" onClick={() =>
                 appendSession({
                   day: "",
                   start_time: "",
                   end_time: "",
                   patients: "",
                 })
-              }
-              className="border px-4 py-2 rounded-lg flex items-center gap-2"
-            >
-              <AddIcon className="!text-sm" />
-              Add Row
-            </button>
-          </div>
+              } className="bg-[#12b886] p-2 text-white rounded-full hover:scale-105 transition">
+                <CirclePlus size={18} />
+              </button>
+            </div>
 
-          <div className="space-y-4">
-            {sessionFields.map((field, index) => (
-              <div
-                key={field.id}
-                className="grid grid-cols-5 gap-4 border rounded-xl p-4"
-              >
-                {/* DAY */}
-                <div className="flex flex-col space-y-2">
-                  <Label>Day</Label>
+            <div>
+              {sessionFields.map((field, index) => (
 
-                  <select
-                    {...register(`sessions.${index}.day`)}
-                    className="w-full border rounded-md h-10 px-3"
-                  >
-                    <option value="">Select Day</option>
+                <div className="grid grid-cols-4 gap-4 p-4 border" key={index}>
+                  <div className="flex flex-col space-y-2">
+                    <Label>Day</Label>
 
-                    <option>Sunday</option>
-                    <option>Monday</option>
-                    <option>Tuesday</option>
-                    <option>Wednesday</option>
-                    <option>Thursday</option>
-                    <option>Friday</option>
-                    <option>Saturday</option>
-                  </select>
-
-                  <p className="text-xs text-red-500 mt-1">
-                    {errors.sessions?.[index]?.day?.message}
-                  </p>
-                </div>
-
-                {/* START */}
-                <div className="flex flex-col space-y-2">
-                  <Label>Start</Label>
-
-                  <Input
-                    type="time"
-                    {...register(`sessions.${index}.start_time`)}
-                  />
-
-                  <p className="text-xs text-red-500 mt-1">
-                    {errors.sessions?.[index]?.start_time?.message}
-                  </p>
-                </div>
-
-                {/* END */}
-                <div className="flex flex-col space-y-2">
-                  <Label>End</Label>
-
-                  <Input
-                    type="time"
-                    {...register(`sessions.${index}.end_time`)}
-                  />
-
-                  <p className="text-xs text-red-500 mt-1">
-                    {errors.sessions?.[index]?.end_time?.message}
-                  </p>
-                </div>
-
-                {/* PATIENTS */}
-                <div className="flex flex-col space-y-2">
-                  <Label>Patients</Label>
-
-                  <Input
-                    type="number"
-                    {...register(`sessions.${index}.patients`)}
-                  />
-
-                  <p className="text-xs text-red-500 mt-1">
-                    {errors.sessions?.[index]?.patients?.message}
-                  </p>
-                </div>
-
-                {/* DELETE */}
-                <div className="flex items-end">
-                  {index !== 0 && (
-                    <button
-                      type="button"
-                      onClick={() => removeSession(index)}
-                      className="border rounded-lg h-10 w-10 flex items-center justify-center"
+                    <select
+                      {...register(`sessions.${index}.day`)} className="w-full border rounded-md h-10 px-3"
                     >
-                      <DeleteIcon />
-                    </button>
-                  )}
+                      <option value="">Select Day</option>
+
+                      <option>Sunday</option>
+                      <option>Monday</option>
+                      <option>Tuesday</option>
+                      <option>Wednesday</option>
+                      <option>Thursday</option>
+                      <option>Friday</option>
+                      <option>Saturday</option>
+                    </select>
+
+                    <p className="text-xs text-red-500 mt-1">
+                      {errors.sessions?.[index]?.day?.message}
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col space-y-2">
+                    <Label>Start</Label>
+
+
+                    <Controller
+                      name={`sessions.${index}.start_time`}
+                      control={control}
+                      render={({ field }) => (
+                        <TimePicker
+                          value={field.value}
+                          onChange={field.onChange}
+                          error={errors.sessions?.[index]?.start_time?.message}
+                          placeholder="Select meeting time"
+                        />
+                      )}
+                    />
+                  </div>
+
+                  <div className="flex flex-col space-y-2">
+                    <Label>End</Label>
+                    <Controller
+                      name={`sessions.${index}.end_time`}
+                      control={control}
+                      render={({ field }) => (
+                        <TimePicker
+                          value={field.value}
+                          onChange={field.onChange}
+                          error={errors.sessions?.[index]?.end_time?.message}
+                          placeholder="Select meeting time"
+                        />
+                      )}
+                    />
+                  </div>
+
+                  <div className="flex flex-col space-y-2">
+                    <Label>patients</Label>
+
+                    <Input type="number"                  {...register(`sessions.${index}.patients`)}
+                    />
+
+                    <p className="text-xs text-red-500 mt-1">
+                      {errors.sessions?.[index]?.patients?.message}
+
+                    </p>
+                  </div>
                 </div>
-              </div>
-            ))}
+              ))}
+
+            </div>
+
+            <DynamicSection title="Education Information"
+              fields={educationFields}
+              append={() =>
+                appendEducation({
+                  degree: "",
+                  university: "",
+                  from: "",
+                  to: "",
+                })
+              }
+              remove={removeEducation}
+              register={register}
+              errors={errors.educations}
+              type="education"
+              control={control}
+            />
+
+            <DynamicSection
+              title="Awards & Recognition"
+              fields={awardFields}
+              append={() =>
+                appendAward({
+                  name: "",
+                  from: "",
+                })
+              }
+              remove={removeAward}
+              register={register}
+              errors={errors.awards}
+              type="award"
+              control={control}
+            />
+
+
+            <DynamicSection
+              title="Certifications"
+              fields={certificationFields}
+              append={() =>
+                appendCertification({
+                  name: "",
+                  from: "",
+                })
+              }
+              remove={removeCertification}
+              register={register}
+              errors={errors.certifications}
+              type="certification"
+              control={control}
+            />
+
+
           </div>
-        </div>
 
-        {/* ================= EDUCATION ================= */}
 
-        <DynamicSection
-          title="Education Information"
-          fields={educationFields}
-          append={() =>
-            appendEducation({
-              degree: "",
-              university: "",
-              from: "",
-              to: "",
-            })
-          }
-          remove={removeEducation}
-          register={register}
-          errors={errors.educations}
-          type="education"
-        />
+          <div className="flex  place-content-end pr-10 space-x-4">
+            <Cancelbtn label="Cancel" />
+            <Addbtn label="Submit" />
+          </div>
+        </form>
 
-        {/* ================= AWARDS ================= */}
-
-        <DynamicSection
-          title="Awards & Recognition"
-          fields={awardFields}
-          append={() =>
-            appendAward({
-              name: "",
-              from: "",
-            })
-          }
-          remove={removeAward}
-          register={register}
-          errors={errors.awards}
-          type="award"
-        />
-
-        {/* ================= CERTIFICATIONS ================= */}
-
-        <DynamicSection
-          title="Certifications"
-          fields={certificationFields}
-          append={() =>
-            appendCertification({
-              name: "",
-              from: "",
-            })
-          }
-          remove={removeCertification}
-          register={register}
-          errors={errors.certifications}
-          type="certification"
-        />
-
-        {/* ================= BUTTONS ================= */}
-
-        <div className="flex gap-4">
-          <button
-            type="button"
-            className="border px-5 py-2 rounded-lg"
-          >
-            Cancel
-          </button>
-
-          <button
-            type="submit"
-            className="border px-5 py-2 rounded-lg"
-          >
-            Submit
-          </button>
-        </div>
-      </form>
-    </div>
+      </div>
+    </>
   );
 };
 
-export default Page;
+export default page;
 
-// ================= REUSABLE COMPONENT =================
 
 const DynamicSection = ({
   title,
@@ -627,119 +678,138 @@ const DynamicSection = ({
   register,
   errors,
   type,
+  control
 }: any) => {
+
   return (
-    <div>
+    <div className=" flex flex-col space-y-4">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-semibold">{title}</h2>
 
-        <button
-          type="button"
-          onClick={append}
-          className="border px-4 py-2 rounded-lg flex items-center gap-2"
-        >
-          <AddIcon className="!text-sm" />
-          Add Row
+        <button type="button" onClick={append} className="bg-[#12b886] p-2 text-white rounded-full hover:scale-105 transition">
+          <CirclePlus size={18} />
         </button>
       </div>
+      {fields.map((field: any, index: number) => (
 
-      <div className="space-y-4">
-        {fields.map((field: any, index: number) => (
-          <div
-            key={field.id}
-            className="grid grid-cols-3 gap-4 border rounded-xl p-4"
-          >
-            {type === "education" ? (
-              <>
+        <div key={index}>
+          {type === "education" ? (
+            <>
+
+              <div className="grid grid-cols-4 gap-4 p-4 border">
+
+
                 <div className="flex flex-col space-y-2">
                   <Label>Degree</Label>
-                  <Input
-                    placeholder="Degree"
-                    {...register(`educations.${index}.degree`)}
-                  />
+
+                  <Input    {...register(`educations.${index}.degree`)} />
 
                   <p className="text-xs text-red-500 mt-1">
                     {errors?.[index]?.degree?.message}
+
                   </p>
                 </div>
 
                 <div className="flex flex-col space-y-2">
                   <Label>University</Label>
-                  <Input
-                    placeholder="University"
-                    {...register(`educations.${index}.university`)}
-                  />
+
+                  <Input     {...register(`educations.${index}.university`)} />
 
                   <p className="text-xs text-red-500 mt-1">
                     {errors?.[index]?.university?.message}
+
+
                   </p>
                 </div>
 
                 <div className="flex flex-col space-y-2">
                   <Label>Start Date</Label>
-                  <Input
-                    type="date"
-                    {...register(`educations.${index}.from`)}
+
+
+                  <Controller
+                    name={`educations.${index}.from`}
+                    control={control}
+                    render={({ field }) => (
+                      <CustomDatePicker
+                        value={field.value}
+                        onChange={field.onChange}
+                        error={errors?.[index]?.from?.message}
+                      />
+                    )}
                   />
 
-                  <p className="text-xs text-red-500 mt-1">
-                    {errors?.[index]?.from?.message}
-                  </p>
+
                 </div>
 
                 <div className="flex flex-col space-y-2">
                   <Label>End Date</Label>
-                  <Input
-                    type="date"
-                    {...register(`educations.${index}.to`)}
+
+                  <Controller
+                    name={`${type}s.${index}.to`}
+                    control={control}
+                    render={({ field }) => (
+                      <CustomDatePicker
+                        value={field.value}
+                        onChange={field.onChange}
+                        error={errors?.[index]?.to?.message}
+                      />
+                    )}
                   />
-
-                  <p className="text-xs text-red-500 mt-1">
-                    {errors?.[index]?.to?.message}
-                  </p>
                 </div>
-              </>
-            ) : (
-              <>
-                <div>
-                  <Input
-                    placeholder="Name"
-                    {...register(`${type}s.${index}.name`)}
-                  />
+              </div>
+            </>
+          ) : (
+            <>
+              <div className="p-4 flex flex-col space-y-4">
 
-                  <p className="text-xs text-red-500 mt-1">
-                    {errors?.[index]?.name?.message}
-                  </p>
+                <div className="grid grid-cols-4 gap-4 p-4 border">
+
+
+                  <div className="flex flex-col space-y-2">
+                    <Label>Title</Label>
+
+                    <Input                     {...register(`${type}s.${index}.name`)}
+                    />
+
+                    <p className="text-xs text-red-500 mt-1">
+                      {errors?.[index]?.name?.message}
+
+                    </p>
+                  </div>
+
+                  <div className="flex flex-col space-y-2">
+                    <Label>Date</Label>
+
+
+                    <Controller
+                      name={`${type}s.${index}.from`}
+                      control={control}
+                      render={({ field }) => (
+                        <CustomDatePicker
+                          value={field.value}
+                          onChange={field.onChange}
+                          error={errors?.[index]?.from?.message}
+                        />
+                      )}
+                    />
+                  </div>
+
+
                 </div>
 
-                <div>
-                  <Input
-                    type="date"
-                    placeholder="From"
-                    {...register(`${type}s.${index}.from`)}
-                  />
 
-                  <p className="text-xs text-red-500 mt-1">
-                    {errors?.[index]?.from?.message}
-                  </p>
-                </div>
-              </>
-            )}
+              </div>
+            </>
+          )}
+        </div>
+      ))}
 
-            <div className="flex items-end">
-              {index !== 0 && (
-                <button
-                  type="button"
-                  onClick={() => remove(index)}
-                  className="border rounded-lg h-10 w-10 flex items-center justify-center"
-                >
-                  <DeleteIcon />
-                </button>
-              )}
-            </div>
-          </div>
-        ))}
-      </div>
+
+
+
+
+
     </div>
-  );
-};
+
+  )
+}

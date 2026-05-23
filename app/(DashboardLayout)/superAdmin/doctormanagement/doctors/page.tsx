@@ -2,15 +2,18 @@
 import Filter from "../../../../components/cutom/Filter";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import WindowIcon from "@mui/icons-material/Window";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Grid from "../../../../components/cutom/doctors/Grid";
 import List from "../../../../components/cutom/doctors/List";
 import Link from 'next/link'
+import { getAllDoctor } from "../../../../services/Doctor";
 
 
 export default function Page() {
 
   const [switchViewwise ,setswitchView] = useState("grid");
+  const [doctors ,setDoctors] = useState([]);
+  const [loading ,setLoading] = useState(true);
 
 
 
@@ -19,6 +22,26 @@ export default function Page() {
   function switchView (viewaction) {
     setswitchView(viewaction);
   }
+
+  useEffect(()=>{
+
+    const getAllDoctors = async() =>{
+        const doctors = await getAllDoctor();
+        setLoading(false)
+        setDoctors(doctors);
+
+    }
+
+    getAllDoctors();
+
+  },[])
+
+
+
+
+
+
+  
 
   return (
 
@@ -51,7 +74,8 @@ export default function Page() {
       </div>
 
       <div className="content">
-        {switchViewwise=="grid" ? (<Grid/>) : (<List/>)}
+        {!loading && doctors.length > 0 ? switchViewwise=="grid" ? (<Grid data={doctors}/>) : (<List data={doctors}/>) : <h1>loading</h1>}
+        
       </div>
 
 
