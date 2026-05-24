@@ -28,7 +28,7 @@ export interface IDoctor {
   lastname: string;
   phonenumber: string;
   email: string;
-  dob: string;
+  dob: any;
   year_of_experience: string;
   department_id: string;
   designation: string;

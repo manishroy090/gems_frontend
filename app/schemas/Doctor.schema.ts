@@ -1,23 +1,26 @@
 import * as yup from "yup";
-const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif"];
+const ACCEPTED_TYPES = ["image/jpeg", "image/png", "image/webp", "image/gif", null];
 const MAX_SIZE_MB = 5;
 const MAX_SIZE_BYTES = MAX_SIZE_MB * 1024 * 1024;
 export const Doctorschema = yup.object({
   image: yup
     .mixed()
-    .required("Please select an image")
+    .nullable()
     .test("fileType", "Only JPEG, PNG, WebP, or GIF allowed", (value) => {
-      if (!value) return false;
-      return ACCEPTED_TYPES.includes(value.type);
+      if (!value) return true;
+
+      if (value) return ACCEPTED_TYPES.includes(value.type);
+
     })
     .test("fileSize", `Image must be under ${MAX_SIZE_MB}MB`, (value) => {
-      if (!value) return false;
-      return value.size <= MAX_SIZE_BYTES;
+      if (!value) return true;
+      if (value) return value.size <= MAX_SIZE_BYTES;
     })
   ,
   firstname: yup.string().required("FirstName is required"),
   lastname: yup.string().required("LastName is required"),
-  phonenumber: yup.string().required("Phone number is required"),
+  phonenumber: yup.string().matches(/^[0-9]{10}$/, 'Phone number must be exactly 10 digits')
+    .required("Phone number is required"),
   email: yup
     .string()
     .email("Invalid email")

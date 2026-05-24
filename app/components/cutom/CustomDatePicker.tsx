@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 
 import { cva } from "class-variance-authority";
 import { cn } from "../../libs/utils";
+import { parsers } from "date-fns";
 
 const inputVariants = cva(
   "flex h-10 w-74 border rounded-lg px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-0",
@@ -43,12 +44,13 @@ function CustomDatePicker({
   dateFormat = "yyyy-MM-dd",
   error,
   variant = "default",
-  className,
+  className = ""
 }) {
 
-    const handleChange = (date) => {
-    const formattedDate = date.toLocaleDateString('en-CA'); // 'YYYY-MM-DD'
-    onChange(formattedDate)
+  const [formatedDate, setFormatedDate] = useState();
+  const handleChange = (date) => {
+    console.log("date",date);
+    onChange(date)
   };
 
 

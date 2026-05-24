@@ -29,6 +29,6 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts"
-, "app/components/cutom/CustomDatePicker.jsx"  ],
+, "app/components/cutom/CustomDatePicker.tsx"  ],
   "exclude": ["node_modules"]
 }

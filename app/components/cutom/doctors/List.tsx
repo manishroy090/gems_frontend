@@ -36,7 +36,7 @@ const List = ({ data }) => {
             label: "View",
             icon: "👁️",
             href: (item) =>
-              `/superAdmin/usersmanagement/users/view/${item.id}`,
+              `/superAdmin/doctormanagement/doctors/view/${item.id}`,
           },
 
           {

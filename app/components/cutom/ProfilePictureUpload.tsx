@@ -1,10 +1,10 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
 
-const ProfilePictureUpload = ({setValue,register}) => {
-  const [image, setImage] = useState(null);
+const ProfilePictureUpload = ({ setValue, register, imaged }) => {
+  let [image, setImage] = useState();
   const fileInputRef = useRef(null);
 
   const handleImageChange = (e) => {
@@ -13,11 +13,17 @@ const ProfilePictureUpload = ({setValue,register}) => {
 
     if (file) {
       const imageUrl = URL.createObjectURL(file);
-      setValue('image',file, { shouldValidate: true });
+      setValue('image', file, { shouldValidate: true });
       setImage(imageUrl);
     }
   };
 
+  useEffect(() => {
+    if (imaged) {
+      setImage(`http://localhost:8080/uploads/doctors/${imaged}`)
+
+    }
+  }, [imaged])
   return (
     <div className="flex justify-center">
       <div className="relative group">

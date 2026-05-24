@@ -24,8 +24,8 @@ export async function createDoctor(payload) {
 
 }
 
-export async function getDoctor() {
-  const doctor = await HospitalApi.get(`doctors/edit/${1}`)
+export async function getDoctor(id) {
+  const doctor = await HospitalApi.get(`doctors/edit/${id}`)
     .then((res) => {
       return res.data.doctor
 
@@ -37,7 +37,10 @@ export async function getDoctor() {
 }
 
 
-export async function updateDoctor() {
+export async function updateDoctor(id,payload) {
+
+  const doctor = await HospitalApi.put(`doctors/update/${id}`,payload)
+
 
 }
 

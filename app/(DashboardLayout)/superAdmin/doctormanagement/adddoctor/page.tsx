@@ -15,7 +15,7 @@ import Cancelbtn from "../../../../components/cutom/Cancelbtn";
 import CustomDatePicker from "../../../../components/cutom/CustomDatePicker";
 import TimePicker from "../../../../components/cutom/TimePicker";
 import { getAllDoctorStatus } from "../../../../services/Config";
-import { createDoctor,getDoctor } from "../../../../services/Doctor";
+import { createDoctor, getDoctor, updateDoctor } from "../../../../services/Doctor";
 import { useSearchParams } from "next/navigation";
 
 
@@ -26,6 +26,8 @@ const page = () => {
   const [countries, setCountries] = useState([]);
   const [bloodgroups, setBloodgroups] = useState([]);
   const [doctorStatus, setDoctorStatus] = useState([]);
+  const [doctorId, setDoctorId] = useState();
+  const [doctorImage, setDoctorImage] = useState();
   const params = useSearchParams();
 
   const {
@@ -34,6 +36,7 @@ const page = () => {
     handleSubmit,
     reset,
     setValue,
+    watch,
     formState: { errors },
   } = useForm<IDoctor>({
     resolver: yupResolver(Doctorschema),
@@ -45,6 +48,7 @@ const page = () => {
       phonenumber: "",
       email: "",
       dob: "",
+      feature_on_website:false,
       year_of_experience: "",
       department_id: "",
       designation: "",
@@ -126,48 +130,55 @@ const page = () => {
   });
 
 
-  useEffect(()=>{
+  useEffect(() => {
+    const doctorId = params.get('doctor_id');
     
-     const doctorId = params.get('doctor_id');
+    
+    if (doctorId!==null) {
+      setDoctorId(doctorId);
+      const getDoctorDetails = async () => {
+        const result = await getDoctor(doctorId);
 
-      const getDoctorDetails = async() =>{
-      const result = await getDoctor();
-      setValue('image',"dd", { shouldValidate: true });
+        const dob = new Date(result.dob).toISOString();
+        const education = result.education.map((item)=>({id: item.id, degree:item.degree, from: new Date(item.from).toISOString(), to:new Date(item.to).toISOString(), university:item.university}))
+        const awards =result.award.map((item)=>({id: item.id, name:item.name, from: new Date(item.from).toISOString()}))
+        const certification =result.certification.map((item)=>({id: item.id, name:item.name, from: new Date(item.from).toISOString()}))
 
-      reset({
-        firstname:result.firstname,
-        lastname:result.lastname,
-        phonenumber:result.phone_number,
-        email:result.email,
-        dob:result.dob,
-        year_of_experience:result.year_of_exp,
-        department_id:String(result.department_id),
-        designation:result.designation,
-        medical_licese_number:result.medical_license_number,
-        language_spoken:result.language_spoken,
-        blood_group:String(result.blood_group),
-        gender:result.gender,
-        fee:result.fees,
-        status:result.status_id,
-        feature_on_website:result.feature_on_website,
-        bio:result.bio,
-        country_id:String(result.country_id),
-        state:result.state,
-        city:result.city,
-        address:result.address_one,
-        address_2:result.address_two,
-        pin_code:result.pin_code,
-        sessions:result.doctor_sessions,
-        educations:result.education,
-        awards:result.award,
-        certifications:result.certification
-      })
-
-      // console.log("result",result);
+        console.log("educt",education);
+        setDoctorImage(result.image)
+        reset({
+          firstname: result.firstname,
+          lastname: result.lastname,
+          phonenumber: result.phone_number,
+          email: result.email,
+          dob: dob,
+          year_of_experience: result.year_of_exp,
+          department_id: String(result.department_id),
+          designation: result.designation,
+          medical_licese_number: result.medical_license_number,
+          language_spoken: result.language_spoken,
+          blood_group: String(result.blood_group),
+          gender: result.gender,
+          fee: result.fees,
+          status: result.status_id,
+          feature_on_website: result.feature_on_website,
+          bio: result.bio,
+          country_id: String(result.country_id),
+          state: result.state,
+          city: result.city,
+          address: result.address_one,
+          address_2: result.address_two,
+          pin_code: result.pin_code,
+          sessions: result.doctor_sessions,
+          educations: education,
+          awards: awards,
+          certifications: certification
+        })
+      }
+      getDoctorDetails();
     }
 
-    getDoctorDetails();
-  },[departments,bloodgroups,countries])
+  }, [departments, bloodgroups, countries])
 
 
 
@@ -176,7 +187,21 @@ const page = () => {
 
     Object.entries(data).forEach(([key, value]) => {
 
+
+      if(key =="dob"){
+        console.log(value);
+        value =new Date(value).toISOString();
+      }
+
       if (Array.isArray(value)) {
+        if(key=="educations"){
+           value = value.map((item)=>({id: item.id, degree:item.degree, from: new Date(item.from).toISOString(), to:new Date(item.to).toISOString(), university:item.university}));
+        }
+        if(key=="awards" || key=="certifications"){
+            value = value.map((item)=>({id: item.id, name:item.name, from: new Date(item.from).toISOString()}));
+
+        }
+     
         formData.append(key, JSON.stringify(value));
       }
 
@@ -194,7 +219,13 @@ const page = () => {
       console.log(pair[0], pair[1]);
     }
 
-    await createDoctor(formData);
+    if (doctorId) {
+      updateDoctor(doctorId, formData)
+    }
+    else {
+
+      await createDoctor(formData);
+    }
   };
 
   const onError = (error: any) => {
@@ -219,10 +250,6 @@ const page = () => {
   }, [])
 
 
-  const edit = async () =>{
-
-      console.log("edit method called")
-  }
 
 
   return (
@@ -241,8 +268,8 @@ const page = () => {
 
           <div className="grid grid-cols-5 gap-4 p-4">
             <div className="col-span-5 flex flex-col items-center justify-center">
-              <ProfilePictureUpload setValue={setValue} register={register("image")} />
-                 <p className="text-xs text-red-500 mt-1">
+              <ProfilePictureUpload setValue={setValue} register={register("image")} imaged={doctorImage} />
+              <p className="text-xs text-red-500 mt-1">
                 {errors.image?.message}
               </p>
             </div>
@@ -415,7 +442,7 @@ const page = () => {
             <div className="flex  space-x-4">
               <Label>Features onWebsite</Label>
 
-              <input type="checkbox" {...register("feature_on_website")} />
+              <input type="checkbox"   checked={watch("feature_on_website") === true} {...register("feature_on_website")} />
 
               <p className="text-xs text-red-500 mt-1">
                 {errors.status?.message}
