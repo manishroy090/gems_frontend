@@ -1,23 +1,16 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import BreadcrumbComp from "../../../layout/shared/breadcrumb/BreadcrumbComp";
-import DataTable from "../../../../components/utilities/data-table/DataTable";
-import Modal from "../../../../components/ui/Modal";
-import { Label } from "../../../../components/ui/label";
-import { Input } from "../../../../components/ui/input";
-import { Textarea } from "../../../../components/ui/textarea";
-import Datepicker from "../../../../components/cutom/Datepicker";
-import Filter from "../../../../components/cutom/Filter";
-import Table from "../../../../components/cutom/Table";
-import Userscards from "../../../../components/cutom/cards/users/Userscards";
+import { useEffect, useState } from "react";
+import Modal from "@components/ui/Modal";
+import { Label } from "@components/cutom/label";
+import { Input } from "@components/cutom/input";
+import { Textarea } from "@components/cutom/textarea";
 import { useForm, SubmitHandler } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup";
-import { RoleSchema } from "../../../../schemas/Role.schema"
-import { IRole} from "../../../../interface/IRoles";
+import { RoleSchema } from "@schemas/Role.schema"
+import { IRole} from "@interface/IRoles";
 import Link from 'next/link'
-import { getAllRoles,createRole } from "../../../../services/Roles";
-import Badge from "@mui/material/Badge";
-
+import { getAllRoles,createRole } from "@services/Roles";
+import Table from "@/components/cutom/Table"
 
 
 

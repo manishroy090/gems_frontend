@@ -138,6 +138,8 @@ const ActionMenu = memo(
         const handleAction = async (
             action: TableAction<T>
         ) => {
+
+            console.log("action" , action);
             if (action.confirm) {
                 setConfirmAction(action);
                 return;

@@ -2,8 +2,8 @@
 
 import { useEffect, useMemo, useState } from "react";
 import { useParams } from "next/navigation";
-import { getRolesWithPermissions ,assignPermission ,updateRolePermissions} from "../../../../../services/Roles";
-import { getPermissions } from "../../../../../services/Permission";
+import { getRolesWithPermissions ,assignPermission ,updateRolePermissions} from "@services/Roles";
+import { getPermissions } from "@services/Permission";
 
 
 const ACTIONS = ["index", "create", "edit", "delete", "view"];

@@ -1,24 +1,33 @@
 "use client"
-import PatientCards from "../../../../components/cutom/cards/users/PatientCards"
-import Filter from "../../../../components/cutom/Filter";
+import Filter from "@components/cutom/Filter";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
-import Exportbtn from "../../../../components/cutom/Exportbtn"
+import Exportbtn from "@components/cutom/Exportbtn"
+import { Input } from "@components/cutom/input";
+import Grid from "@components/cutom/patient.tsx/Grid";
 import WindowIcon from "@mui/icons-material/Window";
-import { useState } from "react";
-import { Input } from "../../../../components/ui/input";
-import Grid from "../../../../components/cutom/patient.tsx/Grid";
-import List from "../../../../components/cutom/patient.tsx/List";
+import { useEffect, useState } from "react";
+import List from "@components/cutom/patient.tsx/List";
 import Link from 'next/link'
+import { getAllPatient } from "@services/Patients";
 
 
 
 const page = () => {
 
     const [switchViewwise, setswitchView] = useState("list");
+    const [patients,setPatients] = useState([]);
     function switchView(viewaction) {
         setswitchView(viewaction);
     }
 
+
+    useEffect(()=>{
+        const getAllPatients = async () =>{
+           const result =  await getAllPatient();
+           setPatients(result);
+        }
+         getAllPatients();
+    },[])
 
     return (
 
@@ -82,7 +91,7 @@ const page = () => {
 
             ) : ""}
             <div>
-                {switchViewwise == "grid" ? (<Grid />) : (<List />)}
+                {switchViewwise == "grid" ? (<Grid data={patients}/>) : (<List data={patients}/>)}
             </div>
 
         </div>

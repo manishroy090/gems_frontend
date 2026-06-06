@@ -19,7 +19,18 @@
       }
     ],
     "paths": {
-      "@/*": ["./src/*"]
+      "@/*": ["./app/*"],
+      "@components/*": ["./app/components/*"],
+      "@context/*": ["./app/context/*"],
+      "@css/*": ["./app/context/*"],
+      "@data/*": ["./app/data/*"],
+      "@hooks/*": ["./app/hooks/*"],
+      "@interface/*": ["./app/interface/*"],
+      "@libs/*": ["./app/libs/*"],
+      "@sas/*": ["./app/sass/*"],
+      "@schemas/*": ["./app/schemas/*"],
+      "@store/*": ["./app/store/*"],
+      "@services/*": ["./app/services/*"]
     }
   },
   "include": [
@@ -28,7 +39,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
-    "**/*.mts"
-, "app/components/cutom/CustomDatePicker.tsx"  ],
+    "**/*.mts",
+    "app/components/cutom/CustomDatePicker.tsx"
+  ],
   "exclude": ["node_modules"]
 }

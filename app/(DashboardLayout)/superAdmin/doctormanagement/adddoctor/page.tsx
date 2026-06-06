@@ -1,22 +1,23 @@
 "use client";
 
-import React, { useEffect, useState } from "react"; import { Label } from "../../../../components/ui/label";
-import { Input } from "../../../../components/ui/input";
-import { Textarea } from "../../../../components/ui/textarea";
+import  { useEffect, useState } from "react"; import { Label } from "@components/ui/label";
+import { Input } from "@components/cutom/input";
+import { Textarea } from "@components/cutom/textarea";
 import { CirclePlus } from 'lucide-react';
-import ProfilePictureUpload from "../../../../components/cutom/ProfilePictureUpload";
+import ProfilePictureUpload from "@components/cutom/ProfilePictureUpload";
 import { useForm, SubmitHandler, useFieldArray, Controller } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup";
-import { IDoctor } from "../../../../interface/IDoctor";
-import { Doctorschema } from "../../../../schemas/Doctor.schema";
-import { getHospitalDepartments, getAllCountries, getAllBloodGroup } from "../../../../services/Hoshpital";
-import Addbtn from "../../../../components/cutom/Addbtn";
-import Cancelbtn from "../../../../components/cutom/Cancelbtn";
-import CustomDatePicker from "../../../../components/cutom/CustomDatePicker";
-import TimePicker from "../../../../components/cutom/TimePicker";
-import { getAllDoctorStatus } from "../../../../services/Config";
-import { createDoctor, getDoctor, updateDoctor } from "../../../../services/Doctor";
+import { IDoctor } from "@interface/IDoctor";
+import { Doctorschema } from "@schemas/Doctor.schema";
+import { getHospitalDepartments, getAllCountries, getAllBloodGroup } from "@services/Hoshpital";
+import Addbtn from "@components/cutom/Addbtn";
+import Cancelbtn from "@components/cutom/Cancelbtn";
+import CustomDatePicker from "@components/cutom/CustomDatePicker";
+import TimePicker from "@components/cutom/TimePicker";
+import { getAllDoctorStatus } from "@services/Config";
+import { createDoctor, getDoctor, updateDoctor } from "@services/Doctor";
 import { useSearchParams } from "next/navigation";
+import { Printer } from 'lucide-react';
 
 
 
@@ -26,7 +27,7 @@ const page = () => {
   const [countries, setCountries] = useState([]);
   const [bloodgroups, setBloodgroups] = useState([]);
   const [doctorStatus, setDoctorStatus] = useState([]);
-  const [doctorId, setDoctorId] = useState();
+  const [doctorId, setDoctorId] = useState(null);
   const [doctorImage, setDoctorImage] = useState();
   const params = useSearchParams();
 
@@ -48,7 +49,7 @@ const page = () => {
       phonenumber: "",
       email: "",
       dob: "",
-      feature_on_website:false,
+      feature_on_website: false,
       year_of_experience: "",
       department_id: "",
       designation: "",
@@ -132,19 +133,19 @@ const page = () => {
 
   useEffect(() => {
     const doctorId = params.get('doctor_id');
-    
-    
-    if (doctorId!==null) {
+
+
+    if (doctorId !== null) {
       setDoctorId(doctorId);
       const getDoctorDetails = async () => {
         const result = await getDoctor(doctorId);
 
         const dob = new Date(result.dob).toISOString();
-        const education = result.education.map((item)=>({id: item.id, degree:item.degree, from: new Date(item.from).toISOString(), to:new Date(item.to).toISOString(), university:item.university}))
-        const awards =result.award.map((item)=>({id: item.id, name:item.name, from: new Date(item.from).toISOString()}))
-        const certification =result.certification.map((item)=>({id: item.id, name:item.name, from: new Date(item.from).toISOString()}))
+        const education = result.education.map((item) => ({ id: item.id, degree: item.degree, from: new Date(item.from).toISOString(), to: new Date(item.to).toISOString(), university: item.university }))
+        const awards = result.award.map((item) => ({ id: item.id, name: item.name, from: new Date(item.from).toISOString() }))
+        const certification = result.certification.map((item) => ({ id: item.id, name: item.name, from: new Date(item.from).toISOString() }))
 
-        console.log("educt",education);
+        console.log("educt", education);
         setDoctorImage(result.image)
         reset({
           firstname: result.firstname,
@@ -188,20 +189,20 @@ const page = () => {
     Object.entries(data).forEach(([key, value]) => {
 
 
-      if(key =="dob"){
+      if (key == "dob") {
         console.log(value);
-        value =new Date(value).toISOString();
+        value = new Date(value).toISOString();
       }
 
       if (Array.isArray(value)) {
-        if(key=="educations"){
-           value = value.map((item)=>({id: item.id, degree:item.degree, from: new Date(item.from).toISOString(), to:new Date(item.to).toISOString(), university:item.university}));
+        if (key == "educations") {
+          value = value.map((item) => ({ id: item.id, degree: item.degree, from: new Date(item.from).toISOString(), to: new Date(item.to).toISOString(), university: item.university }));
         }
-        if(key=="awards" || key=="certifications"){
-            value = value.map((item)=>({id: item.id, name:item.name, from: new Date(item.from).toISOString()}));
+        if (key == "awards" || key == "certifications") {
+          value = value.map((item) => ({ id: item.id, name: item.name, from: new Date(item.from).toISOString() }));
 
         }
-     
+
         formData.append(key, JSON.stringify(value));
       }
 
@@ -257,14 +258,25 @@ const page = () => {
       <div className="bg-white  pb-8 w-full h-fit">
         <form onSubmit={handleSubmit(onSubmit, onError)}
         >
-          <div className="bg-gradient-to-r from-[#14967f] to-[#12b886] px-6 py-4">
-            <h2 className="text-white text-lg font-semibold tracking-wide">
-              Add Doctor
-            </h2>
-            <p className="text-white/80 text-xs mt-1">
-              Fill in the details to create a new Doctor profile
-            </p>
+          <div className="bg-gradient-to-r from-[#14967f] to-[#12b886] px-6 py-4 flex justify-between">
+
+            <div>
+
+
+              <h2 className="text-white text-lg font-semibold tracking-wide">
+                {doctorId ? "Update" : "Add"} Doctor
+              </h2>
+              <p className="text-white/80 text-xs mt-1">
+                Fill in the details to create a new Doctor profile
+              </p>
+            </div>
+            <div className="flex items-center justify-center  px-2 bg-yellow-200 rounded">
+
+              <Printer />
+            </div>
           </div>
+
+
 
           <div className="grid grid-cols-5 gap-4 p-4">
             <div className="col-span-5 flex flex-col items-center justify-center">
@@ -442,7 +454,7 @@ const page = () => {
             <div className="flex  space-x-4">
               <Label>Features onWebsite</Label>
 
-              <input type="checkbox"   checked={watch("feature_on_website") === true} {...register("feature_on_website")} />
+              <input type="checkbox" checked={watch("feature_on_website") === true} {...register("feature_on_website")} />
 
               <p className="text-xs text-red-500 mt-1">
                 {errors.status?.message}
@@ -685,7 +697,7 @@ const page = () => {
 
           <div className="flex  place-content-end pr-10 space-x-4">
             <Cancelbtn label="Cancel" />
-            <Addbtn label="Submit" />
+            <Addbtn label={doctorId ? "Update" : "Submit"} />
           </div>
         </form>
 
@@ -830,12 +842,6 @@ const DynamicSection = ({
           )}
         </div>
       ))}
-
-
-
-
-
-
     </div>
 
   )

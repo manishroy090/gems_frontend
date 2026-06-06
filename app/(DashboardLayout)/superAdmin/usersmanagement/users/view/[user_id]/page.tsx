@@ -1,13 +1,13 @@
 "use client";
 import { useParams, useSearchParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import { getUser } from '../../../../../../services/User';
-import DoctorDetailsPage from '../../../../../../components/cutom/userdetails/Doctordetails';
-import NurseDetailsPage from '../../../../../../components/cutom/userdetails/NurseDetailsPage';
-import ReceptionistDetailsPage from '../../../../../../components/cutom/userdetails/ReceptionistDetailsPage';
-import PharmacistDetailsPage from '../../../../../../components/cutom/userdetails/PharmacistDetailsPage';
-import LabTechnicianDetailsPage from '../../../../../../components/cutom/userdetails/LabTechnicianDetailsPage';
-import AccountantDetailsPage from '../../../../../../components/cutom/userdetails/AccountantDetailsPage';
+import { getUser } from '@services/User';
+import DoctorDetailsPage from '@components/cutom/userdetails/Doctordetails';
+import NurseDetailsPage from '@components/cutom/userdetails/NurseDetailsPage';
+import ReceptionistDetailsPage from '@components/cutom/userdetails/ReceptionistDetailsPage';
+import PharmacistDetailsPage from '@components/cutom/userdetails/PharmacistDetailsPage';
+import LabTechnicianDetailsPage from '@components/cutom/userdetails/LabTechnicianDetailsPage';
+import AccountantDetailsPage from '@components/cutom/userdetails/AccountantDetailsPage';
 
 
 

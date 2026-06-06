@@ -2,7 +2,11 @@
 import EventIcon from '@mui/icons-material/Event';
 import MoreVertIcon from '@mui/icons-material/MoreVert';
 import RoomIcon from '@mui/icons-material/Room';
-const PatientCards = () =>{
+import { useEffect } from 'react';
+const PatientCards = ({patientDetails}) =>{
+
+
+   
 
     return (
           <div className="patient flex justify-between p-4 bg-white ">
@@ -13,15 +17,15 @@ const PatientCards = () =>{
 
                         <div className="w-20 h-20 rounded-full overflow-hidden border-2 border-gray-300">
                             <img
-                                src="https://images.unsplash.com/photo-1500648767791-00dcc994a43e"
+                                src={patientDetails?.image ?  `http://localhost:8080/uploads/doctors/${patientDetails?.image}` : patientDetails?.gender=='male' ? '/hrm_image/male.png' : '/hrm_image/female.jpg'}
                                 alt="Profile"
                                 className="w-full h-full object-cover"
                             />
                         </div>
 
                         <div>
-                            <h1>Alberto Ripley</h1>
-                            <span>26, Male</span>
+                            <h1>{patientDetails?.name}</h1>
+                            <span>{`${patientDetails?.age}, ${patientDetails?.gender}`}</span>
                         </div>
 
                     </div>
@@ -29,14 +33,14 @@ const PatientCards = () =>{
                     <div className='flex flex-col space-y-2'>
                         <div className='flex space-x-4'>
                     <EventIcon style={{ fontSize: "16px" }} />
-                            <span>Last Appointment : Mon, 30 Apr 2025</span>
+                            <span>{patientDetails?.last_visit}</span>
 
                         </div>
 
                         <div className='flex space-x-4'>
                             <RoomIcon style={{ fontSize: "16px" }}  />
 
-                            <span>Green Square, New York, USA</span>
+                            <span>{patientDetails?.location}</span>
 
                         </div>
 

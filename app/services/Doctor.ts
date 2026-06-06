@@ -44,7 +44,21 @@ export async function updateDoctor(id,payload) {
 
 }
 
-export async function deleteDoctor() {
+export async function View(id){
+   const doctor = await HospitalApi.get(`doctors/view/${id}`)
+    .then((res) => {
+      return res.data.doctordetails
+
+    }).catch((error) => {
+      console.log("error", error)
+    })
+  return doctor;
+
+}
+
+export async function deleteDoctor(id) {
+     const doctor = await HospitalApi.delete(`doctors/delete/${id}`)
+
 
 }
 

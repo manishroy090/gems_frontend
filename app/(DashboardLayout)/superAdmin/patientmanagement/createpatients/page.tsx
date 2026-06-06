@@ -1,21 +1,21 @@
 
 "use client";
-import React, { useState, useEffect } from "react";
-import { Label } from "../../../../components/ui/label";
-import { Input } from "../../../../components/ui/input";
-import { Textarea } from "../../../../components/ui/textarea";
-import DeleteIcon from "@mui/icons-material/Delete";
-import AddIcon from "@mui/icons-material/Add";
-import { Select } from "../../../../components/ui/select";
-import { IPatient } from "../../../../interface/Ipatient";
-import { Patientschema } from "../../../../schemas/Patient.schema";
-import { getAllCountries, getAllBloodGroup } from "../../../../services/Hoshpital";
-import { getAllPatientStatus ,createPatient} from "../../../../services/Patients";
-import { getAllDoctor } from "../../../../services/Doctor";
+import  { useState, useEffect } from "react";
+import { Label } from "@components/ui/label";
+import { Input } from "@components/ui/input";
+import { Patientschema } from "@schemas/Patient.schema";
+import { getAllCountries, getAllBloodGroup } from "@services/Hoshpital";
+import { getAllPatientStatus, createPatient } from "@services/Patients";
+import { getAllDoctor } from "@services/Doctor";
+import Addbtn from "@components/cutom/Addbtn";
+import Cancelbtn from "@components/cutom/Cancelbtn";
+import CustomDatePicker from "@components/cutom/CustomDatePicker";
+
 import {
     useForm,
     useFieldArray,
     SubmitHandler,
+    Controller
 } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 
@@ -23,13 +23,16 @@ import { yupResolver } from "@hookform/resolvers/yup";
 const page = () => {
 
 
-    const { register, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(Patientschema) });
+    const { register, handleSubmit, formState: { errors },control } = useForm({ resolver: yupResolver(Patientschema) });
     const [countries, setCountries] = useState([]);
     const [bloodgroups, setBloodgroups] = useState([]);
     const [doctors, setDoctors] = useState([]);
     const [patientStatuses, setPatientStatus] = useState([]);
 
     const onSubmit: SubmitHandler<IPatient> = async (data) => {
+        if(data.dob){
+            data.dob = new Date(data.dob).toISOString();
+        }
         await createPatient(data);
     };
 
@@ -52,13 +55,14 @@ const page = () => {
         }
 
         callMasterData();
-
     }, [])
 
     return (
-        <div className="doctor_form bg-white p-8">
+        <div className="doctor_form bg-white ">
+            <div className="bg-gradient-to-r from-[#14967f] to-[#12b886] px-6 py-4 flex justify-between">
 
-            <h1 className="border-b p-4">New Patient</h1>
+                <h1 className="text-white">New Patient</h1>
+            </div>
 
             <div className="p-4">
                 <h1 className="py-4">Patient Information</h1>
@@ -114,7 +118,7 @@ const page = () => {
                             >
                                 <option value="">Select BloodGroup</option>
                                 {doctors?.map((doctor: any) => (
-                                    <option key={doctor.doctor_id} value={doctor.doctor_id}>{`${doctor.firstname} ${doctor.lastname}`}</option>
+                                    <option key={doctor.doctor_id} value={doctor.id}>{`${doctor.firstname} ${doctor.lastname}`}</option>
                                 ))}
 
                             </select>
@@ -126,10 +130,17 @@ const page = () => {
 
                         <div>
                             <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">DOB</Label>
-                            <Input {...register("dob")} type="date" />
-                            <p className="text-xs text-red-500 mt-1">
-                                {errors.dob?.message}
-                            </p>
+                            <Controller
+                                name="dob"
+                                control={control}
+                                render={({ field }) => (
+                                    <CustomDatePicker
+                                        value={field.value}
+                                        onChange={field.onChange}
+                                        error={errors.dob?.message}
+                                    />
+                                )}
+                            />
 
                         </div>
 
@@ -258,7 +269,10 @@ const page = () => {
                         </div>
                     </div>
 
-                    <button type="submit">Submit</button>
+                    <div className="flex  place-content-end pr-10 space-x-4">
+                        <Cancelbtn label="Cancel" />
+                        <Addbtn label={"Submit"} />
+                    </div>
 
                 </form>
 

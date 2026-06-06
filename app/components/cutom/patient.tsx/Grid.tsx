@@ -1,29 +1,15 @@
 
 import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
 import PatientCards from '../cards/users/PatientCards';
-const Grid = () => {
+const Grid = ({ data }) => {
 
 
   return (
     <div className='grid grid-cols-3 gap-4'>
 
-           <PatientCards/>
-                      <PatientCards/>
-
-           <PatientCards/>
-
-           <PatientCards/>
-
-           <PatientCards/>
-
-           <PatientCards/>
-
-           <PatientCards/>
-
-           <PatientCards/>
-
-           <PatientCards/>
-
+      {data.map((item) => (
+        <PatientCards patientDetails={item} />
+      ))}
     </div>
 
   )

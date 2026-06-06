@@ -1,12 +1,12 @@
 "use client"
-import Filter from "../../../../components/cutom/Filter";
+import Filter from "@components/cutom/Filter";
 import FormatListBulletedIcon from "@mui/icons-material/FormatListBulleted";
 import WindowIcon from "@mui/icons-material/Window";
 import { useEffect, useState } from "react";
-import Grid from "../../../../components/cutom/doctors/Grid";
-import List from "../../../../components/cutom/doctors/List";
+import Grid from "@components/cutom/doctors/Grid";
+import List from "@components/cutom/doctors/List";
 import Link from 'next/link'
-import { getAllDoctor } from "../../../../services/Doctor";
+import { getAllDoctor } from "@services/Doctor";
 
 
 export default function Page() {
@@ -74,7 +74,7 @@ export default function Page() {
       </div>
 
       <div className="content">
-        {!loading && doctors.length > 0 ? switchViewwise=="grid" ? (<Grid data={doctors}/>) : (<List data={doctors}/>) : <h1>loading</h1>}
+        { switchViewwise=="grid" ? (<Grid data={doctors}/>) : (<List data={doctors}/>) }
         
       </div>
 
