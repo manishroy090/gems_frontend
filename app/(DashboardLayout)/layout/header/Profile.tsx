@@ -5,7 +5,7 @@ import Image from 'next/image'
 import { Icon } from '@iconify/react'
 import * as profileData from './data'
 import SimpleBar from 'simplebar-react'
-import { Button } from '../../../components/ui/button'
+import { Button } from '@components/medinexus/button'
 import { logout } from '../../../services/Auth'
 import { useRouter } from 'next/navigation'
 
@@ -15,7 +15,7 @@ import {
   DropdownMenuItem,
   DropdownMenuTrigger,
   DropdownMenuSeparator,
-} from '../../../components/ui/dropdown-menu'
+} from '@/components/medinexus/dropdown-menu'
 
 const Profile = () => {
 

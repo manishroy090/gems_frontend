@@ -3,11 +3,10 @@
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
-import { Label } from '../ui/label';
-import { Input } from '../ui/input';
+import { Label } from '@components/medinexus/label';
+import { Input } from '@components/medinexus/input';
 import { useEffect, useState } from "react";
 import "dotenv/config"
-import Axios from "../../libs/axios";
 import { hoshpitalRegister } from "../../services/Auth";
 import { getAllCountries } from "../../services/Config";
 import { useForm, SubmitHandler } from "react-hook-form"

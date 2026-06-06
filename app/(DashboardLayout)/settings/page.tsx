@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { getAllCountries  } from "../../services/Config";
 import { getHospitalDepartments ,getAllBloodGroup,getAllModules,getAllSubModule,getAllAvailableTest} from "../../services/Hoshpital";
 import { getAllPatientStatus } from "../../services/Patients";
-import Table from "../../components/cutom/Table";
+import Table from "../../components/medinexus/Table";
 import { use } from "apexcharts";
 
 // const masterData = {
