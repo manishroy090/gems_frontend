@@ -4,10 +4,16 @@ import MoreVertIcon from "@mui/icons-material/MoreVert";
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import Link from "next/link";
+import { DeleteModal } from "../../DeleteModal";
+import { deleteDoctor } from "../../../../services/Doctor";
 
 const Doctorcards = ({doctorDetails}) => {
   const [openMenu, setOpenMenu] = useState(false);
   const menuRef = useRef(null);
+     const [open, setOpen] = useState(false);
+          const [confirmAction, setConfirmAction] =
+              useState<TableAction<T> | null>(null);
 
 
   // Close menu when clicking outside
@@ -23,6 +29,17 @@ const Doctorcards = ({doctorDetails}) => {
   }, []);
 
 
+  const toggelModal = () =>{
+    setConfirmAction(true);
+    
+  }
+
+  const deletDoctor = async () =>{
+     const {id} =doctorDetails
+     await deleteDoctor(id)
+  }
+
+
 
 
  
@@ -33,7 +50,7 @@ const Doctorcards = ({doctorDetails}) => {
       {/* Image */}
       <div className="w-28 h-28 flex-shrink-0">
         <img
-          src={`http://localhost:8080/uploads/doctors/${doctorDetails?.image}`}
+          src={ doctorDetails?.image ? `http://localhost:8080/uploads/doctors/${doctorDetails?.image}` : '/hrm_image/doctor.png'}
           alt="doctor"
           className="w-full h-full object-cover rounded-2xl border-2 border-white shadow-md"
         />
@@ -89,13 +106,14 @@ const Doctorcards = ({doctorDetails}) => {
 
         {openMenu && (
           <div className="absolute right-0 mt-2 w-32 bg-white border rounded-xl shadow-lg overflow-hidden z-50">
-
+             <Link href={`/superAdmin/doctormanagement/adddoctor/?doctor_id=${doctorDetails.id}`}>
             <button className="flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-gray-100">
               <EditIcon fontSize="small" />
               Edit
             </button>
+            </Link>
 
-            <button className="flex items-center gap-2 w-full px-3 py-2 text-sm text-red-500 hover:bg-red-50">
+            <button className="flex items-center gap-2 w-full px-3 py-2 text-sm text-red-500 hover:bg-red-50" onClick={toggelModal}>
               <DeleteIcon fontSize="small" />
               Delete
             </button>
@@ -103,6 +121,16 @@ const Doctorcards = ({doctorDetails}) => {
           </div>
         )}
       </div>
+      <DeleteModal open={!!confirmAction}
+                    onClose={() =>
+                        setConfirmAction(null)
+                    }
+                    onConfirm={async () => {
+                       deletDoctor();
+
+                        setConfirmAction(null);
+                        setOpen(false);
+                    }}/>
     </div>
   );
 };

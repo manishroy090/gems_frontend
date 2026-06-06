@@ -18,7 +18,7 @@ import AirIcon from "@mui/icons-material/Air";
 import DeviceThermostatIcon from "@mui/icons-material/DeviceThermostat";
 import ScaleIcon from "@mui/icons-material/Scale";
 import CompressIcon from "@mui/icons-material/Compress";
-import Table from "../../../../components/cutom/Table";
+import Table from "@components/cutom/Table";
 
 const Page = () => {
   const [activeTab, setActiveTab] = useState("appointments");

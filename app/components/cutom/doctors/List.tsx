@@ -6,6 +6,7 @@ import { useEffect, useState } from "react";
 import Link from 'next/link'
 import Badge from '@mui/material/Badge';
 import { useRouter } from 'next/navigation';
+import { deleteDoctor } from '../../../services/Doctor';
 
 
 const List = ({ data }) => {
@@ -20,8 +21,8 @@ const List = ({ data }) => {
 
   }
 
-  const deleteDoctor = async () =>{
-
+  const deleteDoctorD = async (doctorId) =>{
+       deleteDoctor(doctorId);
   }
 
 
@@ -49,7 +50,7 @@ const List = ({ data }) => {
             label: "Delete",
             icon: "🗑️",
             confirm: true,
-            onClick: (item) => deleteDoctor(item.id),
+            onClick: (item) => deleteDoctorD(item.id),
           },
         ]}
 

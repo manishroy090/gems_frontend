@@ -1,28 +1,27 @@
 "use client";
 import { useState, useEffect } from "react";
-import Modal from "../../../../components/ui/Modal";
-import { Label } from "../../../../components/ui/label";
-import { Input } from "../../../../components/ui/input";
-import Datepicker from "../../../../components/cutom/Datepicker";
-import Filter from "../../../../components/cutom/Filter";
-import Table from "../../../../components/cutom/Table";
-import Userscards from "../../../../components/cutom/cards/users/Userscards";
+import Modal from "@components/ui/Modal";
+import { Label } from "@components/cutom/label";
+import { Input } from "@components/cutom/input";
+import Datepicker from "@components/cutom/Datepicker";
+import Filter from "@components/cutom/Filter";
+import Table from "@components/cutom/Table";
+import Userscards from "@components/cutom/cards/users/Userscards";
 import { useForm, SubmitHandler } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Userschema } from "../../../../schemas/Users.Schema"
-import { Iuser } from "../../../../interface/Iuser";
-import Exportbtn from "../../../../components/cutom/Exportbtn";
+import { Userschema } from "@schemas/Users.Schema"
+import { Iuser } from "@interface/Iuser";
+import Exportbtn from "@components/cutom/Exportbtn";
 import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
-import { getUsers } from "../../../../services/User";
-import SortBy from "../../../../components/cutom/SortBy";
-import Link from 'next/link'
-import ProfilePictureUpload from "../../../../components/cutom/ProfilePictureUpload";
-import { getAllCountries } from "../../../../services/Config";
-import { getAllBloodGroup } from "../../../../services/Hoshpital";
-import { getAllRoles } from "../../../../services/Roles";
-import { createUser } from "../../../../services/Hoshpital";
+import { getUsers } from "@services/User";
+import SortBy from "@components/cutom/SortBy";
+import ProfilePictureUpload from "@components/cutom/ProfilePictureUpload";
+import { getAllCountries } from "@services/Config";
+import { getAllBloodGroup } from "@services/Hoshpital";
+import { getAllRoles } from "@services/Roles";
+import { createUser } from "@services/Hoshpital";
 import { useRouter } from 'next/navigation'
-import { getUser, updateUser, deleteUserById } from "../../../../services/User";
+import { getUser, updateUser, deleteUserById } from "@services/User";
 
 const page = () => {
   const router = useRouter();
