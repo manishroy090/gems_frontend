@@ -1,10 +1,8 @@
 
 import React from "react";
-import SalesOverview from "../components/dashboard/SalesOverview";
-import { YearlyBreakup } from "../components/dashboard/YearlyBreakup";
-import { MonthlyEarning } from "../components/dashboard/MonthlyEarning";
-import { RecentTransaction } from "../components/dashboard/RecentTransaction";
-import { ProductPerformance } from "../components/dashboard/ProductPerformance";
+// import { YearlyBreakup } from "../components/dashboard/YearlyBreakup";
+// import { MonthlyEarning } from "../components/dashboard/MonthlyEarning";
+// import { ProductPerformance } from "../components/dashboard/ProductPerformance";
 import { Footer } from "../components/dashboard/Footer";
 import { TopCards } from "../components/dashboard/TopCards";
 import ProfileWelcome from "../components/dashboard/ProfileWelcome";
@@ -22,23 +20,23 @@ const page = () => {
           <TopCards />
         </div>
         <div className="lg:col-span-8 col-span-12">
-          <SalesOverview />
+          {/* <SalesOverview /> */}
         </div>
         <div className="lg:col-span-4 col-span-12">
           <div className="grid grid-cols-12 gap-6">
             <div className="col-span-12">
-              <YearlyBreakup />
+              {/* <YearlyBreakup /> */}
             </div>
             <div className="col-span-12">
-              <MonthlyEarning />
+              {/* <MonthlyEarning /> */}
             </div>
           </div>
         </div>
         <div className="lg:col-span-4 col-span-12">
-          <RecentTransaction />
+          {/* <RecentTransaction /> */}
         </div>
         <div className="lg:col-span-8 col-span-12 flex">
-          <ProductPerformance />
+          {/* <ProductPerformance /> */}
         </div>
         <div className="col-span-12">
           <Footer />

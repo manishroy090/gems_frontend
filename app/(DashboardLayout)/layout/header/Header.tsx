@@ -6,7 +6,7 @@ import { Icon } from "@iconify/react";
 import Profile from "./Profile";
 import SidebarLayout from "../sidebar/Sidebar";
 
-import { Sheet, SheetContent, SheetTitle } from "../../../components/ui/sheet";
+import { Sheet, SheetContent, SheetTitle } from "@components/medinexus/sheet";
 import { VisuallyHidden } from "@radix-ui/react-visually-hidden";
 
 const Header = () => {

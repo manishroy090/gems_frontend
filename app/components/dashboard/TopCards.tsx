@@ -6,7 +6,6 @@ import { Autoplay } from "swiper/modules";
 
 import 'swiper/css';
 import Link from "next/link"
-import CardBox from "../shared/CardBox"
 
 const TopCards = () => {
 
@@ -127,7 +126,7 @@ const TopCards = () => {
               return (
                 <SwiperSlide key={item.key} >
                   <Link href={item.url} >
-                    <CardBox className={`shadow-none ${item.bgcolor} w-full border-none!`}>
+                    {/* <CardBox className={`shadow-none ${item.bgcolor} w-full border-none!`}>
                       <div className="text-center hover:scale-105 transition-all ease-in-out">
                         <div className="flex justify-center">
                           <Image src={item.img}
@@ -138,7 +137,7 @@ const TopCards = () => {
                         </p>
                         <h5 className={`text-lg font-semibold ${item.textclr} mb-0`}>{item.desc}</h5>
                       </div>
-                    </CardBox>
+                    </CardBox> */}
                   </Link>
                 </SwiperSlide>
               )

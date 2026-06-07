@@ -1,4 +1,5 @@
 export interface ISession {
+  id?:String | Number;
   day: string;
   start_time: string;
   end_time: string;
@@ -6,6 +7,7 @@ export interface ISession {
 }
 
 export interface IEducation {
+  id?:String | Number
   degree: string;
   university: string;
   from: string;
@@ -13,11 +15,13 @@ export interface IEducation {
 }
 
 export interface IAward {
+  id?:String | Number
   name: string;
   from: string;
 }
 
 export interface ICertification {
+  id?:String | Number
   name: string;
   from: string;
 }

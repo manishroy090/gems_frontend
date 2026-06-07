@@ -1,49 +1,40 @@
-'use client'
+"use client";
 
-import Link from 'next/link';
-import { Button } from '../../components/ui/button';
-import { Input } from '../../components/ui/input';
-import { Checkbox } from '../../components/ui/checkbox';
-import { Label } from '../../components/ui/label';
-import { login } from "../../services/Auth";
-import { getMe } from "../../services/Auth";
-import { useEffect } from 'react';
-import { useRouter } from 'next/navigation'
+import Link from "next/link";
+import { Button } from "@components/medinexus/button";
+import { Input } from "@components/medinexus/input";
+import { Checkbox } from "../medinexus/checkbox";
+import { Label } from "@components/medinexus/label";
+import { login } from "@services/Auth";
+
+import { useRouter } from "next/navigation";
 import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Loginschema } from '../../schemas/Login.schema';
-import { ILogin } from '../../interface/ILogin';
-import useToaster from '../../hooks/useToaster';
-import Image from "next/image";
-
-
-
-
+import { Loginschema } from "@schemas/Login.schema";
+import { ILogin } from "@interface/ILogin";
+import useToaster from "@hooks/useToaster";
 
 export const Login = () => {
-
-  const router = useRouter()
+  const router = useRouter();
   const toaster = useToaster();
 
-  const { register, handleSubmit, formState: { errors } } = useForm({ resolver: yupResolver(Loginschema) });
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(Loginschema) });
 
   const onSubmit: SubmitHandler<ILogin> = async (data) => {
     const res = await login(data);
     if (res.status === 401) {
       toaster.error(res.data.message);
-
     }
 
     const { success } = res.data;
     if (success) {
-      router.push('/')
+      router.push("/");
     }
-
-  }
-
-
-
-
+  };
 
   return (
     <div
@@ -54,11 +45,12 @@ export const Login = () => {
       <div className="absolute inset-0 bg-gradient-to-br from-black/70 via-black/50 to-black/70"></div>
 
       {/* card */}
-      <div className="relative z-10 w-[360px] p-8 rounded-3xl 
+      <div
+        className="relative z-10 w-[360px] p-8 rounded-3xl 
         backdrop-blur-xl bg-white/10 
         border border-white/20 
-        shadow-2xl shadow-black/40">
-
+        shadow-2xl shadow-black/40"
+      >
         <div className="flex items-center justify-center  mb-6  h-24  w-full">
           <img
             src="/hrm_image/newlogo.svg"
@@ -73,7 +65,7 @@ export const Login = () => {
             <Input
               {...register("email")}
               placeholder="Enter email"
-              autoComplete='off'
+              autoComplete="off"
               className="bg-white/20 text-white placeholder:text-gray-300 border border-white/20 focus:border-white"
             />
             {errors?.["email"] && (
@@ -88,11 +80,13 @@ export const Login = () => {
               {...register("password")}
               type="password"
               placeholder="Enter password"
-              autoComplete='off'
+              autoComplete="off"
               className="bg-white/20 text-white placeholder:text-gray-300 border border-white/20 focus:border-white"
             />
             {errors?.["password"] && (
-              <p className="text-xs text-red-500">{errors["password"].message}</p>
+              <p className="text-xs text-red-500">
+                {errors["password"].message}
+              </p>
             )}
           </div>
 
@@ -113,10 +107,8 @@ export const Login = () => {
 
           {/* login */}
           <Button
-            type='submit'
+            type="submit"
             className="w-full mb-4 bg-white text-black hover:bg-gray-200 font-medium"
-
-
           >
             Login
           </Button>
@@ -151,7 +143,6 @@ export const Login = () => {
             Sign up
           </Link>
         </p>
-
       </div>
     </div>
   );

@@ -31,25 +31,25 @@ const menu = [
   {
     name: "Roles",
     icon: <PeopleIcon />,
-    path: "/superAdmin/usersmanagement/roles",
+    path: "/roles",
   },
 
   {
     name: "Users",
     icon: <PeopleIcon />,
-    path: "/superAdmin/usersmanagement/users",
+    path: "/users",
   },
 
   {
     name: "Doctors",
     icon: <LocalHospitalIcon />,
-    path: "/superAdmin/doctormanagement/doctors",
+    path: "/doctors",
   },
 
   {
     name: "Patients",
     icon: <PeopleIcon />,
-    path: "/superAdmin/patientmanagement/Patients",
+    path: "/patients",
   },
 
   {

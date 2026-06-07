@@ -10,14 +10,14 @@ export const Patientschema = yup.object({
      primary_doctor:yup.string().required("Primary doctor is required"),
      dob:yup.string().required("Dob is required"),
      gender:yup.string().required("Gender is required"),
-     bloodgroup:yup.string().required("Blood group is required"),
+     blood_group:yup.string().required("Blood group is required"),
      status:yup.string().required("Status is required"),
      address_one:yup.string().required("Address one  is required "),
      address_two:yup.string().required("Address two is required"),
-     country:yup.string().required("Country is required"),
+     country_id:yup.string().required("Country is required"),
      state:yup.string().required("State is required"),
      city:yup.string().required("City is required"),
-     pinecode:yup.string().required("Pinecode is required")
+     pinCode:yup.string().required("Pinecode is required")
     
 
 })
