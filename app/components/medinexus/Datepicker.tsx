@@ -1,39 +1,51 @@
-import { useState } from 'react';
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import { useState } from "react";
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
+import "react-date-range/dist/styles.css";
+import "react-date-range/dist/theme/default.css";
+import { DateRange } from "react-date-range";
+import { format } from "date-fns";
 
-import 'react-date-range/dist/styles.css';
-import 'react-date-range/dist/theme/default.css';
-import { DateRange } from 'react-date-range';
-import { format } from 'date-fns';
+interface dateRange{
+  startDate: Date;
+  endDate: Date;
+  label: String;
+};
 
-const Datepicker = ({ onChange }) => {
+interface customInputProps {
+  onChange?: (value: dateRange) => void;
+}
+
+const Datepicker = ({ onChange }: customInputProps) => {
+  // State from here
   const [open, setOpen] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
-
   const [rangeState, setRangeState] = useState([
     {
       startDate: new Date(),
       endDate: new Date(),
-      key: 'selection',
+      key: "selection",
     },
   ]);
 
+  //Date Readable option form here
   const options = [
-    'Today',
-    'Yesterday',
-    'Last 7 Days',
-    'Last 30 Days',
-    'This Month',
-    'Last Month',
-    'Custom Range',
+    "Today",
+    "Yesterday",
+    "Last 7 Days",
+    "Last 30 Days",
+    "This Month",
+    "Last Month",
+    "Custom Range",
   ];
 
-  const formatRange = (start, end) => {
-    return `${format(start, 'd MMM yy')} - ${format(end, 'd MMM yy')}`;
+  //Date fromateRange function here
+  const formatRange = (start: any, end: any) => {
+    return `${format(start, "d MMM yy")} - ${format(end, "d MMM yy")}`;
   };
 
-  const handleSelectOption = (option) => {
-    if (option === 'Custom Range') {
+  //Date Reaable features handle through this function
+  const handleSelectOption = (option: any) => {
+    if (option === "Custom Range") {
       setShowCalendar(true);
       return;
     }
@@ -43,26 +55,26 @@ const Datepicker = ({ onChange }) => {
     let end = today;
 
     switch (option) {
-      case 'Yesterday':
+      case "Yesterday":
         start = end = new Date(today.setDate(today.getDate() - 1));
         break;
 
-      case 'Last 7 Days':
+      case "Last 7 Days":
         start = new Date(today.setDate(today.getDate() - 6));
         end = new Date();
         break;
 
-      case 'Last 30 Days':
+      case "Last 30 Days":
         start = new Date(today.setDate(today.getDate() - 29));
         end = new Date();
         break;
 
-      case 'This Month':
+      case "This Month":
         start = new Date(today.getFullYear(), today.getMonth(), 1);
         end = new Date();
         break;
 
-      case 'Last Month': {
+      case "Last Month": {
         const d = new Date();
         start = new Date(d.getFullYear(), d.getMonth() - 1, 1);
         end = new Date(d.getFullYear(), d.getMonth(), 0);
@@ -73,28 +85,25 @@ const Datepicker = ({ onChange }) => {
         break;
     }
 
-    setRangeState([{ startDate: start, endDate: end, key: 'selection' }]);
+    setRangeState([{ startDate: start, endDate: end, key: "selection" }]);
     onChange?.({ startDate: start, endDate: end, label: option });
-
     setShowCalendar(false);
     setOpen(false);
   };
 
-  const handleRangeChange = (item) => {
+  const handleRangeChange = (item:any) => {
     const selection = item.selection;
-
     setRangeState([selection]);
-
     onChange?.({
       startDate: selection.startDate,
       endDate: selection.endDate,
-      label: 'Custom Range',
+      label: "Custom Range",
     });
   };
 
   const currentRange = formatRange(
     rangeState[0].startDate,
-    rangeState[0].endDate
+    rangeState[0].endDate,
   );
 
   return (
@@ -136,7 +145,6 @@ const Datepicker = ({ onChange }) => {
                 moveRangeOnFirstSelection={false}
                 ranges={rangeState}
               />
-
               <div className="flex justify-end p-2">
                 <button
                   onClick={() => {

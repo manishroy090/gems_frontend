@@ -1,6 +1,6 @@
 
 import CloseOutlinedIcon from '@mui/icons-material/CloseOutlined';
-const Modal = ({ children, showModal,className }: { children: React.ReactNode; showModal: boolean;className:string}) => {
+const Modal = ({ children, showModal,className }: { children: React.ReactNode; showModal:Boolean;className?:string}) => {
     return (
         <div
             className={

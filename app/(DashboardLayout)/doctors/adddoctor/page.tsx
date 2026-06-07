@@ -7,7 +7,7 @@ import { CirclePlus } from 'lucide-react';
 import ProfilePictureUpload from "@/components/medinexus/ProfilePictureUpload";
 import { useForm, SubmitHandler, useFieldArray, Controller } from "react-hook-form"
 import { yupResolver } from "@hookform/resolvers/yup";
-import { IDoctor } from "@interface/IDoctor";
+import { IDoctor,IEducation,IAward,ICertification} from "@interface/IDoctor";
 import { Doctorschema } from "@schemas/Doctor.schema";
 import { getHospitalDepartments, getAllCountries, getAllBloodGroup } from "@services/Hoshpital";
 import Addbtn from "@/components/medinexus/Addbtn";
@@ -21,13 +21,14 @@ import { Printer } from 'lucide-react';
 
 
 
+
 const page = () => {
 
   const [departments, setDepartments] = useState([]);
   const [countries, setCountries] = useState([]);
   const [bloodgroups, setBloodgroups] = useState([]);
   const [doctorStatus, setDoctorStatus] = useState([]);
-  const [doctorId, setDoctorId] = useState(null);
+  const [doctorId, setDoctorId] = useState<String | Number | null>(null);
   const [doctorImage, setDoctorImage] = useState();
   const params = useSearchParams();
 
@@ -41,7 +42,6 @@ const page = () => {
     formState: { errors },
   } = useForm<IDoctor>({
     resolver: yupResolver(Doctorschema),
-
     defaultValues: {
       image: "",
       firstname: "",
@@ -132,7 +132,7 @@ const page = () => {
 
 
   useEffect(() => {
-    const doctorId = params.get('doctor_id');
+    const doctorId:String | Number | null = params.get('doctor_id');
 
 
     if (doctorId !== null) {
@@ -141,9 +141,9 @@ const page = () => {
         const result = await getDoctor(doctorId);
 
         const dob = new Date(result.dob).toISOString();
-        const education = result.education.map((item) => ({ id: item.id, degree: item.degree, from: new Date(item.from).toISOString(), to: new Date(item.to).toISOString(), university: item.university }))
-        const awards = result.award.map((item) => ({ id: item.id, name: item.name, from: new Date(item.from).toISOString() }))
-        const certification = result.certification.map((item) => ({ id: item.id, name: item.name, from: new Date(item.from).toISOString() }))
+        const education = result.education.map((item:IEducation) => ({id:item.id, degree: item.degree, from: new Date(item.from).toISOString(), to: new Date(item.to).toISOString(), university: item.university }))
+        const awards = result.award.map((item:IAward) => ({ id: item.id, name: item.name, from: new Date(item.from).toISOString() }))
+        const certification = result.certification.map((item:ICertification) => ({ id: item.id, name: item.name, from: new Date(item.from).toISOString() }))
 
         console.log("educt", education);
         setDoctorImage(result.image)
@@ -199,7 +199,7 @@ const page = () => {
           value = value.map((item) => ({ id: item.id, degree: item.degree, from: new Date(item.from).toISOString(), to: new Date(item.to).toISOString(), university: item.university }));
         }
         if (key == "awards" || key == "certifications") {
-          value = value.map((item) => ({ id: item.id, name: item.name, from: new Date(item.from).toISOString() }));
+          value = value.map((item:ICertification | IAward) => ({ id: item.id, name: item.name, from: new Date(item.from).toISOString() }));
 
         }
 

@@ -7,12 +7,12 @@ import Datepicker from "@/components/medinexus/Datepicker";
 import Filter from "@/components/medinexus/Filter";
 import Table from "@/components/medinexus/Table";
 import Userscards from "@/components/medinexus/cards/users/Userscards";
-import { useForm, SubmitHandler } from "react-hook-form"
+import { useForm, SubmitHandler } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { Userschema } from "@schemas/Users.Schema"
+import { Userschema } from "@schemas/Users.Schema";
 import { Iuser } from "@interface/Iuser";
 import Exportbtn from "@/components/medinexus/Exportbtn";
-import AddOutlinedIcon from '@mui/icons-material/AddOutlined';
+import AddOutlinedIcon from "@mui/icons-material/AddOutlined";
 import { getUsers } from "@services/User";
 import SortBy from "@/components/medinexus/SortBy";
 import ProfilePictureUpload from "@/components/medinexus/ProfilePictureUpload";
@@ -20,8 +20,30 @@ import { getAllCountries } from "@services/Config";
 import { getAllBloodGroup } from "@services/Hoshpital";
 import { getAllRoles } from "@services/Roles";
 import { createUser } from "@services/Hoshpital";
-import { useRouter } from 'next/navigation'
+import { useRouter } from "next/navigation";
 import { getUser, updateUser, deleteUserById } from "@services/User";
+
+interface Iuse{
+  address_one: string;
+  address_two: string;
+  blood_group: string;
+  city: string;
+  country_id: string | number;
+  designation: string;
+  dob: string | number | Date;
+  email: string;
+  email_verified_at: null;
+  firstname: string;
+  gender:string;
+  id:number | string;
+  is_active:boolean;
+  lastname: string;
+  phone_number: string | number;
+  pin_code: string;
+  role: string | number;
+  role_id: number | string;
+  state: string;
+}
 
 const page = () => {
   const router = useRouter();
@@ -30,44 +52,38 @@ const page = () => {
   const [countries, setCountries] = useState([]);
   const [bloodgroups, setBloodgroups] = useState([]);
   const [roles, setRole] = useState([]);
-  const [user, setUser] = useState([]);
+  const [user, setUser] = useState<Iuse | null >(null);
   const [isDeleted, setIsDeleted] = useState(false);
-
-
-
-
 
   //toggel modal code
   function openUserModal() {
     setShowModal(true);
   }
 
-
-
   //form submission code
-  const { register, handleSubmit, reset, formState: { errors } } = useForm({ resolver: yupResolver(Userschema) });
-  const onSubmit: SubmitHandler<Iuser> = async (data) => {
-    const userExists = Object.keys(user).length > 0;
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({ resolver: yupResolver(Userschema) });
 
+  const onSubmit: SubmitHandler<Iuser> = async (data) => {
+    const userExists = user && Object.keys(user).length > 0;
     if (userExists && user) {
+      console.log("user", user);
       await updateUser(user.id, data);
-    }
-    else {
+    } else {
       //  setShowModal(true);
       createUser(data);
     }
-  }
-
-
+  };
 
   //form submission fail fallback
 
-  const onError: SubmitHandler<Iuser> = async (error) => {
+  const onError = async (error: any) => {
     console.log("error", error);
-
-  }
-
-
+  };
 
   // called on first render
   useEffect(() => {
@@ -78,18 +94,16 @@ const page = () => {
       const roles = await getAllRoles();
       // console.log("result", result.length);
       setUsers(result);
-      setCountries(countries)
+      setCountries(countries);
       setBloodgroups(bloodgroup);
       setRole(roles);
-    }
+    };
     getAllData();
     setIsDeleted(false);
   }, [isDeleted]);
 
-
-
   //call on edit
-  const edit = async (userId) => {
+  const edit = async (userId: String | Number) => {
     const user = await getUser(userId);
     setUser(user);
     setShowModal(true);
@@ -110,24 +124,17 @@ const page = () => {
       address_2: user.address_two,
       pinecode: user.pin_code,
     });
-
-  }
-
+  };
 
   //call on delete
-  const deleteUser = async (userId) => {
+  const deleteUser = async (userId: String | Number) => {
     deleteUserById(userId);
     setIsDeleted(true);
-  }
-
-
-
+  };
 
   return (
     <div className="flex flex-col space-y-5">
-
       <Userscards />
-
 
       <div className="flex flex-col space-y-3">
         <div className="flex justify-between items-center border-b pb-4 border-gray-300">
@@ -136,49 +143,37 @@ const page = () => {
           <div className="flex space-x-4">
             <Exportbtn />
 
-
             <div
               className="inline-flex items-center gap-2 px-4 py-2 bg-[#14967f] text-white border border-[#14967f]
              shadow-sm hover:shadow-md transition cursor-pointer select-none"
               onClick={openUserModal}
             >
               <AddOutlinedIcon fontSize="small" />
-              <span className="text-sm font-medium leading-none">
-                Add User
-              </span>
+              <span className="text-sm font-medium leading-none">Add User</span>
             </div>
-
           </div>
         </div>
 
-
         <div className="flex justify-between space-x-4 ">
-
           <div className="flex space-x-6">
             <div>
-              <Input type="text" placeholder="Search" className="w-96 h-9 bg-white rounded shadow" />
+              <Input
+                type="text"
+                placeholder="Search"
+                className="w-96 h-9 bg-white rounded shadow"
+              />
             </div>
 
-            <Datepicker
-              showDropdown
-
-            />
-
+            <Datepicker />
           </div>
 
-
           <div className="flex items-center space-x-4">
-
             <Filter />
 
             <SortBy />
-
           </div>
-
         </div>
-
       </div>
-
 
       <div className="bg-white rounded px-1">
         <Table
@@ -188,8 +183,7 @@ const page = () => {
             {
               label: "View",
               icon: "👁️",
-              href: (item) =>
-                `/users/view/${item.id}`,
+              href: (item) => `/users/view/${item.id}`,
             },
 
             {
@@ -206,18 +200,17 @@ const page = () => {
             },
           ]}
         />
-
-
       </div>
 
-
       {/* modal code Start from here */}
-      <Modal showModal={showModal} className="w-[60rem] rounded-2xl overflow-hidden shadow-2xl mt-8">
-
+      <Modal
+        showModal={showModal}
+        className="w-[60rem] rounded-2xl overflow-hidden shadow-2xl mt-8"
+      >
         {/* Header */}
         <div className="bg-gradient-to-r from-[#14967f] to-[#12b886] px-6 py-4">
           <h2 className="text-white text-lg font-semibold tracking-wide">
-            {Object.keys(user).length > 0 ? "Update" : "Add"} Staff
+            {user && Object.keys(user).length > 0 ? "Update" : "Add"} Staff
           </h2>
           <p className="text-white/80 text-xs mt-1">
             Fill in the details to create a new staff profile
@@ -229,7 +222,6 @@ const page = () => {
           className="flex flex-col space-y-8 bg-white p-8"
           onSubmit={handleSubmit(onSubmit, onError)}
         >
-
           {/* Profile */}
           <div className="flex justify-center">
             <ProfilePictureUpload />
@@ -242,20 +234,23 @@ const page = () => {
             </h3>
 
             <div className="grid grid-cols-12 gap-4 mt-2">
-
               <div className="col-span-4">
                 <Label>First Name</Label>
-                <Input  {...register("first_name")} />
+                <Input {...register("first_name")} />
                 {errors?.["first_name"] && (
-                  <p className="text-xs text-red-500">{errors["first_name"].message}</p>
+                  <p className="text-xs text-red-500">
+                    {errors["first_name"].message}
+                  </p>
                 )}
               </div>
 
               <div className="col-span-4">
                 <Label>Last Name</Label>
-                <Input  {...register("last_name")} />
+                <Input {...register("last_name")} />
                 {errors?.["last_name"] && (
-                  <p className="text-xs text-red-500">{errors["last_name"].message}</p>
+                  <p className="text-xs text-red-500">
+                    {errors["last_name"].message}
+                  </p>
                 )}
               </div>
 
@@ -267,28 +262,35 @@ const page = () => {
                 >
                   <option value="">Select Role</option>
                   {roles?.map((role: any) => (
-                    <option key={role.id} value={role.id}>{role.title}</option>
+                    <option key={role.id} value={role.id}>
+                      {role.title}
+                    </option>
                   ))}
                 </select>
                 {errors?.["role_id"] && (
-                  <p className="text-xs text-red-500">{errors["role_id"].message}</p>
+                  <p className="text-xs text-red-500">
+                    {errors["role_id"].message}
+                  </p>
                 )}
-
               </div>
 
               <div className="col-span-4">
                 <Label>Designation</Label>
-                <Input  {...register("designation")} />
+                <Input {...register("designation")} />
                 {errors?.["designation"] && (
-                  <p className="text-xs text-red-500">{errors["designation"].message}</p>
+                  <p className="text-xs text-red-500">
+                    {errors["designation"].message}
+                  </p>
                 )}
               </div>
 
               <div className="col-span-4">
                 <Label>Phone Number</Label>
-                <Input  {...register("phone_number")} />
+                <Input {...register("phone_number")} />
                 {errors?.["phone_number"] && (
-                  <p className="text-xs text-red-500">{errors["phone_number"].message}</p>
+                  <p className="text-xs text-red-500">
+                    {errors["phone_number"].message}
+                  </p>
                 )}
               </div>
 
@@ -296,19 +298,21 @@ const page = () => {
                 <Label>Email</Label>
                 <Input {...register("email")} />
                 {errors?.["email"] && (
-                  <p className="text-xs text-red-500">{errors["email"].message}</p>
+                  <p className="text-xs text-red-500">
+                    {errors["email"].message}
+                  </p>
                 )}
               </div>
-
 
               <div className="col-span-4">
                 <Label>DOB</Label>
                 <Input type="date" {...register("dob")} />
                 {errors?.["dob"] && (
-                  <p className="text-xs text-red-500">{errors["dob"].message}</p>
+                  <p className="text-xs text-red-500">
+                    {errors["dob"].message}
+                  </p>
                 )}
               </div>
-
 
               <div className="col-span-4">
                 <Label>Gender</Label>
@@ -319,10 +323,11 @@ const page = () => {
                   <option value="">Select Gender</option>
                   <option value="male">Male</option>
                   <option value="female">Female</option>
-
                 </select>
                 {errors?.["gender"] && (
-                  <p className="text-xs text-red-500">{errors["gender"].message}</p>
+                  <p className="text-xs text-red-500">
+                    {errors["gender"].message}
+                  </p>
                 )}
               </div>
 
@@ -334,22 +339,20 @@ const page = () => {
                 >
                   <option value="">Select Bloodgroup</option>
                   {bloodgroups?.map((bloodgroup: any) => (
-                    <option key={bloodgroup.id} value={bloodgroup.id}>{bloodgroup.title}</option>
+                    <option key={bloodgroup.id} value={bloodgroup.id}>
+                      {bloodgroup.title}
+                    </option>
                   ))}
-
                 </select>
 
                 {errors?.["bloodgroup"] && (
-                  <p className="text-xs text-red-500">{errors["bloodgroup"].message}</p>
+                  <p className="text-xs text-red-500">
+                    {errors["bloodgroup"].message}
+                  </p>
                 )}
               </div>
-
             </div>
           </div>
-
-
-
-
 
           {/* Address */}
           <div className="">
@@ -358,7 +361,6 @@ const page = () => {
             </h3>
 
             <div className="grid grid-cols-12 gap-4 mt-2">
-
               <div className="col-span-4">
                 <Label>Country</Label>
                 <select
@@ -366,22 +368,26 @@ const page = () => {
                   className="w-full border rounded-md h-10 px-3"
                 >
                   <option value="">Select Country</option>
-
-
                   {countries?.map((country: any) => (
-                    <option key={country.id} value={country.id}>{country.title}</option>
+                    <option key={country.id} value={country.id}>
+                      {country.title}
+                    </option>
                   ))}
                 </select>
                 {errors?.["country"] && (
-                  <p className="text-xs text-red-500">{errors["country"].message}</p>
+                  <p className="text-xs text-red-500">
+                    {errors["country"].message}
+                  </p>
                 )}
               </div>
 
               <div className="col-span-4">
                 <Label>State</Label>
-                <Input   {...register("state")} />
+                <Input {...register("state")} />
                 {errors?.["state"] && (
-                  <p className="text-xs text-red-500">{errors["state"].message}</p>
+                  <p className="text-xs text-red-500">
+                    {errors["state"].message}
+                  </p>
                 )}
               </div>
 
@@ -389,7 +395,9 @@ const page = () => {
                 <Label>City</Label>
                 <Input {...register("city")} />
                 {errors?.["city"] && (
-                  <p className="text-xs text-red-500">{errors["city"].message}</p>
+                  <p className="text-xs text-red-500">
+                    {errors["city"].message}
+                  </p>
                 )}
               </div>
 
@@ -397,7 +405,9 @@ const page = () => {
                 <Label>Address 1</Label>
                 <Input {...register("address_1")} />
                 {errors?.["address_1"] && (
-                  <p className="text-xs text-red-500">{errors["address_1"].message}</p>
+                  <p className="text-xs text-red-500">
+                    {errors["address_1"].message}
+                  </p>
                 )}
               </div>
 
@@ -405,7 +415,9 @@ const page = () => {
                 <Label>Address 2</Label>
                 <Input {...register("address_2")} />
                 {errors?.["address_2"] && (
-                  <p className="text-xs text-red-500">{errors["address_2"].message}</p>
+                  <p className="text-xs text-red-500">
+                    {errors["address_2"].message}
+                  </p>
                 )}
               </div>
 
@@ -413,10 +425,11 @@ const page = () => {
                 <Label>Pincode</Label>
                 <Input {...register("pinecode")} />
                 {errors?.["pinecode"] && (
-                  <p className="text-xs text-red-500">{errors["pinecode"].message}</p>
+                  <p className="text-xs text-red-500">
+                    {errors["pinecode"].message}
+                  </p>
                 )}
               </div>
-
             </div>
           </div>
 
@@ -433,13 +446,11 @@ const page = () => {
               type="submit"
               className="px-5 py-2 rounded-lg bg-[#14967f] text-white font-medium hover:opacity-90 shadow-md transition"
             >
-              {Object.keys(user).length > 0 ? "Update" : "Save"} Staff
+              {user && Object.keys(user).length > 0 ? "Update" : "Save"} Staff
             </button>
           </div>
-
         </form>
       </Modal>
-
     </div>
   );
 };

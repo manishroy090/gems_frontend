@@ -44,6 +44,14 @@ function TimePicker({
   error,
   variant = "default",
   className,
+}:{
+  value:any,
+  onChange:()=>void,
+  placeholder:string,
+  timeFormat?:string,
+  error:any,
+  variant?:any
+  className?:string
 }) {
   return (
     <div className="w-full">

@@ -3,16 +3,16 @@
 import React, { useEffect, useRef, useState } from "react";
 import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
 
-const ProfilePictureUpload = ({ setValue, register, imaged }) => {
-  let [image, setImage] = useState();
-  const fileInputRef = useRef(null);
+const ProfilePictureUpload = ({ setValue, register, imaged }:{setValue?:any,register?:any,imaged?:any}) => {
+  let [image, setImage] = useState<String>();
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleImageChange = (e) => {
+  const handleImageChange = (e:any) => {
     const file = e.target.files?.[0];
 
 
     if (file) {
-      const imageUrl = URL.createObjectURL(file);
+      const imageUrl:any = URL.createObjectURL(file);
       setValue('image', file, { shouldValidate: true });
       setImage(imageUrl);
     }

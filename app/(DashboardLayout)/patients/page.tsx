@@ -14,9 +14,9 @@ import { getAllPatient } from "@services/Patients";
 
 const page = () => {
 
-    const [switchViewwise, setswitchView] = useState("list");
+    const [switchViewwise, setswitchView] = useState<String>("list");
     const [patients,setPatients] = useState([]);
-    function switchView(viewaction) {
+    function switchView(viewaction:String) {
         setswitchView(viewaction);
     }
 

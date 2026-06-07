@@ -15,33 +15,21 @@ export default function Page() {
   const [doctors ,setDoctors] = useState([]);
   const [loading ,setLoading] = useState(true);
 
-
-
-
-
   function switchView (viewaction) {
     setswitchView(viewaction);
   }
 
-  useEffect(()=>{
 
+  useEffect(()=>{
     const getAllDoctors = async() =>{
         const doctors = await getAllDoctor();
         setLoading(false)
         setDoctors(doctors);
 
     }
-
     getAllDoctors();
-
   },[])
 
-
-
-
-
-
-  
 
   return (
 
@@ -77,8 +65,6 @@ export default function Page() {
         { switchViewwise=="grid" ? (<Grid data={doctors}/>) : (<List data={doctors}/>) }
         
       </div>
-
-
     </div>
   );
 }

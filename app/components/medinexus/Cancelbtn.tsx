@@ -1,5 +1,5 @@
 
-const Cancelbtn = ({label,className}) => {
+const Cancelbtn = ({label,className}:{label:String,className?:String}) => {
   return (
         <button
               type="button"

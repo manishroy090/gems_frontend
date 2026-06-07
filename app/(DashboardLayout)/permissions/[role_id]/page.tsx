@@ -9,16 +9,16 @@ import { getPermissions } from "@services/Permission";
 const ACTIONS = ["index", "create", "edit", "delete", "view"];
 
 const Page = () => {
-  const [groupedAllPermissions, setGroupedAllPermissions] = useState([]);
-  const [selectedPermissions, setSelectedPermissions] = useState([]);
-  const [assignedPermissionIds, setAssignedPermissionIds] = useState(new Set());
-  const [isExistingAssignment, setIsExistingAssignment] = useState(false);
+  const [groupedAllPermissions, setGroupedAllPermissions] = useState<any>([]);
+  const [selectedPermissions, setSelectedPermissions] = useState<any>([]);
+  const [assignedPermissionIds, setAssignedPermissionIds] = useState<any>(new Set());
+  const [isExistingAssignment, setIsExistingAssignment] = useState<any>(false);
 
   const params = useParams();
 
-  const groupPermissions = (list) =>
-    list.reduce((acc, item) => {
-      let moduleGroup = acc.find((m) => m.module === item.module);
+  const groupPermissions = (list:any) =>
+    list.reduce((acc:any, item:any) => {
+      let moduleGroup = acc.find((m:any) => m.module === item.module);
       if (!moduleGroup) {
         moduleGroup = { module: item.module, rows: [] };
         acc.push(moduleGroup);
@@ -41,6 +41,7 @@ const Page = () => {
 
       return acc;
     }, []);
+    
 
   useEffect(() => {
     const fetchData = async () => {
@@ -66,7 +67,7 @@ const Page = () => {
         const hasAssigned = assignedList.length > 0;
         setIsExistingAssignment(hasAssigned);
 
-        const assignedIds = new Set(assignedList.map((p) => p.id));
+        const assignedIds = new Set(assignedList.map((p:any) => p.id));
         setAssignedPermissionIds(assignedIds);
         setSelectedPermissions(hasAssigned ? [...assignedIds] : []);
 
@@ -86,22 +87,22 @@ const Page = () => {
     [selectedPermissions]
   );
 
-  const handleCheckboxChange = (permissionId, checked) => {
-    setSelectedPermissions((prev) =>
+  const handleCheckboxChange = (permissionId:any, checked:any) => {
+    setSelectedPermissions((prev:any) =>
       checked
         ? prev.includes(permissionId)
           ? prev
           : [...prev, permissionId]
-        : prev.filter((id) => id !== permissionId)
+        : prev.filter((id:any) => id !== permissionId)
     );
   };
 
-  const handleAllowAll = (actions, checked) => {
+  const handleAllowAll = (actions:any, checked:any) => {
     const ids = Object.values(actions);
-    setSelectedPermissions((prev) =>
+    setSelectedPermissions((prev:any) =>
       checked
         ? [...new Set([...prev, ...ids])]
-        : prev.filter((id) => !ids.includes(id))
+        : prev.filter((id:any) => !ids.includes(id))
     );
   };
 
@@ -133,7 +134,7 @@ const Page = () => {
         {groupedAllPermissions.length === 0 ? (
           <p className="text-sm text-gray-500">No permissions found.</p>
         ) : (
-          groupedAllPermissions.map((permission, index) => (
+          groupedAllPermissions.map((permission:any, index:any) => (
             <div
               key={index}
               className="overflow-hidden rounded-lg border bg-white"
@@ -160,7 +161,7 @@ const Page = () => {
                   </thead>
 
                   <tbody>
-                    {permission.rows.map((module, rowIndex) => {
+                    {permission.rows.map((module:any, rowIndex:any) => {
                       const permissionIds = Object.values(module.actions);
                       const allChecked =
                         permissionIds.length > 0 &&

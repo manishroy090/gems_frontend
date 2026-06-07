@@ -10,7 +10,7 @@ import { getAllDoctor } from "@services/Doctor";
 import Addbtn from "@/components/medinexus/Addbtn";
 import Cancelbtn from "@/components/medinexus/Cancelbtn";
 import CustomDatePicker from "@/components/medinexus/CustomDatePicker";
-
+import { IPatient } from "@/interface/Ipatient";
 import {
     useForm,
     useFieldArray,
@@ -23,7 +23,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 const page = () => {
 
 
-    const { register, handleSubmit, formState: { errors },control } = useForm({ resolver: yupResolver(Patientschema) });
+    const { register, handleSubmit, formState: { errors },control } = useForm({ resolver: yupResolver(Patientschema)});
     const [countries, setCountries] = useState([]);
     const [bloodgroups, setBloodgroups] = useState([]);
     const [doctors, setDoctors] = useState([]);
@@ -55,6 +55,7 @@ const page = () => {
         }
 
         callMasterData();
+
     }, [])
 
     return (
@@ -168,7 +169,7 @@ const page = () => {
                         <div>
                             <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Blood Group</Label>
                             <select
-                                {...register("bloodgroup")}
+                                {...register("blood_group")}
                                 className="w-full border rounded-md h-10 px-3"
                             >
                                 <option value="">Select BloodGroup</option>
@@ -178,7 +179,7 @@ const page = () => {
 
                             </select>
                             <p className="text-xs text-red-500 mt-1">
-                                {errors.bloodgroup?.message}
+                                {errors.blood_group?.message}
                             </p>
 
                         </div>
@@ -230,7 +231,7 @@ const page = () => {
                             <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Country</Label>
 
                             <select
-                                {...register("country")}
+                                {...register("country_id")}
                                 className="w-full border rounded-md h-10 px-3"
                             >
                                 <option value="">Select Country</option>
@@ -239,7 +240,7 @@ const page = () => {
                                 ))}
                             </select>
                             <p className="text-xs text-red-500 mt-1">
-                                {errors.country?.message}
+                                {errors.country_id?.message}
                             </p>
                         </div>
 
@@ -262,9 +263,9 @@ const page = () => {
 
                         <div>
                             <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">PineCode</Label>
-                            <Input {...register("pinecode")} />
+                            <Input {...register("pinCode")} />
                             <p className="text-xs text-red-500 mt-1">
-                                {errors.pinecode?.message}
+                                {errors.pinCode?.message}
                             </p>
                         </div>
                     </div>

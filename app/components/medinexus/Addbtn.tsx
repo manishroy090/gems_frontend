@@ -1,4 +1,4 @@
-const Addbtn = ({label,className,type}) => {
+const Addbtn = ({label,className,type}:{label:String,className?:String,type?:String}) => {
   return (
         <button
               type="submit"

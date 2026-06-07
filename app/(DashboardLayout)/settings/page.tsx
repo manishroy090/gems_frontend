@@ -1,10 +1,16 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { getAllCountries  } from "../../services/Config";
-import { getHospitalDepartments ,getAllBloodGroup,getAllModules,getAllSubModule,getAllAvailableTest} from "../../services/Hoshpital";
-import { getAllPatientStatus } from "../../services/Patients";
-import Table from "../../components/medinexus/Table";
+import { getAllCountries } from "@services/Config";
+import {
+  getHospitalDepartments,
+  getAllBloodGroup,
+  getAllModules,
+  getAllSubModule,
+  getAllAvailableTest,
+} from "@services/Hoshpital";
+import { getAllPatientStatus } from "@services/Patients";
+import Table from "@components/medinexus/Table";
 import { use } from "apexcharts";
 
 // const masterData = {
@@ -27,18 +33,27 @@ const tabs = [
   { key: "patientStatus", label: "Patient Status" },
 ];
 
+const masterData: Record<string,{}> = {
+  countries: {},
+  departments: {},
+  bloodGroups: {},
+  modules: {},
+  submodules: {},
+  availableTests: {},
+  patientStatus: {},
+};
+
+type MasterDataKey = keyof typeof masterData;
 
 const Page = () => {
-  const [activeTab, setActiveTab] = useState("availableTests");
-  const [masterData,setMasterData] = useState({});
+  const [activeTab, setActiveTab] = useState<MasterDataKey>("availableTests");
+  const [masterData, setMasterData] = useState<{countries: {}, departments: {}, bloodGroups: {}, modules: {}, submodules: {}, availableTests: {},patientStatus: {}} >();
   const [data, setData] = useState([]);
   //  const data = masterData[activeTab] || [];
 
-
-  useEffect(()=>{
-
-    const getMasterData = async () =>{
-      const countries = await  getAllCountries();
+  useEffect(() => {
+    const getMasterData = async () => {
+      const countries = await getAllCountries();
       const hospitalDepartment = await getHospitalDepartments();
       const getAllBloodGroups = await getAllBloodGroup();
       const modules = await getAllModules();
@@ -46,34 +61,29 @@ const Page = () => {
       const availableTests = await getAllAvailableTest();
       const patientStatus = await getAllPatientStatus();
 
-
       setMasterData({
-        countries:countries,
-        departments:hospitalDepartment,
-        bloodGroups:getAllBloodGroups,
-        modules:modules,
-        submodules:subModules,
-        availableTests:availableTests,
-        patientStatus:patientStatus
-      })
+        countries: countries,
+        departments: hospitalDepartment,
+        bloodGroups: getAllBloodGroups,
+        modules: modules,
+        submodules: subModules,
+        availableTests: availableTests,
+        patientStatus: patientStatus,
+      });
       // console.log("countries",countries);
-    }
+    };
     getMasterData();
-  },[])
+  }, []);
 
-
-  useEffect(()=>{
-
-    const data =  masterData[activeTab];
+  useEffect(() => {
+    const data = masterData[activeTab as keyof typeof masterData];
     setData(data);
 
     // console.log("data",data);
     // console.log(activeTab);
-
-  },[activeTab])
+  }, [activeTab]);
   return (
     <div className="p-6 space-y-6">
-
       {/* ================= TABS ================= */}
       <div className="flex flex-wrap gap-2 border-b pb-3">
         {tabs.map((tab) => (
@@ -101,10 +111,7 @@ const Page = () => {
           </h2>
         </div>
 
-        <Table data={data}/>
-
-      
-
+        <Table data={data} />
       </div>
     </div>
   );
