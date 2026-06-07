@@ -384,12 +384,12 @@ const Table = <T extends Record<string, any>>({
     ===================================================== */
 
     return (
-        <div className="overflow-x-auto rounded-xl border bg-white shadow-sm">
+        <div className="overflow-x-auto rounded-xl  bg-white min-h-62 ">
             <table className="w-full border-collapse">
 
                 {/* HEADER */}
 
-                <thead className="bg-gray-50 border-b">
+                <thead className="bg-gray-50 ">
                     <tr>
 
                         <th className="px-4 py-3 text-left text-xs font-semibold uppercase w-[60px]">
@@ -416,7 +416,7 @@ const Table = <T extends Record<string, any>>({
                 {/* BODY */}
 
                 <tbody className="divide-y">
-
+ {}
                     {filteredData.map((item, index) => (
                         <tr
                             key={item.id || index}
