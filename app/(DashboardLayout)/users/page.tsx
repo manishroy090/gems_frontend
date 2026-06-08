@@ -22,8 +22,12 @@ import { getAllRoles } from "@services/Roles";
 import { createUser } from "@services/Hoshpital";
 import { useRouter } from "next/navigation";
 import { getUser, updateUser, deleteUserById } from "@services/User";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import ModeIcon from '@mui/icons-material/Mode';
+import DeleteIcon from '@mui/icons-material/Delete';
 
-interface Iuse{
+
+interface Iuse {
   address_one: string;
   address_two: string;
   blood_group: string;
@@ -34,9 +38,9 @@ interface Iuse{
   email: string;
   email_verified_at: null;
   firstname: string;
-  gender:string;
-  id:number | string;
-  is_active:boolean;
+  gender: string;
+  id: number | string;
+  is_active: boolean;
   lastname: string;
   phone_number: string | number;
   pin_code: string;
@@ -52,7 +56,7 @@ const page = () => {
   const [countries, setCountries] = useState([]);
   const [bloodgroups, setBloodgroups] = useState([]);
   const [roles, setRole] = useState([]);
-  const [user, setUser] = useState<Iuse | null >(null);
+  const [user, setUser] = useState<Iuse | null>(null);
   const [isDeleted, setIsDeleted] = useState(false);
 
   //toggel modal code
@@ -182,22 +186,30 @@ const page = () => {
           actionlist={[
             {
               label: "View",
-              icon: "👁️",
+              icon: <VisibilityIcon className="text-blue-600"/>,
               href: (item) => `/users/view/${item.id}`,
             },
 
             {
               label: "Edit",
-              icon: "✏️",
+              icon: <ModeIcon className="text-yellow-600"/>,
               onClick: (item) => edit(item.id),
             },
 
             {
               label: "Delete",
-              icon: "🗑️",
+              icon: <DeleteIcon className="text-red-600"/>,
               confirm: true,
               onClick: (item) => deleteUser(item.id),
             },
+          ]}
+          columns={[
+            { title: "First Name" },
+            { title: "last Name" },
+            { title: "Title" },
+            { title: "Email" },
+            { title: "Status" },
+            { title: "Verified" },
           ]}
         />
       </div>
