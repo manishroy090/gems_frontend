@@ -2,7 +2,7 @@ import { HospitalApi } from "../libs/axios";
 import { IDoctor } from "../interface/IDoctor";
 
 
-
+//get all doctors api
 export async function getAllDoctor() {
   const doctors = await HospitalApi.get('doctors').
     then((res) => {
@@ -12,11 +12,11 @@ export async function getAllDoctor() {
       console.log("error", error)
     });
 
-
   return doctors;
 }
 
-export async function createDoctor(payload) {
+//create doctor api
+export async function createDoctor(payload:IDoctor) {
   const register = await HospitalApi.post('doctors/create', payload, {
     headers: { "Content-Type": "multipart/form-data" }
   });
@@ -24,7 +24,9 @@ export async function createDoctor(payload) {
 
 }
 
-export async function getDoctor(id) {
+
+//get doctorapi module
+export async function getDoctor(id:string) {
   const doctor = await HospitalApi.get(`doctors/edit/${id}`)
     .then((res) => {
       return res.data.doctor
@@ -37,14 +39,14 @@ export async function getDoctor(id) {
 }
 
 
-export async function updateDoctor(id,payload) {
-
+//update doctorapi module
+export async function updateDoctor(id:string |number ,payload:IDoctor) {
   const doctor = await HospitalApi.put(`doctors/update/${id}`,payload)
-
-
 }
 
-export async function View(id){
+
+//view doctordetail a api
+export async function View(id:string | number){
    const doctor = await HospitalApi.get(`doctors/view/${id}`)
     .then((res) => {
       return res.data.doctordetails
@@ -56,9 +58,10 @@ export async function View(id){
 
 }
 
-export async function deleteDoctor(id) {
-     const doctor = await HospitalApi.delete(`doctors/delete/${id}`)
 
+//delete doctor api
+export async function deleteDoctor(id:string) {
+     const doctor = await HospitalApi.delete(`doctors/delete/${id}`)
 
 }
 

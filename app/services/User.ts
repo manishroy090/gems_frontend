@@ -1,39 +1,42 @@
 import { Axios, HospitalApi } from "../libs/axios";
+import { Iuser } from "@/interface/Iuser";
 
 
+//get User api call from here
 export async function getUsers() {
   const { data } = await HospitalApi.get("/auth/users");
   return data.users
 }
 
 
-export async function createUser() {
-
-
+//create user api call from here
+export async function createUser(data:Iuser) {
+  const user = HospitalApi.post("auth/signup", data)
+    .then((res) => {})
+    .catch((error) => {});
 }
 
 
-export async function getUser(user_id: any) {
+//get user api call from here
+export async function getUser(user_id:string) {
   const { data } = await HospitalApi.get(`/auth/users/${user_id}`);
   return data.user
 
 }
 
 
-export async function updateUser(id,payload) {
+//update user api call from here
+export async function updateUser(id:string|number,payload:Iuser) {
   const { data } = await HospitalApi.put(`/auth/users/${id}`,payload);
   return data.user
 
 }
 
 
-
-
-
-export async function deleteUserById(id) {
+//delete user api call from here
+export async function deleteUserById(id:string) {
     const { data } = await HospitalApi.delete(`/auth/users/${id}`);
   return data.message
-
 }
 
 

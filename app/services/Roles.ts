@@ -1,15 +1,16 @@
 import {Axios,HospitalApi} from "../libs/axios";
+import { IRole } from "@/interface/IRoles";
 
 
+//get all Role api here
 export async function getAllRoles(){
     const {data} = await HospitalApi.get("/roles");
-
     return data.roles;
-
 }
 
 
-export async function createRole(payload){
+//create roles api here
+export async function createRole(payload:IRole){
     const role = await HospitalApi.post(`roles/create`,payload)
 
 }
@@ -35,18 +36,20 @@ export async function deleteRole(){
 
 }
 
-
+ 
+//assign role api here
 export async function assignPermission(payload){
     const permission = await HospitalApi.post(`roles/assignpermissiontorole`,payload);
     // return permission.data.permissions;
 }
 
+//update role permission api here
 export async function updateRolePermissions(id,payload){
     const permission = await HospitalApi.put(`roles/updaterolepermission/${id}`,payload);
     // return permission.data.permissions;
 }
 
-
+//get roles with permission api here
 export async function  getRolesWithPermissions(id:any){
     const permission = await HospitalApi.get(`permission/getallpermission/${id}`);
     return permission.data.permissions;

@@ -6,7 +6,6 @@ export const AuthUserSlice = createSlice({
     initialState:{authUser:null},
     reducers :{
         setAuthUser: (state ,action) =>{
-
             state.authUser =action.payload
         }
     }
