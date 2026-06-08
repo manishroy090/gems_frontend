@@ -8,8 +8,8 @@ import {
   getAllModules,
   getAllSubModule,
   getAllAvailableTest,
-} from "@services/Hoshpital";
-import { getAllPatientStatus } from "@services/Patients";
+  getAllPatientStatus
+} from "@services/Config";
 import Table from "@components/medinexus/Table";
 import { use } from "apexcharts";
 

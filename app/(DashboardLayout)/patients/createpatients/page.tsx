@@ -4,8 +4,9 @@ import  { useState, useEffect } from "react";
 import { Label } from "@/components/medinexus/label";
 import { Input } from "@/components/medinexus/input";
 import { Patientschema } from "@schemas/Patient.schema";
-import { getAllCountries, getAllBloodGroup } from "@services/Hoshpital";
-import { getAllPatientStatus, createPatient } from "@services/Patients";
+import { getAllCountries ,getAllBloodGroup}  from "@/services/Config";
+import {createPatient } from "@services/Patients";
+import { getAllPatientStatus } from "@/services/Config";
 import { getAllDoctor } from "@services/Doctor";
 import Addbtn from "@/components/medinexus/Addbtn";
 import Cancelbtn from "@/components/medinexus/Cancelbtn";
@@ -119,7 +120,7 @@ const page = () => {
                             >
                                 <option value="">Select BloodGroup</option>
                                 {doctors?.map((doctor: any) => (
-                                    <option key={doctor.doctor_id} value={doctor.id}>{`${doctor.firstname} ${doctor.lastname}`}</option>
+                                    <option key={doctor.doctor_id} value={doctor.id}>{`${doctor.first_name} ${doctor.last_name}`}</option>
                                 ))}
 
                             </select>

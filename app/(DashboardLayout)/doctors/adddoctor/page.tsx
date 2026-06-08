@@ -9,7 +9,7 @@ import { useForm, SubmitHandler, useFieldArray, Controller } from "react-hook-fo
 import { yupResolver } from "@hookform/resolvers/yup";
 import { IDoctor,IEducation,IAward,ICertification} from "@interface/IDoctor";
 import { Doctorschema } from "@schemas/Doctor.schema";
-import { getHospitalDepartments, getAllCountries, getAllBloodGroup } from "@services/Hoshpital";
+import { getHospitalDepartments, getAllCountries, getAllBloodGroup } from "@services/Config";
 import Addbtn from "@/components/medinexus/Addbtn";
 import Cancelbtn from "@/components/medinexus/Cancelbtn";
 import CustomDatePicker from "@/components/medinexus/CustomDatePicker";
