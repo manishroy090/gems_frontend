@@ -3,6 +3,8 @@ import { HospitalApi } from "../libs/axios";
 
 // doctorstatus
 
+
+//get allCountries api 
 export async function getAllCountries() {
   const countries = Axios.get("/config")
     .then((res) => {
@@ -15,6 +17,8 @@ export async function getAllCountries() {
   return countries;
 }
 
+
+//getAllDoctor api
 export async function getAllDoctorStatus() {
   const doctorstatus = HospitalApi.get("/config/doctorstatus")
     .then((res) => {
@@ -27,6 +31,8 @@ export async function getAllDoctorStatus() {
   return doctorstatus;
 }
 
+
+//get allPatient Api
 export async function getAllPatientStatus() {
   const patientStatus = await HospitalApi.get("config/patientstatus")
     .then((res) => {
@@ -39,6 +45,7 @@ export async function getAllPatientStatus() {
   return patientStatus;
 }
 
+//get allHoshpitalDepartment
 export async function getHospitalDepartments() {
   const departments = HospitalApi.get("/config/getalldepartments")
     .then((res) => {
@@ -51,6 +58,7 @@ export async function getHospitalDepartments() {
   return departments;
 }
 
+//get allBloodGroup api
 export async function getAllBloodGroup() {
   const bloodgroups = HospitalApi.get("/config/getallbloodgroup")
     .then((res) => {
@@ -62,6 +70,8 @@ export async function getAllBloodGroup() {
   return bloodgroups;
 }
 
+
+//get allAvailableTest api
 export async function getAllAvailableTest() {
   const availabletest = HospitalApi.get("/config/availabletest")
     .then((res) => {
@@ -73,6 +83,8 @@ export async function getAllAvailableTest() {
   return availabletest;
 }
 
+
+//getAllModules api
 export async function getAllModules() {
   const modules = HospitalApi.get("/config/getallmodules")
     .then((res) => {
@@ -84,6 +96,8 @@ export async function getAllModules() {
   return modules;
 }
 
+
+//get allSubModule api
 export async function getAllSubModule() {
   const subModules = HospitalApi.get("/config/getallsubmodules")
     .then((res) => {
