@@ -1,79 +1,98 @@
-"use client"
+"use client";
 
-import CalendarMonthIcon from '@mui/icons-material/CalendarMonth';
+import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import Table from "../Table";
 import { useEffect, useState } from "react";
-import Link from 'next/link'
-import Badge from '@mui/material/Badge';
-import { useRouter } from 'next/navigation';
-import { deleteDoctor } from '../../../services/Doctor';
-
+import Link from "next/link";
+import Badge from "@mui/material/Badge";
+import { useRouter } from "next/navigation";
+import { deleteDoctor } from "../../../services/Doctor";
+import VisibilityIcon from '@mui/icons-material/Visibility';
+import ModeIcon from '@mui/icons-material/Mode';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 const List = ({ data }) => {
-
   const router = useRouter();
 
   const [page, setPage] = useState(1);
- 
-  const edit = async (doctorId)=>{
-    
+
+  const edit = async (doctorId) => {
     router.push(`/doctors/adddoctor/?doctor_id=${doctorId}`);
+  };
 
-  }
-
-  const deleteDoctorD = async (doctorId) =>{
-       deleteDoctor(doctorId);
-  }
-
-
+  const deleteDoctorD = async (doctorId) => {
+    deleteDoctor(doctorId);
+  };
 
   return (
     <div>
-
-      <Table data={data}
+      <Table
+        data={data}
         showaction={true}
         actionlist={[
           {
             label: "View",
-            icon: "👁️",
-            href: (item) =>
-              `/doctors/view/${item.id}`,
+            icon: <VisibilityIcon className="text-blue-600"/>,
+            href: (item) => `/doctors/view/${item.id}`,
           },
 
           {
             label: "Edit",
-            icon: "✏️",
+            icon: <ModeIcon className="text-yellow-600"/>,
             onClick: (item) => edit(item.id),
           },
 
           {
             label: "Delete",
-            icon: "🗑️",
+            icon: <DeleteIcon className="text-red-600"/>,
             confirm: true,
             onClick: (item) => deleteDoctorD(item.id),
           },
         ]}
-
         columnRenderers={{
           status: (value) => {
             if (value === "Available") {
-              return <Badge className="bg-yellow-100 text-yellow-700 p-2 rounded">Available</Badge>;
+              return (
+                <Badge className="bg-yellow-100 text-yellow-700 p-2 rounded">
+                  Available
+                </Badge>
+              );
             }
             if (value === "On Leave") {
-              return <Badge className="bg-yellow-100 text-yellow-700 p-2 rounded">On Leave</Badge>;
+              return (
+                <Badge className="bg-yellow-100 text-yellow-700 p-2 rounded">
+                  On Leave
+                </Badge>
+              );
             }
             if (value === "Busy") {
-              return <Badge className="bg-green-100 text-green-700 p-2 rounded">Busy</Badge>;
+              return (
+                <Badge className="bg-green-100 text-green-700 p-2 rounded">
+                  Busy
+                </Badge>
+              );
             }
-            return <Badge className="bg-blue-100 text-blue-700 p-2 rounded">Under Treatment</Badge>;
-          }
+            return (
+              <Badge className="bg-blue-100 text-blue-700 p-2 rounded">
+                Under Treatment
+              </Badge>
+            );
+          },
         }}
-
+        columns={[
+          { title: "First Name" },
+          { title: "last Name" },
+          { title: "Designation" },
+          { title: "Email" },
+          { title: "Department" },
+          { title: "Phone Number" },
+          { title: "Image" },
+          { title: "Fees" },
+          { title: "Status" },
+        ]}
       />
     </div>
-
-  )
-}
-
+  );
+};
 
 export default List;
