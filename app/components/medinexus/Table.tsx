@@ -245,9 +245,11 @@ const Table = <T extends Record<string, any>>({
 
     if (dateRange?.key) {
       result = result.filter((row) => {
-        const rowDate = new Date(row[dateRange.key]);
+        const rowDate = new Date(row[dateRange.key] ?? "created_at");
+      
 
         if (dateRange.from && rowDate < new Date(dateRange.from)) {
+          
           return false;
         }
 
@@ -257,6 +259,7 @@ const Table = <T extends Record<string, any>>({
 
         return true;
       });
+      
     }
 
     /* SORT */
@@ -280,6 +283,9 @@ const Table = <T extends Record<string, any>>({
 
     return result;
   }, [data, query]);
+
+
+
 
   /* =====================================================
        EMPTY STATE

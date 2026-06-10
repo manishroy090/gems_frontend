@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import Modal from "@/components/medinexus/Modal";
 import { Label } from "@/components/medinexus/label";
 import { Input } from "@/components/medinexus/input";
@@ -22,6 +22,7 @@ import { getAllRoles } from "@services/Roles";
 import { createUser } from "@services/User";
 import { useRouter } from "next/navigation";
 import { getUser, updateUser, deleteUserById } from "@services/User";
+import { getTotalUseraccoringToType } from "@/services/Sum";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ModeIcon from '@mui/icons-material/Mode';
 import DeleteIcon from '@mui/icons-material/Delete';
@@ -58,6 +59,33 @@ const page = () => {
   const [roles, setRole] = useState([]);
   const [user, setUser] = useState<Iuse | null>(null);
   const [isDeleted, setIsDeleted] = useState(false);
+  const [totalDoctor,setTotalDoctor] = useState<number | string>(0)
+  const [totalnurse,setTotalnurse] = useState<number | string>(0)
+  const [totalreceptionist,settotalreceptionist] = useState<number | string>(0)
+  const [totalaccount,settotalaccount] = useState<number | string>(0)
+
+  interface  filter{
+     search:null | string,
+     filter:null | string,
+     dateRange:{
+      key:string | null,
+      from:string | null,
+      to:string | null
+     },
+     sort:{
+      key:string | null,
+      order:string | null
+     }
+  }
+  const [query ,setquery] = useState<filter>({
+     search:null,
+     filter:null,
+     dateRange:{key:null,from:null,to:null},
+     sort:{key:null,order:null}
+  })
+
+
+
 
   //toggel modal code
   function openUserModal() {
@@ -84,7 +112,6 @@ const page = () => {
   };
 
   //form submission fail fallback
-
   const onError = async (error: any) => {
     console.log("error", error);
   };
@@ -96,7 +123,11 @@ const page = () => {
       const countries = await getAllCountries();
       const bloodgroup = await getAllBloodGroup();
       const roles = await getAllRoles();
-      // console.log("result", result.length);
+      const {data:usercount} = await getTotalUseraccoringToType();
+      setTotalDoctor(usercount.find((item:{title:string,count:number})=>item.title =="Doctor")?.total)
+      setTotalnurse(usercount.find((item:{title:string,count:number})=>item.title =="Nurse")?.total)
+      settotalreceptionist(usercount.find((item:{title:string,count:number})=>item.title =="Receptionist")?.total)
+      settotalaccount(usercount.find((item:{title:string,count:number})=>item.title =="Accountant")?.total)
       setUsers(result);
       setCountries(countries);
       setBloodgroups(bloodgroup);
@@ -105,6 +136,9 @@ const page = () => {
     getAllData();
     setIsDeleted(false);
   }, [isDeleted]);
+
+
+
 
   //call on edit
   const edit = async (userId: String | Number) => {
@@ -136,9 +170,46 @@ const page = () => {
     setIsDeleted(true);
   };
 
+
+  const handleSearch = (e) =>{
+      setquery(filterValue=>({
+         ...filterValue,
+         search:e.target.value
+      }))
+  }
+
+
+  const handleDateChange = useCallback((date) =>{
+
+      const customdate = {key:"created_at",from:date.from,to:date.to}
+      setquery(filterValue=>({
+         ...filterValue,
+         dateRange:customdate
+      }))
+  },[])
+
+
+  const handleShorting = useCallback((value)=>{
+         setquery(filterValue=>({
+         ...filterValue,
+         sort:{key:"id",order:value}
+      }))
+  },[])
+
+
+  useEffect(()=>{
+     console.log("filtervalue",query);
+  },[query])
+
   return (
     <div className="flex flex-col space-y-5">
-      <Userscards />
+      <Userscards 
+       totalDoctor={totalDoctor} 
+       totalnurse={totalnurse}
+       totalreceptionist={totalreceptionist}
+       totalaccount={totalaccount}
+       
+       />
 
       <div className="flex flex-col space-y-3">
         <div className="flex justify-between items-center border-b pb-4 border-gray-300">
@@ -164,17 +235,18 @@ const page = () => {
               <Input
                 type="text"
                 placeholder="Search"
-                className="w-96 h-9 bg-white rounded shadow"
+                onChange={handleSearch}
+                className="placeholder-gray-500 placeholder-opacity-100 placholder-text-red-500 w-96 h-9 rounded bg-white shadow"
               />
             </div>
 
-            <Datepicker />
+            <Datepicker onChange={handleDateChange}  />
           </div>
 
           <div className="flex items-center space-x-4">
             <Filter />
 
-            <SortBy />
+            <SortBy  handleShorting={handleShorting}/>
           </div>
         </div>
       </div>
@@ -210,7 +282,9 @@ const page = () => {
             { title: "Email" },
             { title: "Status" },
             { title: "Verified" },
+            { title: "Created At" },
           ]}
+          query={query}
         />
       </div>
 
