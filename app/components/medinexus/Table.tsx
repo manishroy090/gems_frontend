@@ -334,12 +334,12 @@ const Table = <T extends Record<string, any>>({
               >
                 {/* SERIAL */}
 
-                <td className="px-4 py-3 text-sm font-medium">{index + 1}</td>
+                <td className="px-4  text-xs font-medium">{index + 1}</td>
 
                 {/* DATA */}
 
                 {keys.map((key) => (
-                  <td key={key} className="px-4 py-3 text-sm">
+                  <td key={key} className="px-4  text-xs">
                     {columnRenderers?.[key] ? (
                       columnRenderers[key](item[key], item)
                     ) : typeof item[key] === "boolean" ? (
@@ -359,7 +359,7 @@ const Table = <T extends Record<string, any>>({
                 {/* ACTION */}
 
                 {showaction && (
-                  <td className="px-4 py-3">
+                  <td className="px-4 ">
                     <div className="flex justify-center">
                       <ActionMenu item={item} actions={actionlist} />
                     </div>

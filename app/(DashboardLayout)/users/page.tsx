@@ -26,6 +26,8 @@ import { getTotalUseraccoringToType } from "@/services/Sum";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ModeIcon from '@mui/icons-material/Mode';
 import DeleteIcon from '@mui/icons-material/Delete';
+import Custompagination from "@/components/medinexus/Custompagination";
+
 
 
 interface Iuse {
@@ -124,10 +126,10 @@ const page = () => {
       const bloodgroup = await getAllBloodGroup();
       const roles = await getAllRoles();
       const {data:usercount} = await getTotalUseraccoringToType();
-      setTotalDoctor(usercount.find((item:{title:string,count:number})=>item.title =="Doctor")?.total)
-      setTotalnurse(usercount.find((item:{title:string,count:number})=>item.title =="Nurse")?.total)
-      settotalreceptionist(usercount.find((item:{title:string,count:number})=>item.title =="Receptionist")?.total)
-      settotalaccount(usercount.find((item:{title:string,count:number})=>item.title =="Accountant")?.total)
+      setTotalDoctor(usercount.find((item:{title:string,count:number})=>item.title =="Doctor")?.total ?? 0)
+      setTotalnurse(usercount.find((item:{title:string,count:number})=>item.title =="Nurse")?.total ?? 0)
+      settotalreceptionist(usercount.find((item:{title:string,count:number})=>item.title =="Receptionist")?.total ?? 0)
+      settotalaccount(usercount.find((item:{title:string,count:number})=>item.title =="Accountant")?.total ?? 0)
       setUsers(result);
       setCountries(countries);
       setBloodgroups(bloodgroup);
@@ -286,6 +288,12 @@ const page = () => {
           ]}
           query={query}
         />
+
+         <div className="flex items-center justify-center py-4">
+              <Custompagination/>
+
+         </div>
+
       </div>
 
       {/* modal code Start from here */}
