@@ -18,6 +18,7 @@ export default function RootLayout({
         <link rel='icon' href='/favicon.png' type='image/svg+xml' />
         {/* <link rel="manifest" href="/manifest.json" /> */}
         <meta name="theme-color" content="#5d87ff" />
+<script src="https://kit.fontawesome.com/018e90aa20.js" crossorigin="anonymous"></script>
       </head>
       <body className="">
         <Provider store={store}>

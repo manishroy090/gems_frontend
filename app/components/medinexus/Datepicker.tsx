@@ -6,9 +6,10 @@ import { DateRange } from "react-date-range";
 import { format } from "date-fns";
 
 interface dateRange{
-  startDate: Date;
-  endDate: Date;
-  label: String;
+  from: string | Date;
+  to: String |Date;
+  label?: String;
+  key?:String
 };
 
 interface customInputProps {
@@ -19,11 +20,11 @@ const Datepicker = ({ onChange }: customInputProps) => {
   // State from here
   const [open, setOpen] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
-  const [rangeState, setRangeState] = useState([
+  const [rangeState, setRangeState] = useState<dateRange[]>([
     {
-      startDate: new Date(),
-      endDate: new Date(),
-      key: "selection",
+      from: new Date(),
+      to: new Date(),
+      key: "created_at",
     },
   ]);
 
@@ -45,6 +46,8 @@ const Datepicker = ({ onChange }: customInputProps) => {
 
   //Date Reaable features handle through this function
   const handleSelectOption = (option: any) => {
+
+    
     if (option === "Custom Range") {
       setShowCalendar(true);
       return;
@@ -85,25 +88,28 @@ const Datepicker = ({ onChange }: customInputProps) => {
         break;
     }
 
-    setRangeState([{ startDate: start, endDate: end, key: "selection" }]);
-    onChange?.({ startDate: start, endDate: end, label: option });
+    setRangeState([{ from: format(start,'yyy-MM-dd'), to: end, key: "selection" }]);
+    onChange?.({ from: format(start,'yyy-MM-dd'), to:format(end,'yyy-MM-dd'), key: option });
     setShowCalendar(false);
     setOpen(false);
   };
 
   const handleRangeChange = (item:any) => {
+
+    
     const selection = item.selection;
+    
     setRangeState([selection]);
     onChange?.({
-      startDate: selection.startDate,
-      endDate: selection.endDate,
+      from: selection.from,
+      to: selection.to,
       label: "Custom Range",
     });
   };
 
   const currentRange = formatRange(
-    rangeState[0].startDate,
-    rangeState[0].endDate,
+    rangeState[0].from,
+    rangeState[0].to,
   );
 
   return (

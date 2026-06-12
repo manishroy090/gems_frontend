@@ -245,9 +245,11 @@ const Table = <T extends Record<string, any>>({
 
     if (dateRange?.key) {
       result = result.filter((row) => {
-        const rowDate = new Date(row[dateRange.key]);
+        const rowDate = new Date(row[dateRange.key] ?? "created_at");
+      
 
         if (dateRange.from && rowDate < new Date(dateRange.from)) {
+          
           return false;
         }
 
@@ -257,6 +259,7 @@ const Table = <T extends Record<string, any>>({
 
         return true;
       });
+      
     }
 
     /* SORT */
@@ -281,6 +284,9 @@ const Table = <T extends Record<string, any>>({
     return result;
   }, [data, query]);
 
+
+
+
   /* =====================================================
        EMPTY STATE
     ===================================================== */
@@ -294,7 +300,7 @@ const Table = <T extends Record<string, any>>({
       <table className="w-full border-collapse">
         {/* HEADER */}
 
-        <thead className="bg-gray-50 ">
+        <thead className="bg-yellow-50 border-b shadow">
           <tr>
             <th className="px-4 py-3 text-left text-xs font-semibold uppercase w-[60px]">
               SN
@@ -328,12 +334,12 @@ const Table = <T extends Record<string, any>>({
               >
                 {/* SERIAL */}
 
-                <td className="px-4 py-3 text-sm font-medium">{index + 1}</td>
+                <td className="px-4  text-xs font-medium">{index + 1}</td>
 
                 {/* DATA */}
 
                 {keys.map((key) => (
-                  <td key={key} className="px-4 py-3 text-sm">
+                  <td key={key} className="px-4  text-xs">
                     {columnRenderers?.[key] ? (
                       columnRenderers[key](item[key], item)
                     ) : typeof item[key] === "boolean" ? (
@@ -353,7 +359,7 @@ const Table = <T extends Record<string, any>>({
                 {/* ACTION */}
 
                 {showaction && (
-                  <td className="px-4 py-3">
+                  <td className="px-4 ">
                     <div className="flex justify-center">
                       <ActionMenu item={item} actions={actionlist} />
                     </div>
