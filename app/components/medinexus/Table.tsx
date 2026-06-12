@@ -300,7 +300,7 @@ const Table = <T extends Record<string, any>>({
       <table className="w-full border-collapse">
         {/* HEADER */}
 
-        <thead className="bg-gray-50 ">
+        <thead className="bg-yellow-50 border-b shadow">
           <tr>
             <th className="px-4 py-3 text-left text-xs font-semibold uppercase w-[60px]">
               SN

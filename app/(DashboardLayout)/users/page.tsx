@@ -27,6 +27,8 @@ import VisibilityIcon from "@mui/icons-material/Visibility";
 import ModeIcon from "@mui/icons-material/Mode";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Custompagination from "@/components/medinexus/Custompagination";
+import { excelExport } from "@/services/User";
+
 
 interface Iuse {
   address_one: string;
@@ -206,6 +208,12 @@ const page = () => {
     }));
   }, []);
 
+
+  const handleExport = async () =>{
+    const blob = await excelExport();
+    return blob;
+  }
+
   useEffect(() => {
     console.log("filtervalue", query);
   }, [query]);
@@ -240,7 +248,7 @@ const page = () => {
           </div>
 
           <div className="flex items-center space-x-4">
-            <Exportbtn />
+            <Exportbtn handleExport={handleExport} />
 
             <div
               className="inline-flex items-center gap-2 px-4 py-2 bg-[#14967f] text-white border border-[#14967f]

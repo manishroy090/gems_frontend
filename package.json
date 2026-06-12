@@ -31,6 +31,7 @@
     "date-fns": "^4.4.0",
     "dotenv": "^17.4.2",
     "embla-carousel-react": "^8.6.0",
+    "exceljs": "^4.4.0",
     "flowbite-react": "^0.12.17",
     "framer-motion": "^12.38.0",
     "iconify": "^1.4.0",
