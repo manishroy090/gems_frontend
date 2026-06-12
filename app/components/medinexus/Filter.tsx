@@ -1,7 +1,7 @@
 import FilterAltRoundedIcon from "@mui/icons-material/FilterAltRounded";
 import { useState } from "react";
 
-const Filter = () => {
+const Filter = ({children}) => {
 
   const [showfilter,setShow] = useState(false);
 
@@ -23,41 +23,8 @@ const Filter = () => {
           <h1>Filter</h1>
           <span className="text-red-600">clear All</span>
         </div>
-
-        <div className="flex flex-col space-y-4">
-          <div className="flex flex-col space-y-1">
-            <label>Doctor</label>
-            <input type="text" className="border w-fit py-1 rounded" />
-          </div>
-          <div className="flex flex-col space-y-1">
-            <label>Designation</label>
-            <input type="text" className="border w-fit py-1 rounded" />
-          </div>
-          <div className="flex flex-col space-y-1">
-            <label>Department</label>
-            <input type="text" className="border w-fit py-1 rounded" />
-          </div>
-
-          <div className="flex flex-col space-y-1">
-            <label>Date</label>
-            <input type="text" className="border w-fit py-1 rounded" />
-          </div>
-          <div className="flex flex-col space-y-1">
-            <label>Amount</label>
-            <input type="text" className="border w-fit py-1 rounded" />
-          </div>
-            <div className="flex flex-col space-y-1">
-            <label>Status</label>
-            <input type="text" className="border w-fit py-1 rounded" />
-          </div>
-
-          <div className="flex space-x-4">
-            <button className="bg-slate-100 p-1 rounded">Close</button>
-            <button className="bg-blue-600 text-white p-1 rounded">
-              Filter
-            </button>
-          </div>
-        </div>
+           {children}
+     
       </div>
     </div>
   );

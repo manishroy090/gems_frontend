@@ -23,12 +23,10 @@ import { createUser } from "@services/User";
 import { useRouter } from "next/navigation";
 import { getUser, updateUser, deleteUserById } from "@services/User";
 import { getTotalUseraccoringToType } from "@/services/Sum";
-import VisibilityIcon from '@mui/icons-material/Visibility';
-import ModeIcon from '@mui/icons-material/Mode';
-import DeleteIcon from '@mui/icons-material/Delete';
+import VisibilityIcon from "@mui/icons-material/Visibility";
+import ModeIcon from "@mui/icons-material/Mode";
+import DeleteIcon from "@mui/icons-material/Delete";
 import Custompagination from "@/components/medinexus/Custompagination";
-
-
 
 interface Iuse {
   address_one: string;
@@ -61,33 +59,32 @@ const page = () => {
   const [roles, setRole] = useState([]);
   const [user, setUser] = useState<Iuse | null>(null);
   const [isDeleted, setIsDeleted] = useState(false);
-  const [totalDoctor,setTotalDoctor] = useState<number | string>(0)
-  const [totalnurse,setTotalnurse] = useState<number | string>(0)
-  const [totalreceptionist,settotalreceptionist] = useState<number | string>(0)
-  const [totalaccount,settotalaccount] = useState<number | string>(0)
+  const [totalDoctor, setTotalDoctor] = useState<number | string>(0);
+  const [totalnurse, setTotalnurse] = useState<number | string>(0);
+  const [totalreceptionist, settotalreceptionist] = useState<number | string>(
+    0,
+  );
+  const [totalaccount, settotalaccount] = useState<number | string>(0);
 
-  interface  filter{
-     search:null | string,
-     filter:null | string,
-     dateRange:{
-      key:string | null,
-      from:string | null,
-      to:string | null
-     },
-     sort:{
-      key:string | null,
-      order:string | null
-     }
+  interface filter {
+    search: null | string;
+    filter: null | string;
+    dateRange: {
+      key: string | null;
+      from: string | null;
+      to: string | null;
+    };
+    sort: {
+      key: string | null;
+      order: string | null;
+    };
   }
-  const [query ,setquery] = useState<filter>({
-     search:null,
-     filter:null,
-     dateRange:{key:null,from:null,to:null},
-     sort:{key:null,order:null}
-  })
-
-
-
+  const [query, setquery] = useState<filter>({
+    search: null,
+    filter: null,
+    dateRange: { key: null, from: null, to: null },
+    sort: { key: null, order: null },
+  });
 
   //toggel modal code
   function openUserModal() {
@@ -125,11 +122,29 @@ const page = () => {
       const countries = await getAllCountries();
       const bloodgroup = await getAllBloodGroup();
       const roles = await getAllRoles();
-      const {data:usercount} = await getTotalUseraccoringToType();
-      setTotalDoctor(usercount.find((item:{title:string,count:number})=>item.title =="Doctor")?.total ?? 0)
-      setTotalnurse(usercount.find((item:{title:string,count:number})=>item.title =="Nurse")?.total ?? 0)
-      settotalreceptionist(usercount.find((item:{title:string,count:number})=>item.title =="Receptionist")?.total ?? 0)
-      settotalaccount(usercount.find((item:{title:string,count:number})=>item.title =="Accountant")?.total ?? 0)
+      const { data: usercount } = await getTotalUseraccoringToType();
+      setTotalDoctor(
+        usercount.find(
+          (item: { title: string; count: number }) => item.title == "Doctor",
+        )?.total ?? 0,
+      );
+      setTotalnurse(
+        usercount.find(
+          (item: { title: string; count: number }) => item.title == "Nurse",
+        )?.total ?? 0,
+      );
+      settotalreceptionist(
+        usercount.find(
+          (item: { title: string; count: number }) =>
+            item.title == "Receptionist",
+        )?.total ?? 0,
+      );
+      settotalaccount(
+        usercount.find(
+          (item: { title: string; count: number }) =>
+            item.title == "Accountant",
+        )?.total ?? 0,
+      );
       setUsers(result);
       setCountries(countries);
       setBloodgroups(bloodgroup);
@@ -138,9 +153,6 @@ const page = () => {
     getAllData();
     setIsDeleted(false);
   }, [isDeleted]);
-
-
-
 
   //call on edit
   const edit = async (userId: String | Number) => {
@@ -172,63 +184,44 @@ const page = () => {
     setIsDeleted(true);
   };
 
+  const handleSearch = (e) => {
+    setquery((filterValue) => ({
+      ...filterValue,
+      search: e.target.value,
+    }));
+  };
 
-  const handleSearch = (e) =>{
-      setquery(filterValue=>({
-         ...filterValue,
-         search:e.target.value
-      }))
-  }
+  const handleDateChange = useCallback((date) => {
+    const customdate = { key: "created_at", from: date.from, to: date.to };
+    setquery((filterValue) => ({
+      ...filterValue,
+      dateRange: customdate,
+    }));
+  }, []);
 
+  const handleShorting = useCallback((value) => {
+    setquery((filterValue) => ({
+      ...filterValue,
+      sort: { key: "id", order: value },
+    }));
+  }, []);
 
-  const handleDateChange = useCallback((date) =>{
-
-      const customdate = {key:"created_at",from:date.from,to:date.to}
-      setquery(filterValue=>({
-         ...filterValue,
-         dateRange:customdate
-      }))
-  },[])
-
-
-  const handleShorting = useCallback((value)=>{
-         setquery(filterValue=>({
-         ...filterValue,
-         sort:{key:"id",order:value}
-      }))
-  },[])
-
-
-  useEffect(()=>{
-     console.log("filtervalue",query);
-  },[query])
+  useEffect(() => {
+    console.log("filtervalue", query);
+  }, [query]);
 
   return (
     <div className="flex flex-col space-y-5">
-      <Userscards 
-       totalDoctor={totalDoctor} 
-       totalnurse={totalnurse}
-       totalreceptionist={totalreceptionist}
-       totalaccount={totalaccount}
-       
-       />
+      <Userscards
+        totalDoctor={totalDoctor}
+        totalnurse={totalnurse}
+        totalreceptionist={totalreceptionist}
+        totalaccount={totalaccount}
+      />
 
       <div className="flex flex-col space-y-3">
         <div className="flex justify-between items-center border-b pb-4 border-gray-300">
           <span className="font-semibold text-xl">Users</span>
-
-          <div className="flex space-x-4">
-            <Exportbtn />
-
-            <div
-              className="inline-flex items-center gap-2 px-4 py-2 bg-[#14967f] text-white border border-[#14967f]
-             shadow-sm hover:shadow-md transition cursor-pointer select-none"
-              onClick={openUserModal}
-            >
-              <AddOutlinedIcon fontSize="small" />
-              <span className="text-sm font-medium leading-none">Add User</span>
-            </div>
-          </div>
         </div>
 
         <div className="flex justify-between space-x-4 ">
@@ -242,13 +235,21 @@ const page = () => {
               />
             </div>
 
-            <Datepicker onChange={handleDateChange}  />
+            <Datepicker onChange={handleDateChange} />
+            <SortBy handleShorting={handleShorting} />
           </div>
 
           <div className="flex items-center space-x-4">
-            <Filter />
+            <Exportbtn />
 
-            <SortBy  handleShorting={handleShorting}/>
+            <div
+              className="inline-flex items-center gap-2 px-4 py-2 bg-[#14967f] text-white border border-[#14967f]
+             shadow-sm hover:shadow-md transition cursor-pointer select-none"
+              onClick={openUserModal}
+            >
+              <AddOutlinedIcon fontSize="small" />
+              <span className="text-sm font-medium leading-none">Add User</span>
+            </div>
           </div>
         </div>
       </div>
@@ -260,19 +261,19 @@ const page = () => {
           actionlist={[
             {
               label: "View",
-              icon: <VisibilityIcon className="text-blue-600"/>,
+              icon: <VisibilityIcon className="text-blue-600" />,
               href: (item) => `/users/view/${item.id}`,
             },
 
             {
               label: "Edit",
-              icon: <ModeIcon className="text-yellow-600"/>,
+              icon: <ModeIcon className="text-yellow-600" />,
               onClick: (item) => edit(item.id),
             },
 
             {
               label: "Delete",
-              icon: <DeleteIcon className="text-red-600"/>,
+              icon: <DeleteIcon className="text-red-600" />,
               confirm: true,
               onClick: (item) => deleteUser(item.id),
             },
@@ -289,11 +290,9 @@ const page = () => {
           query={query}
         />
 
-         <div className="flex items-center justify-center py-4">
-              <Custompagination/>
-
-         </div>
-
+        <div className="flex items-center justify-center py-4 hidden">
+          <Custompagination />
+        </div>
       </div>
 
       {/* modal code Start from here */}
