@@ -169,7 +169,7 @@ const page = () => {
           }),
         );
 
-        console.log("educt", education);
+        console.log("educt", result);
         setDoctorImage(result.image);
         reset({
           firstname: result.firstname,
