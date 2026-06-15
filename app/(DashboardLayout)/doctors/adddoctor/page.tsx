@@ -1,15 +1,30 @@
 "use client";
 
-import  { useEffect, useState } from "react"; import { Label } from "@/components/medinexus/label";
+import { useEffect, useState } from "react";
+import { Label } from "@/components/medinexus/label";
 import { Input } from "@/components/medinexus/input";
 import { Textarea } from "@/components/medinexus/textarea";
-import { CirclePlus } from 'lucide-react';
+import { CirclePlus } from "lucide-react";
 import ProfilePictureUpload from "@/components/medinexus/ProfilePictureUpload";
-import { useForm, SubmitHandler, useFieldArray, Controller } from "react-hook-form"
+import {
+  useForm,
+  SubmitHandler,
+  useFieldArray,
+  Controller,
+} from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-import { IDoctor,IEducation,IAward,ICertification} from "@interface/IDoctor";
+import {
+  IDoctor,
+  IEducation,
+  IAward,
+  ICertification,
+} from "@interface/IDoctor";
 import { Doctorschema } from "@schemas/Doctor.schema";
-import { getHospitalDepartments, getAllCountries, getAllBloodGroup } from "@services/Config";
+import {
+  getHospitalDepartments,
+  getAllCountries,
+  getAllBloodGroup,
+} from "@services/Config";
 import Addbtn from "@/components/medinexus/Addbtn";
 import Cancelbtn from "@/components/medinexus/Cancelbtn";
 import CustomDatePicker from "@/components/medinexus/CustomDatePicker";
@@ -17,13 +32,9 @@ import TimePicker from "@/components/medinexus/TimePicker";
 import { getAllDoctorStatus } from "@services/Config";
 import { createDoctor, getDoctor, updateDoctor } from "@services/Doctor";
 import { useSearchParams } from "next/navigation";
-import { Printer } from 'lucide-react';
-
-
-
+import { Printer } from "lucide-react";
 
 const page = () => {
-
   const [departments, setDepartments] = useState([]);
   const [countries, setCountries] = useState([]);
   const [bloodgroups, setBloodgroups] = useState([]);
@@ -93,7 +104,6 @@ const page = () => {
     },
   });
 
-
   const {
     fields: sessionFields,
     append: appendSession,
@@ -130,10 +140,8 @@ const page = () => {
     name: "certifications",
   });
 
-
   useEffect(() => {
-    const doctorId:String | Number | null = params.get('doctor_id');
-
+    const doctorId: String | Number | null = params.get("doctor_id");
 
     if (doctorId !== null) {
       setDoctorId(doctorId);
@@ -141,12 +149,28 @@ const page = () => {
         const result = await getDoctor(doctorId);
 
         const dob = new Date(result.dob).toISOString();
-        const education = result.education.map((item:IEducation) => ({id:item.id, degree: item.degree, from: new Date(item.from).toISOString(), to: new Date(item.to).toISOString(), university: item.university }))
-        const awards = result.award.map((item:IAward) => ({ id: item.id, name: item.name, from: new Date(item.from).toISOString() }))
-        const certification = result.certification.map((item:ICertification) => ({ id: item.id, name: item.name, from: new Date(item.from).toISOString() }))
+        const education = result.education.map((item: IEducation) => ({
+          id: item.id,
+          degree: item.degree,
+          from: new Date(item.from).toISOString(),
+          to: new Date(item.to).toISOString(),
+          university: item.university,
+        }));
+        const awards = result.award.map((item: IAward) => ({
+          id: item.id,
+          name: item.name,
+          from: new Date(item.from).toISOString(),
+        }));
+        const certification = result.certification.map(
+          (item: ICertification) => ({
+            id: item.id,
+            name: item.name,
+            from: new Date(item.from).toISOString(),
+          }),
+        );
 
-        console.log("educt", education);
-        setDoctorImage(result.image)
+        console.log("educt", result);
+        setDoctorImage(result.image);
         reset({
           firstname: result.firstname,
           lastname: result.lastname,
@@ -173,22 +197,17 @@ const page = () => {
           sessions: result.doctor_sessions,
           educations: education,
           awards: awards,
-          certifications: certification
-        })
-      }
+          certifications: certification,
+        });
+      };
       getDoctorDetails();
     }
-
-  }, [departments, bloodgroups, countries])
-
-
+  }, [departments, bloodgroups, countries]);
 
   const onSubmit: SubmitHandler<IDoctor> = async (data) => {
     const formData = new FormData();
 
     Object.entries(data).forEach(([key, value]) => {
-
-
       if (key == "dob") {
         console.log(value);
         value = new Date(value).toISOString();
@@ -196,21 +215,26 @@ const page = () => {
 
       if (Array.isArray(value)) {
         if (key == "educations") {
-          value = value.map((item) => ({ id: item.id, degree: item.degree, from: new Date(item.from).toISOString(), to: new Date(item.to).toISOString(), university: item.university }));
+          value = value.map((item) => ({
+            id: item.id,
+            degree: item.degree,
+            from: new Date(item.from).toISOString(),
+            to: new Date(item.to).toISOString(),
+            university: item.university,
+          }));
         }
         if (key == "awards" || key == "certifications") {
-          value = value.map((item:ICertification | IAward) => ({ id: item.id, name: item.name, from: new Date(item.from).toISOString() }));
-
+          value = value.map((item: ICertification | IAward) => ({
+            id: item.id,
+            name: item.name,
+            from: new Date(item.from).toISOString(),
+          }));
         }
 
         formData.append(key, JSON.stringify(value));
-      }
-
-      else if (value instanceof File) {
+      } else if (value instanceof File) {
         formData.append(key, value);
-      }
-
-      else if (value !== undefined && value !== null) {
+      } else if (value !== undefined && value !== null) {
         formData.append(key, String(value));
       }
     });
@@ -221,10 +245,8 @@ const page = () => {
     }
 
     if (doctorId) {
-      updateDoctor(doctorId, formData)
-    }
-    else {
-
+      updateDoctor(doctorId, formData);
+    } else {
       await createDoctor(formData);
     }
   };
@@ -234,7 +256,6 @@ const page = () => {
   };
 
   useEffect(() => {
-
     const callMasterData = async () => {
       const getAllDepartment = await getHospitalDepartments();
       const Countries = await getAllCountries();
@@ -245,24 +266,16 @@ const page = () => {
       setDepartments(getAllDepartment);
       setCountries(Countries);
       setDoctorStatus(doctorStatus);
-
-    }
+    };
     callMasterData();
-  }, [])
-
-
-
+  }, []);
 
   return (
     <>
       <div className="bg-white  pb-8 w-full h-fit">
-        <form onSubmit={handleSubmit(onSubmit, onError)}
-        >
+        <form onSubmit={handleSubmit(onSubmit, onError)}>
           <div className="bg-gradient-to-r from-[#14967f] to-[#12b886] px-6 py-4 flex justify-between">
-
             <div>
-
-
               <h2 className="text-white text-lg font-semibold tracking-wide">
                 {doctorId ? "Update" : "Add"} Doctor
               </h2>
@@ -271,16 +284,17 @@ const page = () => {
               </p>
             </div>
             <div className="flex items-center justify-center  px-2 bg-yellow-200 rounded">
-
               <Printer />
             </div>
           </div>
 
-
-
           <div className="grid grid-cols-5 gap-4 p-4">
             <div className="col-span-5 flex flex-col items-center justify-center">
-              <ProfilePictureUpload setValue={setValue} register={register("image")} imaged={doctorImage} />
+              <ProfilePictureUpload
+                setValue={setValue}
+                register={register("image")}
+                imaged={doctorImage}
+              />
               <p className="text-xs text-red-500 mt-1">
                 {errors.image?.message}
               </p>
@@ -315,7 +329,7 @@ const page = () => {
 
             <div className="flex flex-col space-y-2">
               <Label>Email</Label>
-              <Input  {...register("email")} />
+              <Input {...register("email")} />
               <p className="text-xs text-red-500 mt-1">
                 {errors.email?.message}
               </p>
@@ -335,12 +349,11 @@ const page = () => {
                   />
                 )}
               />
-
             </div>
 
             <div className="flex flex-col space-y-2">
               <Label>Experience</Label>
-              <Input  {...register("year_of_experience")} type="number" />
+              <Input {...register("year_of_experience")} type="number" />
               <p className="text-xs text-red-500 mt-1">
                 {errors.year_of_experience?.message}
               </p>
@@ -355,10 +368,10 @@ const page = () => {
                 <option value="">Select Department</option>
 
                 {departments?.map((item: any) => (
-                  <option key={item.id} value={item.id}>{item.title}</option>
+                  <option key={item.id} value={item.id}>
+                    {item.title}
+                  </option>
                 ))}
-
-
               </select>
 
               <p className="text-xs text-red-500 mt-1">
@@ -368,7 +381,7 @@ const page = () => {
 
             <div className="flex flex-col space-y-2">
               <Label>Designation</Label>
-              <Input  {...register("designation")} />
+              <Input {...register("designation")} />
               <p className="text-xs text-red-500 mt-1">
                 {errors.designation?.message}
               </p>
@@ -382,10 +395,9 @@ const page = () => {
               </p>
             </div>
 
-
             <div className="flex flex-col space-y-2">
               <Label>Language Spoken</Label>
-              <Input  {...register("language_spoken")} />
+              <Input {...register("language_spoken")} />
               <p className="text-xs text-red-500 mt-1">
                 {errors.language_spoken?.message}
               </p>
@@ -399,9 +411,10 @@ const page = () => {
               >
                 <option value="">Select Bloodgroup</option>
                 {bloodgroups?.map((bloodgroup: any) => (
-                  <option key={bloodgroup.id} value={bloodgroup.id}>{bloodgroup.title}</option>
+                  <option key={bloodgroup.id} value={bloodgroup.id}>
+                    {bloodgroup.title}
+                  </option>
                 ))}
-
               </select>
 
               <p className="text-xs text-red-500 mt-1">
@@ -419,7 +432,6 @@ const page = () => {
                 <option value="">Select Gender</option>
                 <option value="male">Male</option>
                 <option value="female">Female</option>
-
               </select>
 
               <p className="text-xs text-red-500 mt-1">
@@ -428,10 +440,8 @@ const page = () => {
             </div>
             <div className="flex flex-col space-y-2">
               <Label>Fee</Label>
-              <Input  {...register("fee")} />
-              <p className="text-xs text-red-500 mt-1">
-                {errors.fee?.message}
-              </p>
+              <Input {...register("fee")} />
+              <p className="text-xs text-red-500 mt-1">{errors.fee?.message}</p>
             </div>
 
             <div className="flex flex-col space-y-2">
@@ -442,9 +452,10 @@ const page = () => {
               >
                 <option value="">Select Status</option>
                 {doctorStatus?.map((status: any) => (
-                  <option key={status.id} value={status.id}>{status.title}</option>
+                  <option key={status.id} value={status.id}>
+                    {status.title}
+                  </option>
                 ))}
-
               </select>
               <p className="text-xs text-red-500 mt-1">
                 {errors.status?.message}
@@ -454,7 +465,11 @@ const page = () => {
             <div className="flex  space-x-4">
               <Label>Features onWebsite</Label>
 
-              <input type="checkbox" checked={watch("feature_on_website") === true} {...register("feature_on_website")} />
+              <input
+                type="checkbox"
+                checked={watch("feature_on_website") === true}
+                {...register("feature_on_website")}
+              />
 
               <p className="text-xs text-red-500 mt-1">
                 {errors.status?.message}
@@ -463,10 +478,8 @@ const page = () => {
 
             <div className="flex flex-col space-y-2 col-span-5">
               <Label>Bio</Label>
-              <Textarea  {...register("bio")} />
-              <p className="text-xs text-red-500 mt-1">
-                {errors.bio?.message}
-              </p>
+              <Textarea {...register("bio")} />
+              <p className="text-xs text-red-500 mt-1">{errors.bio?.message}</p>
             </div>
           </div>
 
@@ -482,12 +495,11 @@ const page = () => {
                 >
                   <option value="">Select Country</option>
 
-
                   {countries?.map((country: any) => (
-                    <option key={country.id} value={country.id}>{country.title}</option>
+                    <option key={country.id} value={country.id}>
+                      {country.title}
+                    </option>
                   ))}
-
-
                 </select>
                 <p className="text-xs text-red-500 mt-1">
                   {errors.country_id?.message}
@@ -517,11 +529,10 @@ const page = () => {
               <div className="flex flex-col space-y-2">
                 <Label>Address</Label>
 
-                <Input  {...register("address")} />
+                <Input {...register("address")} />
 
                 <p className="text-xs text-red-500 mt-1">
                   {errors.address?.message}
-
                 </p>
               </div>
 
@@ -532,7 +543,6 @@ const page = () => {
 
                 <p className="text-xs text-red-500 mt-1">
                   {errors.address_2?.message}
-
                 </p>
               </div>
 
@@ -543,7 +553,6 @@ const page = () => {
 
                 <p className="text-xs text-red-500 mt-1">
                   {errors.pin_code?.message}
-
                 </p>
               </div>
             </div>
@@ -553,27 +562,31 @@ const page = () => {
             <div className="flex justify-between items-center mb-4">
               <h2 className="text-lg font-semibold">Session Information</h2>
 
-              <button type="button" onClick={() =>
-                appendSession({
-                  day: "",
-                  start_time: "",
-                  end_time: "",
-                  patients: "",
-                })
-              } className="bg-[#12b886] p-2 text-white rounded-full hover:scale-105 transition">
+              <button
+                type="button"
+                onClick={() =>
+                  appendSession({
+                    day: "",
+                    start_time: "",
+                    end_time: "",
+                    patients: "",
+                  })
+                }
+                className="bg-[#12b886] p-2 text-white rounded-full hover:scale-105 transition"
+              >
                 <CirclePlus size={18} />
               </button>
             </div>
 
             <div>
               {sessionFields.map((field, index) => (
-
                 <div className="grid grid-cols-4 gap-4 p-4 border" key={index}>
                   <div className="flex flex-col space-y-2">
                     <Label>Day</Label>
 
                     <select
-                      {...register(`sessions.${index}.day`)} className="w-full border rounded-md h-10 px-3"
+                      {...register(`sessions.${index}.day`)}
+                      className="w-full border rounded-md h-10 px-3"
                     >
                       <option value="">Select Day</option>
 
@@ -593,7 +606,6 @@ const page = () => {
 
                   <div className="flex flex-col space-y-2">
                     <Label>Start</Label>
-
 
                     <Controller
                       name={`sessions.${index}.start_time`}
@@ -628,20 +640,21 @@ const page = () => {
                   <div className="flex flex-col space-y-2">
                     <Label>patients</Label>
 
-                    <Input type="number"                  {...register(`sessions.${index}.patients`)}
+                    <Input
+                      type="number"
+                      {...register(`sessions.${index}.patients`)}
                     />
 
                     <p className="text-xs text-red-500 mt-1">
                       {errors.sessions?.[index]?.patients?.message}
-
                     </p>
                   </div>
                 </div>
               ))}
-
             </div>
 
-            <DynamicSection title="Education Information"
+            <DynamicSection
+              title="Education Information"
               fields={educationFields}
               append={() =>
                 appendEducation({
@@ -674,7 +687,6 @@ const page = () => {
               control={control}
             />
 
-
             <DynamicSection
               title="Certifications"
               fields={certificationFields}
@@ -690,24 +702,19 @@ const page = () => {
               type="certification"
               control={control}
             />
-
-
           </div>
-
 
           <div className="flex  place-content-end pr-10 space-x-4">
             <Cancelbtn label="Cancel" />
             <Addbtn label={doctorId ? "Update" : "Submit"} />
           </div>
         </form>
-
       </div>
     </>
   );
 };
 
 export default page;
-
 
 const DynamicSection = ({
   title,
@@ -717,53 +724,48 @@ const DynamicSection = ({
   register,
   errors,
   type,
-  control
+  control,
 }: any) => {
-
   return (
     <div className=" flex flex-col space-y-4">
       <div className="flex justify-between items-center mb-4">
         <h2 className="text-lg font-semibold">{title}</h2>
 
-        <button type="button" onClick={append} className="bg-[#12b886] p-2 text-white rounded-full hover:scale-105 transition">
+        <button
+          type="button"
+          onClick={append}
+          className="bg-[#12b886] p-2 text-white rounded-full hover:scale-105 transition"
+        >
           <CirclePlus size={18} />
         </button>
       </div>
       {fields.map((field: any, index: number) => (
-
         <div key={index}>
           {type === "education" ? (
             <>
-
               <div className="grid grid-cols-4 gap-4 p-4 border">
-
-
                 <div className="flex flex-col space-y-2">
                   <Label>Degree</Label>
 
-                  <Input    {...register(`educations.${index}.degree`)} />
+                  <Input {...register(`educations.${index}.degree`)} />
 
                   <p className="text-xs text-red-500 mt-1">
                     {errors?.[index]?.degree?.message}
-
                   </p>
                 </div>
 
                 <div className="flex flex-col space-y-2">
                   <Label>University</Label>
 
-                  <Input     {...register(`educations.${index}.university`)} />
+                  <Input {...register(`educations.${index}.university`)} />
 
                   <p className="text-xs text-red-500 mt-1">
                     {errors?.[index]?.university?.message}
-
-
                   </p>
                 </div>
 
                 <div className="flex flex-col space-y-2">
                   <Label>Start Date</Label>
-
 
                   <Controller
                     name={`educations.${index}.from`}
@@ -776,8 +778,6 @@ const DynamicSection = ({
                       />
                     )}
                   />
-
-
                 </div>
 
                 <div className="flex flex-col space-y-2">
@@ -800,25 +800,19 @@ const DynamicSection = ({
           ) : (
             <>
               <div className="p-4 flex flex-col space-y-4">
-
                 <div className="grid grid-cols-4 gap-4 p-4 border">
-
-
                   <div className="flex flex-col space-y-2">
                     <Label>Title</Label>
 
-                    <Input                     {...register(`${type}s.${index}.name`)}
-                    />
+                    <Input {...register(`${type}s.${index}.name`)} />
 
                     <p className="text-xs text-red-500 mt-1">
                       {errors?.[index]?.name?.message}
-
                     </p>
                   </div>
 
                   <div className="flex flex-col space-y-2">
                     <Label>Date</Label>
-
 
                     <Controller
                       name={`${type}s.${index}.from`}
@@ -832,17 +826,12 @@ const DynamicSection = ({
                       )}
                     />
                   </div>
-
-
                 </div>
-
-
               </div>
             </>
           )}
         </div>
       ))}
     </div>
-
-  )
-}
+  );
+};

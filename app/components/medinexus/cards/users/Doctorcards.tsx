@@ -58,7 +58,7 @@ const Doctorcards = ({ doctorDetails }) => {
         <div className="flex items-start justify-between gap-2">
           <div className="flex flex-col">
             <h2 className="text-lg font-bold text-gray-800">
-              {`${doctorDetails?.first_name} ${doctorDetails?.last_name}`}
+              {doctorDetails?.name}
             </h2>
             <p className="text-sm text-blue-600 font-medium">
               {doctorDetails.department}

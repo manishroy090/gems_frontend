@@ -7,7 +7,7 @@ import { cn } from "../../libs/utils";
 import { parsers } from "date-fns";
 
 const inputVariants = cva(
-  "flex h-10 w-74 border rounded-lg px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-0",
+  "flex h-10 w-[100%] border rounded-lg px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-0",
   {
     variants: {
       variant: {
@@ -55,12 +55,13 @@ function CustomDatePicker({
 
 
   return (
-    <div className="w-full">
+    <div className="">
       <DatePicker
         selected={value}
         onChange={handleChange}
         placeholderText={placeholder}
         dateFormat={dateFormat}
+        wrapperClassName="w-full"
         className={cn(
           inputVariants({
             variant: error ? "failure" : variant,

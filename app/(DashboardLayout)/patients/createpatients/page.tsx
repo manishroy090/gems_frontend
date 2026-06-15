@@ -1,11 +1,10 @@
-
 "use client";
-import  { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { Label } from "@/components/medinexus/label";
 import { Input } from "@/components/medinexus/input";
 import { Patientschema } from "@schemas/Patient.schema";
-import { getAllCountries ,getAllBloodGroup}  from "@/services/Config";
-import {createPatient } from "@services/Patients";
+import { getAllCountries, getAllBloodGroup } from "@/services/Config";
+import { createPatient, PatientDetails,updatePatient } from "@services/Patients";
 import { getAllPatientStatus } from "@/services/Config";
 import { getAllDoctor } from "@services/Doctor";
 import Addbtn from "@/components/medinexus/Addbtn";
@@ -13,276 +12,321 @@ import Cancelbtn from "@/components/medinexus/Cancelbtn";
 import CustomDatePicker from "@/components/medinexus/CustomDatePicker";
 import { IPatient } from "@/interface/Ipatient";
 import {
-    useForm,
-    useFieldArray,
-    SubmitHandler,
-    Controller
+  useForm,
+  useFieldArray,
+  SubmitHandler,
+  Controller,
 } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
-
+import { useSearchParams } from "next/navigation";
 
 const page = () => {
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+    control,
+    reset,
+  } = useForm({ resolver: yupResolver(Patientschema) });
+  const [countries, setCountries] = useState([]);
+  const [bloodgroups, setBloodgroups] = useState([]);
+  const [doctors, setDoctors] = useState([]);
+  const [patientStatuses, setPatientStatus] = useState([]);
+  const params = useSearchParams();
+  const patientId = params.get("userId");
+  const [isEdit ,setEdit] = useState(false);
 
+  const onSubmit: SubmitHandler<IPatient> = async (data) => {
+    if (data.dob) {
+      data.dob = new Date(data.dob).toISOString();
+    }
 
-    const { register, handleSubmit, formState: { errors },control } = useForm({ resolver: yupResolver(Patientschema)});
-    const [countries, setCountries] = useState([]);
-    const [bloodgroups, setBloodgroups] = useState([]);
-    const [doctors, setDoctors] = useState([]);
-    const [patientStatuses, setPatientStatus] = useState([]);
+    if(patientId){
+      console.log("update patient details",data);
+      await updatePatient(patientId,data);
+    }
+    else{
+      await createPatient(data);
+    }
+  };
 
-    const onSubmit: SubmitHandler<IPatient> = async (data) => {
-        if(data.dob){
-            data.dob = new Date(data.dob).toISOString();
-        }
-        await createPatient(data);
+  const onError = (error: any) => {
+    console.log("FORM ERROR", error);
+  };
+
+  useEffect(() => {
+    const getpatientDetails = async () => {
+      const patientDetails = await PatientDetails(patientId);
+
+      if (patientId) {
+        setEdit(true);
+        reset({
+          firstname: patientDetails.firstname,
+          lastname: patientDetails.lastname,
+          phonenumber: patientDetails.phone_number,
+          email: patientDetails.email,
+          primary_doctor: patientDetails.primary_doctor,
+          dob: patientDetails.dob,
+          gender: patientDetails.gender,
+          blood_group: patientDetails.blood_group,
+          status: patientDetails.status,
+          address_one: patientDetails.address_one,
+          address_two: patientDetails.address_two,
+          country_id: patientDetails.country_id,
+          state: patientDetails.state,
+          city: patientDetails.city,
+          pinCode: patientDetails.pin_code,
+        });
+      }
     };
 
+    getpatientDetails();
+  }, [patientId, doctors, countries, bloodgroups, patientStatuses]);
 
-    const onError = (error: any) => {
-        console.log("FORM ERROR", error);
+  useEffect(() => {
+    const callMasterData = async () => {
+      const Countries = await getAllCountries();
+      const bloodgroup = await getAllBloodGroup();
+      const doctors = await getAllDoctor();
+      const patientStatus = await getAllPatientStatus();
+      setPatientStatus(patientStatus);
+      setBloodgroups(bloodgroup);
+      setCountries(Countries);
+      setDoctors(doctors);
     };
 
-    useEffect(() => {
+    callMasterData();
+  }, []);
 
-        const callMasterData = async () => {
-            const Countries = await getAllCountries();
-            const bloodgroup = await getAllBloodGroup();
-            const doctors = await getAllDoctor();
-            const patientStatus = await getAllPatientStatus();
-            setPatientStatus(patientStatus);
-            setBloodgroups(bloodgroup);
-            setCountries(Countries);
-            setDoctors(doctors);
-        }
+  return (
+    <div className="doctor_form bg-white ">
+      <div className="bg-gradient-to-r from-[#14967f] to-[#12b886] px-6 py-4 flex justify-between">
+        <h1 className="text-white">{isEdit ? "Edit" : "New"} Patient</h1>
+      </div>
 
-        callMasterData();
+      <div className="p-4">
+        <h1 className="py-4">Patient Information</h1>
 
-    }, [])
-
-    return (
-        <div className="doctor_form bg-white ">
-            <div className="bg-gradient-to-r from-[#14967f] to-[#12b886] px-6 py-4 flex justify-between">
-
-                <h1 className="text-white">New Patient</h1>
+        <form onSubmit={handleSubmit(onSubmit, onError)}>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                First Name
+              </Label>
+              <Input {...register("firstname")} />
+              <p className="text-xs text-red-500 mt-1">
+                {errors.firstname?.message}
+              </p>
             </div>
 
-            <div className="p-4">
-                <h1 className="py-4">Patient Information</h1>
-
-                <form onSubmit={handleSubmit(onSubmit, onError)}>
-
-                    <div className="grid grid-cols-2 gap-4">
-
-                        <div>
-                            <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">First Name</Label>
-                            <Input {...register("firstname")} />
-                            <p className="text-xs text-red-500 mt-1">
-                                {errors.firstname?.message}
-                            </p>
-
-                        </div>
-
-
-                        <div>
-                            <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Last Name</Label>
-                            <Input  {...register("lastname")} />
-                            <p className="text-xs text-red-500 mt-1">
-                                {errors.lastname?.message}
-                            </p>
-
-                        </div>
-
-
-                        <div>
-                            <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Phone Number</Label>
-                            <Input {...register("phonenumber")} />
-                            <p className="text-xs text-red-500 mt-1">
-                                {errors.phonenumber?.message}
-                            </p>
-
-                        </div>
-
-
-                        <div>
-                            <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Email Address</Label>
-                            <Input {...register("email")} />
-                            <p className="text-xs text-red-500 mt-1">
-                                {errors.email?.message}
-                            </p>
-
-                        </div>
-
-                        <div>
-                            <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Primary Doctor</Label>
-                            <select
-                                {...register("primary_doctor")}
-                                className="w-full border rounded-md h-10 px-3"
-                            >
-                                <option value="">Select BloodGroup</option>
-                                {doctors?.map((doctor: any) => (
-                                    <option key={doctor.doctor_id} value={doctor.id}>{`${doctor.first_name} ${doctor.last_name}`}</option>
-                                ))}
-
-                            </select>
-                            <p className="text-xs text-red-500 mt-1">
-                                {errors.primary_doctor?.message}
-                            </p>
-
-                        </div>
-
-                        <div>
-                            <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">DOB</Label>
-                            <Controller
-                                name="dob"
-                                control={control}
-                                render={({ field }) => (
-                                    <CustomDatePicker
-                                        value={field.value}
-                                        onChange={field.onChange}
-                                        error={errors.dob?.message}
-                                    />
-                                )}
-                            />
-
-                        </div>
-
-
-
-                        <div>
-                            <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Gender</Label>
-
-                            <select
-                                {...register("gender")}
-                                className="w-full border rounded-md h-10 px-3"
-                            >
-                                <option value="">Select Gender</option>
-                                <option value="male">Male</option>
-                                <option value="female">Female</option>
-
-                            </select>
-                            <p className="text-xs text-red-500 mt-1">
-                                {errors.gender?.message}
-                            </p>
-
-                        </div>
-
-
-                        <div>
-                            <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Blood Group</Label>
-                            <select
-                                {...register("blood_group")}
-                                className="w-full border rounded-md h-10 px-3"
-                            >
-                                <option value="">Select BloodGroup</option>
-                                {bloodgroups?.map((bloodgroup: any) => (
-                                    <option key={bloodgroup.id} value={bloodgroup.id}>{bloodgroup.title}</option>
-                                ))}
-
-                            </select>
-                            <p className="text-xs text-red-500 mt-1">
-                                {errors.blood_group?.message}
-                            </p>
-
-                        </div>
-
-                        <div>
-                            <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Status</Label>
-                            <select
-                                {...register("status")}
-                                className="w-full border rounded-md h-10 px-3"
-                            >
-                                <option value="">Select Status</option>
-                                {patientStatuses?.map((patientStatus: any) => (
-                                    <option key={patientStatus.id} value={patientStatus.id}>{patientStatus.title}</option>
-                                ))}
-                            </select>
-                            <p className="text-xs text-red-500 mt-1">
-                                {errors.status?.message}
-                            </p>
-
-                        </div>
-
-
-
-                    </div>
-
-
-                    <h1 className="py-4">Address Information</h1>
-                    <div className="grid grid-cols-2 gap-4">
-
-                        <div>
-                            <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Address 1 </Label>
-                            <Input  {...register("address_one")} />
-                            <p className="text-xs text-red-500 mt-1">
-                                {errors.address_one?.message}
-                            </p>
-                        </div>
-
-
-                        <div>
-                            <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Address 2 </Label>
-                            <Input  {...register("address_two")} />
-                            <p className="text-xs text-red-500 mt-1">
-                                {errors.address_two?.message}
-                            </p>
-                        </div>
-
-
-                        <div>
-                            <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">Country</Label>
-
-                            <select
-                                {...register("country_id")}
-                                className="w-full border rounded-md h-10 px-3"
-                            >
-                                <option value="">Select Country</option>
-                                {countries?.map((country: any) => (
-                                    <option key={country.id} value={country.id}>{country.title}</option>
-                                ))}
-                            </select>
-                            <p className="text-xs text-red-500 mt-1">
-                                {errors.country_id?.message}
-                            </p>
-                        </div>
-
-                        <div>
-                            <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">State</Label>
-                            <Input   {...register("state")} />
-                            <p className="text-xs text-red-500 mt-1">
-                                {errors.state?.message}
-                            </p>
-                        </div>
-
-                        <div>
-                            <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">City</Label>
-                            <Input  {...register("city")} />
-                            <p className="text-xs text-red-500 mt-1">
-                                {errors.city?.message}
-                            </p>
-                        </div>
-
-
-                        <div>
-                            <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">PineCode</Label>
-                            <Input {...register("pinCode")} />
-                            <p className="text-xs text-red-500 mt-1">
-                                {errors.pinCode?.message}
-                            </p>
-                        </div>
-                    </div>
-
-                    <div className="flex  place-content-end pr-10 space-x-4">
-                        <Cancelbtn label="Cancel" />
-                        <Addbtn label={"Submit"} />
-                    </div>
-
-                </form>
-
+            <div>
+              <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                Last Name
+              </Label>
+              <Input {...register("lastname")} />
+              <p className="text-xs text-red-500 mt-1">
+                {errors.lastname?.message}
+              </p>
             </div>
 
-        </div>
-    )
-}
+            <div>
+              <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                Phone Number
+              </Label>
+              <Input {...register("phonenumber")} />
+              <p className="text-xs text-red-500 mt-1">
+                {errors.phonenumber?.message}
+              </p>
+            </div>
 
+            <div>
+              <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                Email Address
+              </Label>
+              <Input {...register("email")} />
+              <p className="text-xs text-red-500 mt-1">
+                {errors.email?.message}
+              </p>
+            </div>
 
-export default page
+            <div>
+              <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                Primary Doctor
+              </Label>
+              <select
+                {...register("primary_doctor")}
+                className="w-full border rounded-md h-10 px-3"
+              >
+                <option value="">Select BloodGroup</option>
+                {doctors?.map((doctor: any) => (
+                  <option key={doctor.id} value={doctor.did}>
+                    {doctor.name}
+                  </option>
+                ))}
+              </select>
+              <p className="text-xs text-red-500 mt-1">
+                {errors.primary_doctor?.message}
+              </p>
+            </div>
+
+            <div>
+              <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                DOB
+              </Label>
+              <Controller
+                name="dob"
+                control={control}
+                render={({ field }) => (
+                  <CustomDatePicker
+                    value={field.value}
+                    onChange={field.onChange}
+                    error={errors.dob?.message}
+                  />
+                )}
+              />
+            </div>
+
+            <div>
+              <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                Gender
+              </Label>
+
+              <select
+                {...register("gender")}
+                className="w-full border rounded-md h-10 px-3"
+              >
+                <option value="">Select Gender</option>
+                <option value="male">Male</option>
+                <option value="female">Female</option>
+              </select>
+              <p className="text-xs text-red-500 mt-1">
+                {errors.gender?.message}
+              </p>
+            </div>
+
+            <div>
+              <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                Blood Group
+              </Label>
+              <select
+                {...register("blood_group")}
+                className="w-full border rounded-md h-10 px-3"
+              >
+                <option value="">Select BloodGroup</option>
+                {bloodgroups?.map((bloodgroup: any) => (
+                  <option key={bloodgroup.id} value={bloodgroup.id}>
+                    {bloodgroup.title}
+                  </option>
+                ))}
+              </select>
+              <p className="text-xs text-red-500 mt-1">
+                {errors.blood_group?.message}
+              </p>
+            </div>
+
+            <div>
+              <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                Status
+              </Label>
+              <select
+                {...register("status")}
+                className="w-full border rounded-md h-10 px-3"
+              >
+                <option value="">Select Status</option>
+                {patientStatuses?.map((patientStatus: any) => (
+                  <option key={patientStatus.id} value={patientStatus.id}>
+                    {patientStatus.title}
+                  </option>
+                ))}
+              </select>
+              <p className="text-xs text-red-500 mt-1">
+                {errors.status?.message}
+              </p>
+            </div>
+          </div>
+
+          <h1 className="py-4">Address Information</h1>
+          <div className="grid grid-cols-2 gap-4">
+            <div>
+              <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                Address 1{" "}
+              </Label>
+              <Input {...register("address_one")} />
+              <p className="text-xs text-red-500 mt-1">
+                {errors.address_one?.message}
+              </p>
+            </div>
+
+            <div>
+              <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                Address 2{" "}
+              </Label>
+              <Input {...register("address_two")} />
+              <p className="text-xs text-red-500 mt-1">
+                {errors.address_two?.message}
+              </p>
+            </div>
+
+            <div>
+              <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                Country
+              </Label>
+
+              <select
+                {...register("country_id")}
+                className="w-full border rounded-md h-10 px-3"
+              >
+                <option value="">Select Country</option>
+                {countries?.map((country: any) => (
+                  <option key={country.id} value={country.id}>
+                    {country.title}
+                  </option>
+                ))}
+              </select>
+              <p className="text-xs text-red-500 mt-1">
+                {errors.country_id?.message}
+              </p>
+            </div>
+
+            <div>
+              <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                State
+              </Label>
+              <Input {...register("state")} />
+              <p className="text-xs text-red-500 mt-1">
+                {errors.state?.message}
+              </p>
+            </div>
+
+            <div>
+              <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                City
+              </Label>
+              <Input {...register("city")} />
+              <p className="text-xs text-red-500 mt-1">
+                {errors.city?.message}
+              </p>
+            </div>
+
+            <div>
+              <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">
+                PineCode
+              </Label>
+              <Input {...register("pinCode")} />
+              <p className="text-xs text-red-500 mt-1">
+                {errors.pinCode?.message}
+              </p>
+            </div>
+          </div>
+
+          <div className="flex  place-content-end pr-10 space-x-4">
+            <Cancelbtn label="Cancel" />
+            <Addbtn label={isEdit ? "Update" :"Submit"} />
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+};
+
+export default page;

@@ -207,7 +207,7 @@ const Table = <T extends Record<string, any>>({
   const keys = useMemo(() => {
     if (!data?.length) return [];
 
-    return Object.keys(data[0]).filter((key) => key !== "id");
+    return Object.keys(data[0]).filter((key) => key !== "id" && key !== "pid");
   }, [data]);
 
   /* =====================================================

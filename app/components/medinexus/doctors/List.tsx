@@ -10,8 +10,9 @@ import { deleteDoctor } from "../../../services/Doctor";
 import VisibilityIcon from '@mui/icons-material/Visibility';
 import ModeIcon from '@mui/icons-material/Mode';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { use } from "apexcharts";
 
-const List = ({ data }) => {
+const List = ({ data,query}) => {
   const router = useRouter();
 
   const [page, setPage] = useState(1);
@@ -23,6 +24,12 @@ const List = ({ data }) => {
   const deleteDoctorD = async (doctorId) => {
     deleteDoctor(doctorId);
   };
+
+  useEffect(()=>{
+
+    console.log(query);
+
+  },[query])
 
   return (
     <div>
@@ -80,8 +87,7 @@ const List = ({ data }) => {
           },
         }}
         columns={[
-          { title: "First Name" },
-          { title: "last Name" },
+          { title: "Name" },
           { title: "Designation" },
           { title: "Email" },
           { title: "Department" },
@@ -90,6 +96,7 @@ const List = ({ data }) => {
           { title: "Fees" },
           { title: "Status" },
         ]}
+        query={query}
       />
     </div>
   );

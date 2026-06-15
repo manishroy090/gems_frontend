@@ -36,17 +36,42 @@ export async function createPatient(patientDetails:IPatient){
 
 
 //edit patient api
-export async function editPatient(){
+export async function PatientDetails(patientId:String){
 
+  const result =  await HospitalApi
+    .get(`/patient/edit/${patientId}`).then((res)=>{
+        return res.data.patientDetails;
+    }).catch((error)=>{
+        console.log("error",error)
+    });
+
+    return result;
+   
 
 }
 
 //update patient api
-export async function updatePatient(){
+export async function updatePatient(patientId:String,patientDetails:IPatient){
+    const result = await HospitalApi.put(`patient/update/${patientId}`,patientDetails)
+    .then((res)=>{
+        console.log("res",res);
+    }).catch((error)=>{
+        console.log("error",error);
+    });
+
+    console.log("result",result);
 
 }
 
 //delete patient api
-export async function deletePatient(){
+export async function deletePatient(patientId:String){
+     const result = await HospitalApi.delete(`patient/delete/${patientId}`)
+    .then((res)=>{
+        console.log("res",res);
+    }).catch((error)=>{
+        console.log("error",error);
+    });
+
+    console.log("result",result);
 
 }
