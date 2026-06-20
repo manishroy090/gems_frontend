@@ -73,5 +73,12 @@ export async function deletePatient(patientId:String){
     });
 
     console.log("result",result);
+}
 
+export async function excelExport(){
+    const {data} = await HospitalApi.post("patient/excel/export",{},{
+        responseType: 'blob'  
+    })
+
+    return data;
 }
