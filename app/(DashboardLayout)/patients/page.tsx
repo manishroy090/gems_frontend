@@ -8,7 +8,7 @@ import WindowIcon from "@mui/icons-material/Window";
 import { useCallback, useEffect, useState } from "react";
 import List from "@/components/medinexus/patient.tsx/List";
 import Link from "next/link";
-import { getAllPatient } from "@services/Patients";
+import { getAllPatient,excelExport } from "@services/Patients";
 import Datepicker from "@/components/medinexus/Datepicker";
 import SortBy from "@/components/medinexus/SortBy";
 import { useSearchParams } from "next/navigation";
@@ -97,6 +97,12 @@ const page = () => {
     }));
   };
 
+    const handleExport = async () =>{
+      const blob = await excelExport();
+
+      return blob;
+    }
+
   return (
     <div className="flex flex-col space-y-4">
       <div className="flex justify-between items-center blorder border-b pb-4">
@@ -111,7 +117,7 @@ const page = () => {
         </div>
         <div className="flex space-x-4">
           {switchViewwise == "list" ? (
-            <Exportbtn />
+            <Exportbtn handleExport={handleExport} />
           ) : (
             <Filter>
               <form onSubmit={handleSubmit(onSubmit)}>
