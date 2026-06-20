@@ -79,6 +79,8 @@ const page = () => {
                 );
               },
             }}
+
+           columns = {[  { title: "Role" }, { title: "Permission" }]}
           />
         ) : (
           "loading"
