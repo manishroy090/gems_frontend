@@ -20,7 +20,7 @@ const Datepicker = ({ onChange }: customInputProps) => {
   // State from here
   const [open, setOpen] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
-  const [rangeState, setRangeState] = useState<dateRange[]>([
+  const [rangeState, setRangeState] = useState<any>([
     {
       from: new Date(),
       to: new Date(),

@@ -4,6 +4,7 @@ import React, { memo, useEffect, useMemo, useRef, useState } from "react";
 
 import Link from "next/link";
 import { Badge } from "@/components/medinexus/badge";
+import { Ifilter } from "@/interface/IFilter";
 
 /* =========================================================
    TYPES
@@ -17,26 +18,19 @@ export type TableAction<T = any> = {
   onClick?: (item: T) => void | Promise<void>;
 };
 
+export type tablecolm <T = any> ={
+  title:string
+}
+
 type ColumnRenderer<T> = (value: any, item: T) => React.ReactNode;
 
 type TableProps<T = any> = {
   data: T[];
   actionlist?: TableAction<T>[];
   columnRenderers?: Record<string, ColumnRenderer<T>>;
-  query?: {
-    search?: string;
-    filters?: Record<string, any>;
-    dateRange?: {
-      key: string;
-      from?: string;
-      to?: string;
-    };
-    sort?: {
-      key: string;
-      order: "asc" | "desc";
-    };
-  };
+  query?: Ifilter;
   showaction?: boolean;
+  columns?:tablecolm<T>[]
 };
 
 /* =========================================================
@@ -93,7 +87,7 @@ const ActionMenu = memo(
     actions = [],
   }: {
     item: T;
-    actions: TableAction<T>[];
+    actions: any;
   }) => {
     const [open, setOpen] = useState(false);
     const [confirmAction, setConfirmAction] = useState<TableAction<T> | null>(
@@ -137,7 +131,7 @@ const ActionMenu = memo(
 
           {open && (
             <div className="absolute right-0 mt-2 w-44 bg-white border rounded-lg shadow-lg overflow-hidden z-40">
-              {actions.map((action, i) =>
+              {actions.map((action:any, i:any) =>
                 action.href ? (
                   <Link
                     key={i}
@@ -196,7 +190,20 @@ const Table = <T extends Record<string, any>>({
   data = [],
   actionlist = [],
   columnRenderers = {},
-  query = {},
+  query = {
+    search:" ",
+    filters:" ",
+    dateRange:{
+        key:" ",
+        from:" ",
+        to: " "
+    },
+    sort:{
+      key: " ",
+      order:" "
+
+    }
+  },
   showaction = false,
   columns = []
 }: TableProps<T>) => {
@@ -245,7 +252,7 @@ const Table = <T extends Record<string, any>>({
 
     if (dateRange?.key) {
       result = result.filter((row) => {
-        const rowDate = new Date(row[dateRange.key] ?? "created_at");
+        const rowDate = new Date(row[dateRange.key as keyof typeof row] ?? "created_at");
       
 
         if (dateRange.from && rowDate < new Date(dateRange.from)) {
@@ -266,8 +273,8 @@ const Table = <T extends Record<string, any>>({
 
     if (sort?.key) {
       result.sort((a, b) => {
-        const aVal = a[sort.key];
-        const bVal = b[sort.key];
+        const aVal = a[sort.key as keyof typeof a];
+        const bVal = b[sort.key as keyof typeof b];
 
         const isAsc = sort.order === "asc";
 
@@ -369,7 +376,7 @@ const Table = <T extends Record<string, any>>({
             ))
           ) : (
             <tr className=" text-center  w-full">
-              <td colSpan="8" className="py-10 fontsemibold text-lg">
+              <td colSpan={8} className="py-10 fontsemibold text-lg">
 
               No Data Available
               </td>

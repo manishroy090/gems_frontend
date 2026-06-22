@@ -28,6 +28,7 @@ import ModeIcon from "@mui/icons-material/Mode";
 import DeleteIcon from "@mui/icons-material/Delete";
 import Custompagination from "@/components/medinexus/Custompagination";
 import { excelExport } from "@/services/User";
+import { Ifilter } from "@/interface/IFilter";
 
 
 interface Iuse {
@@ -68,22 +69,10 @@ const page = () => {
   );
   const [totalaccount, settotalaccount] = useState<number | string>(0);
 
-  interface filter {
-    search: null | string;
-    filter: null | string;
-    dateRange: {
-      key: string | null;
-      from: string | null;
-      to: string | null;
-    };
-    sort: {
-      key: string | null;
-      order: string | null;
-    };
-  }
-  const [query, setquery] = useState<filter>({
+
+  const [query, setquery] = useState<Ifilter>({
     search: null,
-    filter: null,
+    filters: null,
     dateRange: { key: null, from: null, to: null },
     sort: { key: null, order: null },
   });
@@ -186,14 +175,14 @@ const page = () => {
     setIsDeleted(true);
   };
 
-  const handleSearch = (e) => {
+  const handleSearch = (e:any) => {
     setquery((filterValue) => ({
       ...filterValue,
       search: e.target.value,
     }));
   };
 
-  const handleDateChange = useCallback((date) => {
+  const handleDateChange = useCallback((date:any) => {
     const customdate = { key: "created_at", from: date.from, to: date.to };
     setquery((filterValue) => ({
       ...filterValue,
@@ -201,7 +190,7 @@ const page = () => {
     }));
   }, []);
 
-  const handleShorting = useCallback((value) => {
+  const handleShorting = useCallback((value:string) => {
     setquery((filterValue) => ({
       ...filterValue,
       sort: { key: "id", order: value },

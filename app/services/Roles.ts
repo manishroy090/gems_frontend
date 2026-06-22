@@ -38,13 +38,13 @@ export async function deleteRole(){
 
  
 //assign role api here
-export async function assignPermission(payload){
+export async function assignPermission(payload:any){
     const permission = await HospitalApi.post(`roles/assignpermissiontorole`,payload);
     // return permission.data.permissions;
 }
 
 //update role permission api here
-export async function updateRolePermissions(id,payload){
+export async function updateRolePermissions(id:any,payload:any){
     const permission = await HospitalApi.put(`roles/updaterolepermission/${id}`,payload);
     // return permission.data.permissions;
 }

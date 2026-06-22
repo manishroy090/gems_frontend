@@ -36,7 +36,7 @@ export async function createPatient(patientDetails:IPatient){
 
 
 //edit patient api
-export async function PatientDetails(patientId:String){
+export async function PatientDetails(patientId:any){
 
   const result =  await HospitalApi
     .get(`/patient/edit/${patientId}`).then((res)=>{

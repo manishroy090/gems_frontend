@@ -48,7 +48,7 @@ type MasterDataKey = keyof typeof masterData;
 const Page = () => {
   const [activeTab, setActiveTab] = useState<MasterDataKey>("availableTests");
   const [masterData, setMasterData] = useState<{countries: {}, departments: {}, bloodGroups: {}, modules: {}, submodules: {}, availableTests: {},patientStatus: {}} >();
-  const [data, setData] = useState([]);
+  const [data, setData] = useState<any>([]);
   //  const data = masterData[activeTab] || [];
 
   useEffect(() => {
@@ -76,12 +76,16 @@ const Page = () => {
   }, []);
 
   useEffect(() => {
-    const data = masterData[activeTab as keyof typeof masterData];
-    setData(data);
+
+     if(masterData){
+       const data = masterData[activeTab as keyof typeof masterData];
+       setData(data);
+
+     }
 
     // console.log("data",data);
     // console.log(activeTab);
-  }, [activeTab]);
+  }, [activeTab,masterData]);
   return (
     <div className="p-6 space-y-6">
       {/* ================= TABS ================= */}

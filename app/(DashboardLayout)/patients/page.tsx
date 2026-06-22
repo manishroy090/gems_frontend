@@ -22,8 +22,8 @@ const page = () => {
   const [patients, setPatients] = useState([]);
   const params = useSearchParams();
   const patientId = params.get("userId");
-  const [patientsStatus, setPatientStatus] = useState();
-  const [doctors, setDoctors] = useState();
+  const [patientsStatus, setPatientStatus] = useState<any>();
+  const [doctors, setDoctors] = useState<any>();
 
   interface filter {
     search: null | string;
@@ -66,7 +66,7 @@ const page = () => {
     getAllPatients();
   }, []);
 
-  const handleFreeSearch = (e) => {
+  const handleFreeSearch = (e:any) => {
     setquery((filterValue) => ({
       ...filterValue,
       search: e.target.value,
@@ -81,7 +81,7 @@ const page = () => {
   //   }));
   // };
 
-  const handleShorting = (value) => {
+  const handleShorting = (value:string) => {
     setquery((filterValue) => ({
       ...filterValue,
       sort: { key: "id", order: value },
@@ -90,7 +90,7 @@ const page = () => {
 
   const { register, handleSubmit, control } = useForm();
 
-  const onSubmit: SubmitHandler = (data) => {
+  const onSubmit: SubmitHandler<any> = (data) => {
     setquery((filterValue) => ({
       ...filterValue,
       filters: data,

@@ -4,7 +4,7 @@ import React, { useEffect, useRef, useState } from "react";
 import CameraAltOutlinedIcon from "@mui/icons-material/CameraAltOutlined";
 
 const ProfilePictureUpload = ({ setValue, register, imaged }:{setValue?:any,register?:any,imaged?:any}) => {
-  let [image, setImage] = useState<String>();
+  let [image, setImage] = useState<string>();
   const fileInputRef = useRef<HTMLInputElement>(null);
 
   const handleImageChange = (e:any) => {

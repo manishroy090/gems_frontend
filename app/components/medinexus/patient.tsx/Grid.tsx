@@ -3,8 +3,8 @@
 import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import PatientCards from "../cards/users/PatientCards";
 import { useEffect, useState } from "react";
-const Grid = ({ data = [], query }) => {
-  const [patients, setPatients] = useState();
+const Grid = ({ data = [], query }:{ data:any, query:any }) => {
+  const [patients, setPatients] = useState<any>();
 
   useEffect(() => {
     setPatients(data);
@@ -15,7 +15,7 @@ const Grid = ({ data = [], query }) => {
     if (filtersValue) {
 
       const filterPatients = patients?.filter(
-        (patient) =>
+        (patient:any) =>
           patient?.name == filtersValue?.name ||
           patient?.status == filtersValue?.status ||
           patient.primary_doctor == filtersValue?.primary_doctor,
@@ -35,7 +35,7 @@ const Grid = ({ data = [], query }) => {
 
   return (
     <div className="grid grid-cols-3 gap-4">
-      {patients?.map((item, index) => (
+      {patients?.map((item:any, index:any) => (
         <PatientCards patientDetails={item} key={index} />
       ))}
     </div>

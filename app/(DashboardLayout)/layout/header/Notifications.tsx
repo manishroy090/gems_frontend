@@ -10,9 +10,9 @@ import {
   DropdownMenuTrigger,
   DropdownMenuContent,
   DropdownMenuItem,
-} from '../../../components/ui/dropdown-menu'
-import { Badge } from '../../../components/ui/badge'
-import { Button } from '../../../components/ui/button'
+} from '@components/medinexus/dropdown-menu'
+import { Badge } from '@components/medinexus/badge'
+import { Button } from '@components/medinexus/button'
 
 const Notifications = () => {
   return (

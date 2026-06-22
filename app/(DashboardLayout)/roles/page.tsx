@@ -79,8 +79,13 @@ const page = () => {
                 );
               },
             }}
+            
 
-           columns = {[  { title: "Role" }, { title: "Permission" }]}
+           columns = 
+           {[
+            { title: "Role" }, 
+            { title: "Permission" }]
+          }
           />
         ) : (
           "loading"

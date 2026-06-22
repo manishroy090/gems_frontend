@@ -74,7 +74,7 @@ const Header = () => {
             <SheetTitle>Sidebar</SheetTitle>
           </VisuallyHidden>
 
-          <SidebarLayout onClose={() => setIsOpen(false)} />
+          {/* <SidebarLayout onClose={() => setIsOpen(false)} /> */}
         </SheetContent>
       </Sheet>
     </>

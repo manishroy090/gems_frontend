@@ -1,5 +1,5 @@
 export interface ISession {
-  id?:String | Number;
+  id?:string | number ;
   day: string;
   start_time: string;
   end_time: string;
@@ -7,7 +7,7 @@ export interface ISession {
 }
 
 export interface IEducation {
-  id?:String | Number
+  id?:string | number
   degree: string;
   university: string;
   from: string;
@@ -15,19 +15,19 @@ export interface IEducation {
 }
 
 export interface IAward {
-  id?:String | Number
+  id?:string | number
   name: string;
   from: string;
 }
 
 export interface ICertification {
-  id?:String | Number
+  id?:string | number
   name: string;
   from: string;
 }
 
 export interface IDoctor {
-  image:any,
+  image?:any,
   firstname: string;
   lastname: string;
   phonenumber: string;
@@ -40,20 +40,20 @@ export interface IDoctor {
   language_spoken: string;
   blood_group: string;
   gender: string;
-  fee:String,
-  status:String,
-  feature_on_website:Boolean;
+  fee:string,
+  status:string,
+  feature_on_website?:Boolean;
   bio: string;
-  country_id:String
-  state:String,
-  city:String,
-  address:String,
-  address_2:String
-  pin_code:String
+  country_id:string
+  state:string,
+  city:string,
+  address:string,
+  address_2?:string
+  pin_code:string
 
   // Dynamic Fields
-  sessions: ISession[];
-  educations: IEducation[];
-  awards: IAward[];
-  certifications: ICertification[];
+  sessions?: ISession[] |undefined;
+  educations?: IEducation[] | undefined;
+  awards?: IAward[] |undefined;
+  certifications?: ICertification[] |undefined;
 }

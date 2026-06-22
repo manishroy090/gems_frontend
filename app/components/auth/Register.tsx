@@ -35,7 +35,7 @@ export const Register = () => {
     
     
   };
-  const [countries, setCountries] = useState();
+  const [countries, setCountries] = useState<any>();
 
 
 
@@ -162,14 +162,14 @@ export const Register = () => {
                   <select
                     {...register("country_id")} className="h-10 text-sm bg-white text-black border border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent"
                     defaultValue=""
-                     errors={errors}
+                    //  errors={errors}
 
                   >
                     <option value="" disabled>
                       Select Country
                     </option>
 
-                    {countries?.map((country, index) => (
+                    {countries?.map((country:any, index:any) => (
                       <option className="text-black" key={index} value={country.id}>
                         {country.title}
                       </option>
@@ -205,7 +205,7 @@ export const Register = () => {
 
 
 
-const Section = ({ title, icon, children }) => (
+const Section = ({ title, icon, children }:{title:string ,icon:any, children:any}) => (
   <div>
     <div className="flex items-center gap-2 mb-4">
       <span className="text-base">{icon}</span>
@@ -217,7 +217,7 @@ const Section = ({ title, icon, children }) => (
   </div>
 );
 
-const Field = ({ label, type = "text", placeholder, name, register ,min ,errors}) => (
+const Field = ({ label, type = "text", placeholder, name, register ,min ,errors}:{label:string,type?:string,placeholder?:string,name:unknown,register:any,min?:number,errors?:any}) => (
   <div className="flex flex-col gap-1.5">
     <Label className="text-xs font-medium text-gray-500 uppercase tracking-wide">{label}</Label>
     <Input
@@ -227,8 +227,8 @@ const Field = ({ label, type = "text", placeholder, name, register ,min ,errors}
 
       className="h-10 text-sm bg-white border-gray-200 rounded-lg focus:ring-2 focus:ring-blue-400 focus:border-transparent placeholder:text-gray-300"
     />
-     {errors?.[name] && (
-      <p className="text-xs text-red-500">{errors[name].message}</p>
+     {errors?.[name as keyof typeof errors] && (
+      <p className="text-xs text-red-500">{errors[name as keyof typeof errors].message}</p>
     )}
   </div>
 );

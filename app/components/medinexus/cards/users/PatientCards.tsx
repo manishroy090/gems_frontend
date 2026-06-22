@@ -8,16 +8,16 @@ import { useState, useRef, useEffect } from "react";
 import { DeleteModal } from "../../DeleteModal";
 import { deletePatient } from "@/services/Patients";
 
-const PatientCards = ({ patientDetails }) => {
+const PatientCards = ({ patientDetails }:{ patientDetails:any}) => {
   const [openMenu, setOpenMenu] = useState(false);
-  const menuRef = useRef(null);
+  const menuRef = useRef<any>(null);
   const [open, setOpen] = useState(false);
 
-  const [confirmAction, setConfirmAction] = useState<TableAction<T> | null>(
+  const [confirmAction, setConfirmAction] = useState<any>(
     null,
   );
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (event:MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setOpenMenu(false);
       }

@@ -3,7 +3,7 @@ import { ChevronDown } from "lucide-react";
 import { FileText } from "lucide-react";
 import { Sheet } from "lucide-react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-const Exportbtn = ({handleExport}) => {
+const Exportbtn = ({handleExport}:{handleExport:any}) => {
 
   
   const downloadReport = async () => {
@@ -20,7 +20,7 @@ const Exportbtn = ({handleExport}) => {
       link.click();
 
       // Clean up DOM and memory pointer
-      link.parentNode.removeChild(link);
+        // link.parentNode.removeChild(link);
       window.URL.revokeObjectURL(url);
     } catch (error) {
       console.error("Download failed:", error);

@@ -39,9 +39,10 @@ const page = () => {
   const [countries, setCountries] = useState([]);
   const [bloodgroups, setBloodgroups] = useState([]);
   const [doctorStatus, setDoctorStatus] = useState([]);
-  const [doctorId, setDoctorId] = useState<String | Number | null>(null);
+  const [doctorId, setDoctorId] = useState<string | number | null>(null);
   const [doctorImage, setDoctorImage] = useState();
   const params = useSearchParams();
+
 
   const {
     register,
@@ -51,7 +52,7 @@ const page = () => {
     setValue,
     watch,
     formState: { errors },
-  } = useForm<IDoctor>({
+  } = useForm({
     resolver: yupResolver(Doctorschema),
     defaultValues: {
       image: "",
@@ -75,7 +76,7 @@ const page = () => {
           day: "",
           start_time: "",
           end_time: "",
-          patients: "",
+          patients: 0,
         },
       ],
 
@@ -141,7 +142,7 @@ const page = () => {
   });
 
   useEffect(() => {
-    const doctorId: String | Number | null = params.get("doctor_id");
+    const doctorId: string | number | null = params.get("doctor_id");
 
     if (doctorId !== null) {
       setDoctorId(doctorId);
@@ -569,7 +570,7 @@ const page = () => {
                     day: "",
                     start_time: "",
                     end_time: "",
-                    patients: "",
+                    patients: 0,
                   })
                 }
                 className="bg-[#12b886] p-2 text-white rounded-full hover:scale-105 transition"

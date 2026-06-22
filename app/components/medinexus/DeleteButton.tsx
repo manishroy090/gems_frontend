@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-export default function DeleteButton({ onDelete }) {
+export default function DeleteButton({ onDelete }:{onDelete:any}) {
   const [showConfirm, setShowConfirm] = useState(false);
 
   return (

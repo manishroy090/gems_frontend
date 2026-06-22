@@ -22,6 +22,7 @@
     "@mui/material": "^9.0.0",
     "@reduxjs/toolkit": "^2.11.2",
     "@tanstack/react-table": "^8.21.3",
+    "@types/lodash": "^4.17.24",
     "@types/react-date-range": "^1.4.10",
     "@types/react-slick": "^0.23.13",
     "apexcharts": "^5.10.6",

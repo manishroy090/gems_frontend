@@ -4,7 +4,6 @@ import "react-datepicker/dist/react-datepicker.css";
 
 import { cva } from "class-variance-authority";
 import { cn } from "../../libs/utils";
-import { parsers } from "date-fns";
 
 const inputVariants = cva(
   "flex h-10 w-[100%] border rounded-lg px-3 py-2 text-sm disabled:cursor-not-allowed disabled:opacity-50 focus-visible:outline-0",
@@ -45,10 +44,10 @@ function CustomDatePicker({
   error,
   variant = "default",
   className = ""
-}) {
+}:{value?:any,onChange?:any,placeholder?:any,dateFormat?:any,error?:any,variant?:any,className?:string}) {
 
   const [formatedDate, setFormatedDate] = useState();
-  const handleChange = (date) => {
+  const handleChange = (date:any) => {
     console.log("date",date);
     onChange(date)
   };

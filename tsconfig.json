@@ -1,7 +1,11 @@
 {
   "compilerOptions": {
     "target": "ES2017",
-    "lib": ["dom", "dom.iterable", "esnext"],
+    "lib": [
+      "dom",
+      "dom.iterable",
+      "esnext"
+    ],
     "allowJs": true,
     "skipLibCheck": true,
     "strict": true,
@@ -19,18 +23,42 @@
       }
     ],
     "paths": {
-      "@/*": ["./app/*"],
-      "@components/*": ["./app/components/*"],
-      "@context/*": ["./app/context/*"],
-      "@css/*": ["./app/context/*"],
-      "@data/*": ["./app/data/*"],
-      "@hooks/*": ["./app/hooks/*"],
-      "@interface/*": ["./app/interface/*"],
-      "@libs/*": ["./app/libs/*"],
-      "@sas/*": ["./app/sass/*"],
-      "@schemas/*": ["./app/schemas/*"],
-      "@store/*": ["./app/store/*"],
-      "@services/*": ["./app/services/*"]
+      "@/*": [
+        "./app/*"
+      ],
+      "@components/*": [
+        "./app/components/*"
+      ],
+      "@context/*": [
+        "./app/context/*"
+      ],
+      "@css/*": [
+        "./app/context/*"
+      ],
+      "@data/*": [
+        "./app/data/*"
+      ],
+      "@hooks/*": [
+        "./app/hooks/*"
+      ],
+      "@interface/*": [
+        "./app/interface/*"
+      ],
+      "@libs/*": [
+        "./app/libs/*"
+      ],
+      "@sas/*": [
+        "./app/sass/*"
+      ],
+      "@schemas/*": [
+        "./app/schemas/*"
+      ],
+      "@store/*": [
+        "./app/store/*"
+      ],
+      "@services/*": [
+        "./app/services/*"
+      ]
     }
   },
   "include": [
@@ -40,7 +68,11 @@
     ".next/types/**/*.ts",
     ".next/dev/types/**/*.ts",
     "**/*.mts",
-    "app/components/medinexus/CustomDatePicker.tsx"
+    "app/components/medinexus/CustomDatePicker.tsx",
+    "build/types/**/*.ts",
+    "build/dev/types/**/*.ts"
   ],
-  "exclude": ["node_modules"]
+  "exclude": [
+    "node_modules"
+  ]
 }

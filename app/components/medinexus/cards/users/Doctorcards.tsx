@@ -8,17 +8,17 @@ import Link from "next/link";
 import { DeleteModal } from "../../DeleteModal";
 import { deleteDoctor } from "../../../../services/Doctor";
 
-const Doctorcards = ({ doctorDetails }) => {
+const Doctorcards = ({ doctorDetails } : { doctorDetails:any }) => {
   const [openMenu, setOpenMenu] = useState(false);
-  const menuRef = useRef(null);
+  const menuRef = useRef<any>(null);
   const [open, setOpen] = useState(false);
-  const [confirmAction, setConfirmAction] = useState<TableAction<T> | null>(
+  const [confirmAction, setConfirmAction] = useState<any>(
     null,
   );
 
   // Close menu when clicking outside
   useEffect(() => {
-    const handleClickOutside = (event) => {
+    const handleClickOutside = (event:MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setOpenMenu(false);
       }

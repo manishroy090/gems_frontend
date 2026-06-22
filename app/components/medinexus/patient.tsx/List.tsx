@@ -9,7 +9,7 @@ import ModeIcon from "@mui/icons-material/Mode";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { deletePatient } from "@/services/Patients";
 
-const List = ({ data,query }) => {
+const List = ({ data,query }:{ data:any,query:any }) => {
 
   const deletePatientDetails = async (patientId:String) =>{
     await deletePatient(patientId);

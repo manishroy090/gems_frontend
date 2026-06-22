@@ -34,7 +34,7 @@ const stats = [
   },
 ];
 
-const StatCard = ({ label, value, icon: Icon, color }) => {
+const StatCard = ({ label, value, icon: Icon, color }:{ label:any, value:any, icon:any , color:any }) => {
   return (
     <div
       className={`flex flex-col gap-3 text-white rounded-xl p-6 shadow-md hover:scale-[1.02] transition ${color}`}

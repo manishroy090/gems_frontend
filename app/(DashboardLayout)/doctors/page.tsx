@@ -35,7 +35,7 @@ export default function Page() {
   
 
 
-  function switchView(viewaction) {
+  function switchView(viewaction:string) {
     setswitchView(viewaction);
   }
 
@@ -63,7 +63,7 @@ export default function Page() {
 
 
    const {register, handleSubmit,control} = useForm();
-   const onSubmit:SubmitHandler = (data)=>{
+   const onSubmit:SubmitHandler<any> = (data)=>{
     setquery((filterValue)=>({
       ...filterValue,
       filters:data

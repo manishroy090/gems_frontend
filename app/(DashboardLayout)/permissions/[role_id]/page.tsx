@@ -27,7 +27,7 @@ const Page = () => {
       const submoduleKey = item.submodules ?? item.submodule ?? "";
 
       let submoduleGroup = moduleGroup.rows.find(
-        (s) => s.submodule === submoduleKey
+        (s:any) => s.submodule === submoduleKey
       );
       if (!submoduleGroup) {
         submoduleGroup = { submodule: submoduleKey, actions: {} };

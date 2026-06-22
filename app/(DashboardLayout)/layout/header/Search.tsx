@@ -4,7 +4,7 @@ import { Icon } from '@iconify/react'
 import SidebarContent, { MenuItem, ChildItem } from '../sidebar/sidebaritems'
 
 import SimpleBar from 'simplebar-react'
-import { Input } from '../../../components/ui/input'
+import { Input } from '@components/medinexus/input'
 import Link from 'next/link'
 
 interface SearchResult {

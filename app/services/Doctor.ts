@@ -16,7 +16,7 @@ export async function getAllDoctor() {
 }
 
 //create doctor api
-export async function createDoctor(payload:IDoctor) {
+export async function createDoctor(payload:any) {
   const register = await HospitalApi.post('doctors/create', payload, {
     headers: { "Content-Type": "multipart/form-data" }
   });
@@ -26,7 +26,7 @@ export async function createDoctor(payload:IDoctor) {
 
 
 //get doctorapi module
-export async function getDoctor(id:string) {
+export async function getDoctor(id:String) {
   const doctor = await HospitalApi.get(`doctors/edit/${id}`)
     .then((res) => {
       return res.data.doctor
@@ -40,13 +40,13 @@ export async function getDoctor(id:string) {
 
 
 //update doctorapi module
-export async function updateDoctor(id:string |number ,payload:IDoctor) {
+export async function updateDoctor(id:string |number ,payload:any) {
   const doctor = await HospitalApi.put(`doctors/update/${id}`,payload)
 }
 
 
 //view doctordetail a api
-export async function View(id:string | number){
+export async function View(id:any ){
    const doctor = await HospitalApi.get(`doctors/view/${id}`)
     .then((res) => {
       return res.data.doctordetails

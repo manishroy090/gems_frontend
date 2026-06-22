@@ -97,7 +97,7 @@ const Page = () => {
         </div>
 
         <div className="flex gap-2 flex-wrap">
-          {availabilityData[activeDay].map((t, i) => (
+          {availabilityData[activeDay as keyof typeof availabilityData].map((t, i) => (
             <span key={i} className="px-3 py-1 bg-gray-100 rounded">
               {t}
             </span>

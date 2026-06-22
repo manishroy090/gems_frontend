@@ -12,16 +12,16 @@ import ModeIcon from '@mui/icons-material/Mode';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { use } from "apexcharts";
 
-const List = ({ data,query}) => {
+const List = ({ data,query}:{ data:any,query:any}) => {
   const router = useRouter();
 
   const [page, setPage] = useState(1);
 
-  const edit = async (doctorId) => {
+  const edit = async (doctorId:string) => {
     router.push(`/doctors/adddoctor/?doctor_id=${doctorId}`);
   };
 
-  const deleteDoctorD = async (doctorId) => {
+  const deleteDoctorD = async (doctorId:string) => {
     deleteDoctor(doctorId);
   };
 

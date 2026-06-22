@@ -71,7 +71,7 @@ const Custompagination = () => {
         </li>
       </ul>
       <form className="w-32 mx-auto">
-        <label for="countries" className="sr-only">
+        <label className="sr-only">
           Select an option
         </label>
         <select

@@ -1,6 +1,6 @@
   export interface Ifilter {
     search: null | string;
-    filter: null | string;
+    filters: null | string |any;
     dateRange: {
       key: string | null;
       from: string | null;

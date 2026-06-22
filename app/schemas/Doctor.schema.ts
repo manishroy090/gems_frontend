@@ -9,12 +9,12 @@ export const Doctorschema = yup.object({
     .test("fileType", "Only JPEG, PNG, WebP, or GIF allowed", (value) => {
       if (!value) return true;
 
-      if (value) return ACCEPTED_TYPES.includes(value.type);
+      // if (value) return ACCEPTED_TYPES.includes(value.type);
 
     })
     .test("fileSize", `Image must be under ${MAX_SIZE_MB}MB`, (value) => {
       if (!value) return true;
-      if (value) return value.size <= MAX_SIZE_BYTES;
+      // if (value) return value.size <= MAX_SIZE_BYTES;
     })
   ,
   firstname: yup.string().required("FirstName is required"),
@@ -41,7 +41,7 @@ export const Doctorschema = yup.object({
   gender: yup.string().required("Gender is required"),
   fee: yup.string().required("Fee is required"),
   status: yup.string().required("Status is required"),
-  feature_on_website: yup.boolean(),
+  feature_on_website: yup.boolean().default(false),
   bio: yup.string().required("Bio is required"),
   country_id: yup.string().required("Country is required"),
   state: yup.string().required("State is required"),

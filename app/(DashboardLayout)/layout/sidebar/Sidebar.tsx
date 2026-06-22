@@ -141,7 +141,7 @@ const Sidebar = () => {
   const toggleSubmenu = (menuName: string) => {
     setOpenMenus((prev) => ({
       ...prev,
-      [menuName]: !prev[menuName],
+      [menuName]: !prev[menuName as keyof typeof prev],
     }));
   };
 
@@ -232,7 +232,7 @@ const Sidebar = () => {
                         Soon
                       </span>
 
-                      {openMenus[item.name] ? (
+                      {openMenus[item.name as keyof typeof  openMenus] ? (
                         <KeyboardArrowDownIcon fontSize="small" />
                       ) : (
                         <KeyboardArrowRightIcon fontSize="small" />
@@ -243,7 +243,7 @@ const Sidebar = () => {
                 </button>
 
                 {/* SUB MENU ITEMS */}
-                {openMenus[item.name] && !collapsed && (
+                {openMenus[item.name as keyof typeof openMenus] && !collapsed && (
                   <div className="ml-5 pl-4 border-l border-white/10 space-y-1">
 
                     {item.children.map((child, idx) => (
@@ -291,7 +291,7 @@ const Sidebar = () => {
           return (
             <Link
               key={i}
-              href={item.disabled ? "#" : item.path}
+              href={item.disabled ? "#" : item.path ?  item.path : "#"}
               onClick={(e) => {
                 if (item.disabled) e.preventDefault();
               }}

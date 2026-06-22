@@ -1,7 +1,7 @@
 import FilterAltRoundedIcon from "@mui/icons-material/FilterAltRounded";
 import { useState } from "react";
 
-const Filter = ({children}) => {
+const Filter = ({children} :{children:any}) => {
 
   const [showfilter,setShow] = useState(false);
 

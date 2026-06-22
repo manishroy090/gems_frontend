@@ -15,7 +15,7 @@ export async function createUser(data: Iuser) {
 }
 
 //get user api call from here
-export async function getUser(user_id: string) {
+export async function getUser(user_id: any) {
   const { data } = await HospitalApi.get(`/auth/users/${user_id}`);
   return data.user;
 }
@@ -27,7 +27,7 @@ export async function updateUser(id: string | number, payload: Iuser) {
 }
 
 //delete user api call from here
-export async function deleteUserById(id: string) {
+export async function deleteUserById(id: any) {
   const { data } = await HospitalApi.delete(`/auth/users/${id}`);
   return data.message;
 }

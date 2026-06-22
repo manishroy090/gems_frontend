@@ -8,7 +8,7 @@ import { useParams } from "next/navigation";
 
 const page = () => {
   const [activeDay, setActiveDay] = useState("Sunday");
-  const [doctordetails, setDoctorDetails] = useState();
+  const [doctordetails, setDoctorDetails] = useState<any>();
   const param = useParams()
 
   const StructurData = (data: any) => {
@@ -19,7 +19,7 @@ const page = () => {
           let availabilityData: any = {};
           const dayList = [...new Set(value.map((item: any) => item.day))];
           dayList.forEach((day) => {
-            availabilityData[day] = value.filter((item: any) => item.day === day);
+            availabilityData[day as keyof typeof  availabilityData] = value.filter((item: any) => item.day === day);
           });
           return [key, availabilityData];
 
@@ -34,7 +34,8 @@ const page = () => {
   useEffect(() => {
     const getDoctorDetails = async () => {
       const {user_id} =param;
-      const result = await View(user_id);
+    
+      const result = await View(user_id );
       const structureData = StructurData(result);
       setDoctorDetails(structureData);
     }
@@ -126,7 +127,7 @@ const page = () => {
         </div>
 
         <div className="flex gap-2 flex-wrap">
-          {doctordetails?.doctor_sessions && doctordetails?.doctor_sessions?.[activeDay]?.map((t, i) => (
+          {doctordetails?.doctor_sessions && doctordetails?.doctor_sessions?.[activeDay]?.map((t:any, i:any) => (
             <span key={i} className="px-3 py-1 bg-gray-100 rounded">
               {`${t.start_time} - ${t.end_time}`}
             </span>
@@ -163,7 +164,7 @@ const page = () => {
         <h1 className="font-semibold mb-3">Education</h1>
 
         <div className="border-l pl-4 space-y-3 text-sm">
-          {doctordetails?.education.map((item,index) => (
+          {doctordetails?.education.map((item:any,index:any) => (
             <div key={index}>
               <p className="font-medium">{item.university}</p>
               <p className="text-gray-500">{item?.degree} {`(${item.from} - ${item.to})`}</p>
@@ -180,7 +181,7 @@ const page = () => {
         <h1 className="font-semibold mb-3">Awards & Recognition</h1>
 
         <div className="space-y-3">
-          {doctordetails?.award.map((award,index) => (
+          {doctordetails?.award.map((award:any,index:any) => (
             <div className="flex gap-3" key={index}>
               <span>🏆</span>
               <div>
@@ -201,7 +202,7 @@ const page = () => {
         <h1 className="font-semibold mb-3">Certifications</h1>
 
         <div className="space-y-3">
-          {doctordetails?.certification.map((certifi,index) => (
+          {doctordetails?.certification.map((certifi:any,index:any) => (
             <div className="flex gap-3" key={index}>
               <span>🎓</span>
               <div>
