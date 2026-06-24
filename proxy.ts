@@ -6,11 +6,10 @@ import { decodeToken } from './app/libs/jwt';
 
 export function proxy(request: NextRequest) {
 
-    console.log("proxy middleware called")
     // const dispatch = useDispatch();
     const accessToken = request.cookies.get('ACCESS_TOKEN')?.value;
 
-    console.log("access",accessToken);
+    console.log("access",request);
 
 
 
