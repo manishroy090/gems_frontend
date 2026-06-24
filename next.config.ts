@@ -14,11 +14,11 @@ const nextConfig = {
           has: [{ type: "host", value: "silveroakhospital.localhost" }],
           destination: "/:path*",
         },
+    
          {
-          source: "/:path*",
-          has: [{ type: "host", value: "https://medinexus-production-a69b.up.railway.app/" }],
-          destination: "/:path*",
-        },
+          source: "/api/v1/:path*",
+          destination: "http://localhost:8080/api/v1/config",
+        }
       ],
     };
   },
