@@ -14,6 +14,8 @@ export function proxy(request: NextRequest) {
 
     console.log("access",response.cookies);
 
+    console.log('tokem',accessToken);
+
 
 
     if (!accessToken) {
