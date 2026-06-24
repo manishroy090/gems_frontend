@@ -19,7 +19,7 @@ export default function Layout({ children }: { children: React.ReactNode }) {
     if (!ACCESS_TOKEN) {
       router.push("/auth/login");
     }
-  });
+  },[]);
 
   useEffect(() => {
     const getAuth = async () => {
