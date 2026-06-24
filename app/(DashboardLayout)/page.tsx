@@ -6,6 +6,7 @@ import React from "react";
 import { Footer } from "../components/dashboard/Footer";
 import { TopCards } from "../components/dashboard/TopCards";
 import ProfileWelcome from "../components/dashboard/ProfileWelcome";
+import SalesOverview from "@components/medinexus/SalesOverview";
 
 
 const page = () => {
@@ -20,7 +21,7 @@ const page = () => {
           <TopCards />
         </div>
         <div className="lg:col-span-8 col-span-12">
-          {/* <SalesOverview /> */}
+          <SalesOverview />
         </div>
         <div className="lg:col-span-4 col-span-12">
           <div className="grid grid-cols-12 gap-6">
