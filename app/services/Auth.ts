@@ -3,8 +3,6 @@ import { useRouter } from "next/navigation";
 import { Ionboarding } from "../interface/Ionboarding";
 import toast, { Toaster } from "react-hot-toast";
 import useToaster from "../hooks/useToaster";
-import { NextResponse } from "next/server";
-
 
 
 export async function hoshpitalRegister(payload: Ionboarding) {

@@ -13,8 +13,6 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Loginschema } from "@schemas/Login.schema";
 import { ILogin } from "@interface/ILogin";
 import useToaster from "@hooks/useToaster";
-import { NextResponse } from "next/server";
-
 
 export const Login = () => {
   const router = useRouter();
@@ -32,17 +30,8 @@ export const Login = () => {
       toaster.error(res.data.message);
     }
 
-    const { success ,ACCESS_TOKEN} = res.data;
+    const { success } = res.data;
     if (success) {
-       const response = NextResponse.json({success:true});
-
-       response.cookies.set('ACCESS_TOKEN',ACCESS_TOKEN,{
-         httpOnly: true,
-         secure: true,
-         sameSite: "lax",
-         path: "/",
-       })
-
       router.push("/");
     }
   };
