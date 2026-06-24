@@ -6,7 +6,7 @@ export function proxy(request: NextRequest) {
     // const dispatch = useDispatch();
     // const accessToken = request.cookies.get('ACCESS_TOKEN')?.value;
    
-     const token = request.headers.get('authorization');
+     const token = request.headers.get('Authorization');
 
      console.log("token",token);
 
