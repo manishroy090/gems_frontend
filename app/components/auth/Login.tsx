@@ -31,6 +31,7 @@ export const Login = () => {
     }
 
     const { success } = res.data;
+    console.log(success);
     if (success) {
       router.push("/");
     }
