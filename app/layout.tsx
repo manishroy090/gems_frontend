@@ -4,7 +4,6 @@ import "./css/globals.css";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
 import { Suspense } from "react";
-import { useRouter } from "next/router";
 
 
 
@@ -14,15 +13,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
 
-  const router = useRouter();
 
-  useEffect(()=>{
-      const ACCESS_TOKEN = localStorage.getItem("ACCESS_TOKEN");
-    
-         if(!ACCESS_TOKEN){
-             router.push('/auth/login')
-         }
-  })
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
