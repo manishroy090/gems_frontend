@@ -1,19 +1,21 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 import { decodeToken } from './app/libs/jwt';
-
-
-
 export function proxy(request: NextRequest) {
 
     // const dispatch = useDispatch();
     // const accessToken = request.cookies.get('ACCESS_TOKEN')?.value;
+   
+    // const token = getCookie('ACCESS_TOKEN')
 
-     const ACCESS_TOKEN = localStorage.getItem("ACCESS_TOKEN");
+    // if(token){
+    //      return NextResponse.redirect(new URL('/auth/login', request.url))
+    //  }
+    
 
-     if(!ACCESS_TOKEN){
-         return NextResponse.redirect(new URL('/auth/login', request.url))
-     }
+
+
+    
 
 //use it on production
     // if (!accessToken) {

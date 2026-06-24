@@ -13,10 +13,12 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { Loginschema } from "@schemas/Login.schema";
 import { ILogin } from "@interface/ILogin";
 import useToaster from "@hooks/useToaster";
-
+import { setToken } from "@/store/features/Hoshpital/AuthSlice";
+import { useDispatch } from "react-redux";
 export const Login = () => {
   const router = useRouter();
   const toaster = useToaster();
+  const dispatch = useDispatch();
 
   const {
     register,
@@ -32,8 +34,9 @@ export const Login = () => {
 
     const { success ,ACCESS_TOKEN} = res.data;
     if (success) {
-      localStorage.setItem("ACCESS_TOKEN",ACCESS_TOKEN)
-      router.push("/");
+      // localStorage.setItem("ACCESS_TOKEN",ACCESS_TOKEN)
+      // document.cookie= `ACCESS_TOKEN=${ACCESS_TOKEN}`
+      // router.push("/");
     }
   };
 

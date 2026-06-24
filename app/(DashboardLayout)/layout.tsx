@@ -7,19 +7,22 @@ import { getMe } from "../services/Auth";
 import { useDispatch } from "react-redux";
 import { setAuthUser } from "../store/features/Hoshpital/AuthSlice";
 import AIBotUI from "../components/medinexus/AIBotUI";
-import { useRouter } from "next/router";
+import { useRouter } from 'next/navigation'
 export default function Layout({ children }: { children: React.ReactNode }) {
-  const dispatch = useDispatch();
+   const dispatch = useDispatch();
 
-  const router = useRouter();
+   const router = useRouter();
 
-  useEffect(() => {
+   useEffect(()=>{
     const ACCESS_TOKEN = localStorage.getItem("ACCESS_TOKEN");
 
     if (!ACCESS_TOKEN) {
       router.push("/auth/login");
     }
-  },[]);
+
+   },[])
+
+  
 
   useEffect(() => {
     const getAuth = async () => {

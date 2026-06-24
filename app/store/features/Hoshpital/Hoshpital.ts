@@ -1,4 +1,4 @@
-// app/store/features/counterSlice.js
+// app//features/counterSlice.js
 
 import { createSlice } from '@reduxjs/toolkit';
 

@@ -1,19 +1,15 @@
 "use client";
-import React, { useEffect } from "react";
+import React from "react";
 import "./css/globals.css";
 import { Provider } from "react-redux";
 import { store } from "./store/store";
 import { Suspense } from "react";
-
-
 
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-
-
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
