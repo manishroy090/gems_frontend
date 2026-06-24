@@ -34,7 +34,7 @@ export const Login = () => {
 
     const { success ,ACCESS_TOKEN} = res.data;
     if (success) {
-       const response = NextResponse.json(success);
+       const response = NextResponse.json({success:true});
 
        response.cookies.set('ACCESS_TOKEN',ACCESS_TOKEN,{
          httpOnly: true,
