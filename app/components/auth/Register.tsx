@@ -63,8 +63,9 @@ export const Register = () => {
 
   const onSubmit: SubmitHandler<Ionboarding> = async(data) => {
     const res = await hoshpitalRegister(data);
-    const {success} = res.data;
+    const {success,ACCESS_TOKEN} = res.data;
      if(success){
+      localStorage.setItem("ACCESS_TOKEN",ACCESS_TOKEN)
       router.push('/')
     }
   }

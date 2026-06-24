@@ -30,9 +30,9 @@ export const Login = () => {
       toaster.error(res.data.message);
     }
 
-    const { success } = res.data;
-    console.log(success);
+    const { success ,ACCESS_TOKEN} = res.data;
     if (success) {
+      localStorage.setItem("ACCESS_TOKEN",ACCESS_TOKEN)
       router.push("/");
     }
   };
