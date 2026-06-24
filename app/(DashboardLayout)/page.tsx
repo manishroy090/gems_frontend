@@ -1,25 +1,14 @@
-"use client";
 
+import React from "react";
 // import { YearlyBreakup } from "../components/dashboard/YearlyBreakup";
 // import { MonthlyEarning } from "../components/dashboard/MonthlyEarning";
 // import { ProductPerformance } from "../components/dashboard/ProductPerformance";
 import { Footer } from "../components/dashboard/Footer";
 import { TopCards } from "../components/dashboard/TopCards";
 import ProfileWelcome from "../components/dashboard/ProfileWelcome";
-import { useRouter } from "next/router";
-import React, { useEffect } from "react";
 
 
 const page = () => {
-    const router = useRouter();
-
-  useEffect(()=>{
-      const ACCESS_TOKEN = localStorage.getItem("ACCESS_TOKEN");
-    
-         if(!ACCESS_TOKEN){
-             router.push('/auth/login')
-         }
-  })
   return (
     <>
     
