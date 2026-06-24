@@ -21,9 +21,9 @@ const createApi = (baseURL:any) => {
 };
 
 export const Axios = createApi(
-    "https://medinexus-production-ff5c.up.railway.app/api/v1"
+    "https://medinexus-production-1749.up.railway.app/api/v1"
 );
 
 export const HospitalApi = createApi(
-    "https://medinexus-production-ff5c.up.railway.app/api/v1/hospital"
+    "https://medinexus-production-1749.up.railway.app/api/v1/hospital"
 );
