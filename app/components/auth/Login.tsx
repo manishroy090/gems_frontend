@@ -34,6 +34,7 @@ export const Login = () => {
 
     const { success ,ACCESS_TOKEN} = res.data;
     if (success) {
+      console.log("ACCESS_TOKEN",ACCESS_TOKEN);
       localStorage.setItem("ACCESS_TOKEN",ACCESS_TOKEN)
       // document.cookie= `ACCESS_TOKEN=${ACCESS_TOKEN}`
       router.push("/");
