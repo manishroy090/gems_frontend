@@ -78,7 +78,7 @@ export default function Page() {
   return (
 
    
-    <div className="flex flex-col space-y-10">
+    <div className="flex flex-col space-y-10 ">
       <div className="doctor_header flex justify-between w-full bg-yellow-200 px-4 py-3 text-gray-800">
         {/* Left side */}
         <div className="doctor_heading flex space-x-4 items-center">
@@ -184,7 +184,7 @@ export default function Page() {
         </div>
       </div>
 
-      <div className="content">
+      <div className="content ">
         {switchViewwise == "grid" ? (
           <Grid data={doctors} query={query}  />
         ) : (

@@ -3,10 +3,13 @@ import CalendarMonthIcon from "@mui/icons-material/CalendarMonth";
 import Doctorcards from "../cards/users/Doctorcards";
 import { useEffect, useState } from "react";
 const Grid = ({ data = [], query }:{ data:any, query:any}) => {
-  const [doctors, setDoctors] = useState<any>();
+  const [doctors, setDoctorDetails] = useState<any>();
 
   useEffect(() => {
-    setDoctors(data);
+    if(data.length>0){
+
+      setDoctorDetails(data);
+    }
   }, [data]);
 
   useEffect(() => {
@@ -29,17 +32,17 @@ const Grid = ({ data = [], query }:{ data:any, query:any}) => {
       !filtersValue?.fees &&
       !filtersValue?.status
     ) {
-      setDoctors(data);
+      setDoctorDetails(data);
     } else {
-      setDoctors(filterDoctors);
+      setDoctorDetails(filterDoctors);
     }
   }, [query]);
 
   return (
-    <div className="grid grid-cols-3 gap-4">
-      {doctors?.map((item:any, index:any) => (
+    <div className="grid grid-cols-3 gap-4 ">
+      {doctors?.length >0 ? doctors?.map((item:any, index:any) => (
         <Doctorcards doctorDetails={item} key={index} />
-      ))}
+      )) : <span className="text-center  col-span-3 py-8 font-semibold text-xl">No Data Available</span>}
     </div>
   );
 };

@@ -76,10 +76,10 @@ const Page = () => {
           </div>
 
           <div className="flex flex-col gap-2">
-            <button className="bg-[#14967f] text-white px-5 py-2 rounded-xl">
+            <button className="bg-[#14967f] text-white px-5 py-2 rounded-xl hidden">
               Book Appointment
             </button>
-            <button className="border px-5 py-2 rounded-xl">
+            <button className="border px-5 py-2 rounded-xl hidden">
               Call Now
             </button>
           </div>

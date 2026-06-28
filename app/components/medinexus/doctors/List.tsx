@@ -57,6 +57,11 @@ const List = ({ data,query}:{ data:any,query:any}) => {
           },
         ]}
         columnRenderers={{
+          image:(value,row)=>{
+            return(
+                 <img className="w-16 h-16" src={row.image ? `http://localhost:8080/uploads/doctors/${row.image}`  : '/hrm_image/doctor.png'}/>
+            )
+          },
           status: (value) => {
             if (value === "Available") {
               return (
@@ -94,6 +99,7 @@ const List = ({ data,query}:{ data:any,query:any}) => {
           { title: "Phone Number" },
           { title: "Image" },
           { title: "Fees" },
+          { title: "Created At" },
           { title: "Status" },
         ]}
         query={query}

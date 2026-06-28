@@ -183,13 +183,13 @@ export const Register = () => {
             {/* SUBMIT */}
             <button
               type="submit"
-              className="w-full h-12 bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white rounded-xl font-semibold text-sm tracking-wide transition-all duration-200 shadow-md hover:shadow-lg"
+              className="hidden w-full h-12 bg-blue-600 hover:bg-blue-700 active:scale-[0.99] text-white rounded-xl font-semibold text-sm tracking-wide transition-all duration-200 shadow-md hover:shadow-lg"
             >
               Create Account →
             </button>
 
             <p className="text-center text-xs text-gray-400 pb-4">
-              Already have an account?{" "}
+              {/* Already have an account?{" "} */}
               <a href="/auth/login" className="text-blue-500 hover:underline font-medium">Sign in</a>
             </p>
 

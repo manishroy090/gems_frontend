@@ -9,12 +9,10 @@ import ModeIcon from "@mui/icons-material/Mode";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { deletePatient } from "@/services/Patients";
 
-const List = ({ data,query }:{ data:any,query:any }) => {
-
-  const deletePatientDetails = async (patientId:String) =>{
+const List = ({ data, query }: { data: any; query: any }) => {
+  const deletePatientDetails = async (patientId: String) => {
     await deletePatient(patientId);
-  }
-
+  };
 
   return (
     <div>
@@ -36,9 +34,25 @@ const List = ({ data,query }:{ data:any,query:any }) => {
             label: "Delete",
             icon: <DeleteIcon className="text-red-600" />,
             confirm: true,
-            onClick: (item) =>deletePatientDetails(item.id),
+            onClick: (item) => deletePatientDetails(item.id),
           },
         ]}
+        columnRenderers={{
+          image: (value, row) => {
+            return (
+              <img
+                className="w-16 h-16"
+                src={
+                  row.image
+                    ? `http://localhost:8080/uploads/patients/${row?.image}`
+                    : row?.gender == "male"
+                      ? "/hrm_image/male.png"
+                      : "/hrm_image/female.jpg"
+                }
+              />
+            );
+          },
+        }}
         columns={[
           { title: "Name" },
           { title: "Age" },
@@ -48,7 +62,7 @@ const List = ({ data,query }:{ data:any,query:any }) => {
           { title: "Last Visit" },
           { title: "Image" },
           { title: "Status" },
-          { title: "Primary Doctor" }
+          { title: "Primary Doctor" },
         ]}
         query={query}
       />

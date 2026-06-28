@@ -8,16 +8,14 @@ import { useState, useRef, useEffect } from "react";
 import { DeleteModal } from "../../DeleteModal";
 import { deletePatient } from "@/services/Patients";
 
-const PatientCards = ({ patientDetails }:{ patientDetails:any}) => {
+const PatientCards = ({ patientDetails }: { patientDetails: any }) => {
   const [openMenu, setOpenMenu] = useState(false);
   const menuRef = useRef<any>(null);
   const [open, setOpen] = useState(false);
 
-  const [confirmAction, setConfirmAction] = useState<any>(
-    null,
-  );
+  const [confirmAction, setConfirmAction] = useState<any>(null);
   useEffect(() => {
-    const handleClickOutside = (event:MouseEvent) => {
+    const handleClickOutside = (event: MouseEvent) => {
       if (menuRef.current && !menuRef.current.contains(event.target)) {
         setOpenMenu(false);
       }
@@ -73,33 +71,34 @@ const PatientCards = ({ patientDetails }:{ patientDetails:any}) => {
         </div>
       </div>
 
-      <div className="absolute top-3 right-3"  ref={menuRef}>
+      <div className="absolute top-3 right-3" ref={menuRef}>
         <button
           onClick={() => setOpenMenu(!openMenu)}
           className="p-2 rounded-xl bg-white shadow hover:scale-105 transition"
-         
         >
           <MoreVertIcon fontSize="small" />
         </button>
-      {openMenu && (
-        <div className="absolute right-0 mt-2 w-32 bg-white border rounded-xl shadow-lg overflow-hidden z-50">
-          <Link href={`/patients/createpatients/?userId=${patientDetails.id}`}>
-            <button className="flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-gray-100">
-              <EditIcon fontSize="small" />
-              Edit
-            </button>
-          </Link>
+        {openMenu && (
+          <div className="absolute right-0 mt-2 w-32 bg-white border rounded-xl shadow-lg overflow-hidden z-50">
+            <Link
+              href={`/patients/createpatients/?userId=${patientDetails.id}`}
+            >
+              <button className="flex items-center gap-2 w-full px-3 py-2 text-sm hover:bg-gray-100">
+                <EditIcon fontSize="small" />
+                Edit
+              </button>
+            </Link>
 
-          <button
-            className="flex items-center gap-2 w-full px-3 py-2 text-sm text-red-500 hover:bg-red-50"
-            onClick={toggelModal}
-          >
-            <DeleteIcon fontSize="small" />
-            Delete
-          </button>
-        </div>
-      )}
-            </div>
+            <button
+              className="flex items-center gap-2 w-full px-3 py-2 text-sm text-red-500 hover:bg-red-50"
+              onClick={toggelModal}
+            >
+              <DeleteIcon fontSize="small" />
+              Delete
+            </button>
+          </div>
+        )}
+      </div>
 
       <DeleteModal
         open={!!confirmAction}

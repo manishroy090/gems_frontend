@@ -24,8 +24,7 @@ const menu = [
   {
     name: "Home",
     icon: <HomeIcon />,
-    path: "/underconstruction",
-    disabled: true,
+    path: "/",
   },
 
   {

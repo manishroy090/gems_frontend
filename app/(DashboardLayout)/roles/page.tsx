@@ -46,6 +46,13 @@ const page = () => {
     getAllRole();
   }, []);
 
+
+  useEffect(()=>{
+
+    console.log("roles",roles)
+
+  },[roles])
+
   return (
     <div className="flex flex-col space-y-5">
       <div className="flex flex-col space-y-3">
@@ -63,7 +70,7 @@ const page = () => {
       </div>
 
       <div className="bg-white rounded px-1">
-        {roles.length > 0 ? (
+       
           <Table
             data={roles}
             showaction={false}
@@ -80,16 +87,13 @@ const page = () => {
               },
             }}
             
-
            columns = 
            {[
             { title: "Role" }, 
             { title: "Permission" }]
           }
           />
-        ) : (
-          "loading"
-        )}
+        
       </div>
 
       {/* modal code Start from here */}

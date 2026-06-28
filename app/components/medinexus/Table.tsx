@@ -30,7 +30,7 @@ type TableProps<T = any> = {
   columnRenderers?: Record<string, ColumnRenderer<T>>;
   query?: Ifilter;
   showaction?: boolean;
-  columns?:tablecolm<T>[]
+  columns?:tablecolm<T>[];
 };
 
 /* =========================================================
@@ -191,21 +191,21 @@ const Table = <T extends Record<string, any>>({
   actionlist = [],
   columnRenderers = {},
   query = {
-    search:" ",
-    filters:" ",
+    search:null,
+    filters:null,
     dateRange:{
-        key:" ",
-        from:" ",
-        to: " "
+        key:null,
+        from:null,
+        to: null
     },
     sort:{
-      key: " ",
-      order:" "
+      key: null,
+      order:null
 
     }
   },
   showaction = false,
-  columns = []
+  columns = [],
 }: TableProps<T>) => {
   /* =====================================================
        KEYS
@@ -224,7 +224,21 @@ const Table = <T extends Record<string, any>>({
   const filteredData = useMemo(() => {
     let result = [...data];
 
+    
     const { search, filters, dateRange, sort } = query;
+
+    const notApplyfilter = search===null && filters ===null &&  dateRange.key==null && dateRange.from==null && dateRange.to===null && sort.key===null && sort.order===null
+
+
+    if(notApplyfilter){
+
+      console.log("ff")
+        return result
+
+    }
+
+
+
 
     /* SEARCH */
 
@@ -290,6 +304,10 @@ const Table = <T extends Record<string, any>>({
 
     return result;
   }, [data, query]);
+
+
+
+ 
 
 
 
@@ -376,7 +394,7 @@ const Table = <T extends Record<string, any>>({
             ))
           ) : (
             <tr className=" text-center  w-full">
-              <td colSpan={8} className="py-10 fontsemibold text-lg">
+              <td colSpan={8} className="py-10 fontsemibold text-lg font-semibold">
 
               No Data Available
               </td>
